@@ -16,6 +16,7 @@
 		D3CF0C5A2537501400394F79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3CF0C592537501400394F79 /* Assets.xcassets */; };
 		D3CF0C652537501500394F79 /* Infection_TagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CF0C642537501500394F79 /* Infection_TagTests.swift */; };
 		D3CF0C702537501500394F79 /* Infection_TagUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CF0C6F2537501500394F79 /* Infection_TagUITests.swift */; };
+		D3CF0C81253753FF00394F79 /* TFAnalogJoystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CF0C80253753FF00394F79 /* TFAnalogJoystick.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		D3CF0C6B2537501500394F79 /* Infection TagUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Infection TagUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3CF0C6F2537501500394F79 /* Infection_TagUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Infection_TagUITests.swift; sourceTree = "<group>"; };
 		D3CF0C712537501500394F79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D3CF0C80253753FF00394F79 /* TFAnalogJoystick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFAnalogJoystick.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 				D3CF0C4E2537500F00394F79 /* GameScene.sks */,
 				D3CF0C502537500F00394F79 /* Actions.sks */,
 				D3CF0C522537500F00394F79 /* GameScene.swift */,
+				D3CF0C80253753FF00394F79 /* TFAnalogJoystick.swift */,
 				D3CF0C542537500F00394F79 /* GameViewController.swift */,
 				D3CF0C562537500F00394F79 /* Main.storyboard */,
 				D3CF0C592537501400394F79 /* Assets.xcassets */,
@@ -263,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3CF0C532537500F00394F79 /* GameScene.swift in Sources */,
+				D3CF0C81253753FF00394F79 /* TFAnalogJoystick.swift in Sources */,
 				D3CF0C552537500F00394F79 /* GameViewController.swift in Sources */,
 				D3CF0C4D2537500F00394F79 /* AppDelegate.swift in Sources */,
 			);
