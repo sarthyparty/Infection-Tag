@@ -80,6 +80,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D34D07F7253DE53B00482274 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				D34D07F8253DE54B00482274 /* Scene1 */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		D34D07F8253DE54B00482274 /* Scene1 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Scene1;
+			sourceTree = "<group>";
+		};
 		D3CF0C402537500F00394F79 = {
 			isa = PBXGroup;
 			children = (
@@ -106,10 +121,11 @@
 				D3CF0C4C2537500F00394F79 /* AppDelegate.swift */,
 				D3CF0C4E2537500F00394F79 /* GameScene.sks */,
 				D3CF0C502537500F00394F79 /* Actions.sks */,
-				D3CF0C522537500F00394F79 /* GameScene.swift */,
+				D34D07F7253DE53B00482274 /* Scenes */,
 				D3CF0C80253753FF00394F79 /* TFAnalogJoystick.swift */,
-				D3CF0C542537500F00394F79 /* GameViewController.swift */,
+				D3CF0C522537500F00394F79 /* GameScene.swift */,
 				D3CF0C562537500F00394F79 /* Main.storyboard */,
+				D3CF0C542537500F00394F79 /* GameViewController.swift */,
 				D3CF0C592537501400394F79 /* Assets.xcassets */,
 				D3CF0C5B2537501400394F79 /* Info.plist */,
 			);
