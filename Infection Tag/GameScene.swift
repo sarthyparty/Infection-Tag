@@ -19,7 +19,8 @@ class GameScene: SKScene {
         joystick.handleImage = UIImage(named: "test_joystick.png")
         joystick.baseImage = UIImage(named: "test_joystick.png")
         joystick.alpha = 0.5
-        camera?.addChild(joystick)
+        joystick.name = "joystick"
+        self.addChild(joystick)
         //Joystick movement handlers
 //        joystick.on(.move) { [unowned self] joystick in
 //            self.isTracking = true
