@@ -13,12 +13,14 @@ import GameplayKit
 
 class GameScene: SKScene {
     var joystick = TLAnalogJoystick(withDiameter: 100)
+    var character = Character(isInfected: false)
     
     override func didMove(to view: SKView) {
         joystick.position = CGPoint(x: 100, y: 100)
         joystick.alpha = 0.5
-        joystick.name = "joystick"
+//        joystick.name = "joystick"
         self.addChild(joystick)
+        self.addChild(character)
         //Joystick movement handlers
 //        joystick.on(.move) { [unowned self] joystick in
 //            self.isTracking = true
