@@ -10,6 +10,7 @@ import SpriteKit
 
 class Character: SKNode {
     var isInfected: Bool
+    var image=SKSpriteNode(imageNamed: "walk1")
     override init() {
         if isInfected {
             
