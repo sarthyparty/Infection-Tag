@@ -228,7 +228,7 @@ open class TLAnalogJoystick: SKNode {
 	}
 	
 	public var velocity: CGPoint {
-		let diff = handle.diameter * 0.02
+		let diff = handle.diameter * 0.04
 		return CGPoint(x: handle.position.x / diff, y: handle.position.y / diff)
 	}
 	

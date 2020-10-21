@@ -95,6 +95,9 @@ class GameScene: SKScene {
             
             
     }
+    override func update(_ currentTime: TimeInterval) {
+            self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y + (self.joystick.velocity.y))
+        }
     
     
 }
