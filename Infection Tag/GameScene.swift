@@ -16,8 +16,6 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         joystick.position = CGPoint(x: 100, y: 100)
-        joystick.handleImage = UIImage(named: "test_joystick.png")
-        joystick.baseImage = UIImage(named: "test_joystick.png")
         joystick.alpha = 0.5
         joystick.name = "joystick"
         self.addChild(joystick)
