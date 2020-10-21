@@ -13,6 +13,7 @@ class Character: SKNode {
     var image=SKSpriteNode(imageNamed: "walk1")
     override init() {
         if isInfected {
+            //can u see
             //heyoooooooo
         }
     }
