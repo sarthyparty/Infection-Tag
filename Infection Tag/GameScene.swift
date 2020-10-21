@@ -18,6 +18,7 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         joystick.position = CGPoint(x: 100, y: 100)
         character.position = CGPoint(x: screenWidth/2, y: screenHeight/2)
+        character.size = CGSize(width:character.size.width/2, height:character.size.height/2)
         joystick.alpha = 0.5
 //        joystick.name = "joystick"
         self.addChild(joystick)
@@ -96,19 +97,38 @@ class GameScene: SKScene {
             
     }
     override func update(_ currentTime: TimeInterval) {
-        if (self.character.position.x + (self.joystick.velocity.x)<0){
-            self.character.position.x=0
+        var boundaryx=false
+        var boundaryy=false
+        if (self.character.position.x + (self.joystick.velocity.x)<character.size.width/2){
+            self.character.position.x=character.size.width/2
+            boundaryx=true
         }
-        if (self.character.position.y + (self.joystick.velocity.y)<0){
-            self.character.position.y=0
+        if (self.character.position.y + (self.joystick.velocity.y)<character.size.height/2){
+            self.character.position.y=character.size.height/2
+            boundaryy=true
         }
-        if (self.character.position.x + (self.joystick.velocity.x)>screenWidth){
-            self.character.position.x=screenWidth
+        if (self.character.position.x + (self.joystick.velocity.x)>screenWidth-character.size.width/2){
+            self.character.position.x=screenWidth-character.size.width/2
+            boundaryx=true
         }
-        if (self.character.position.y + (self.joystick.velocity.y)>screenHeight){
-            self.character.position.y=screenHeight
+        if (self.character.position.y + (self.joystick.velocity.y)>screenHeight-character.size.height/2){
+            self.character.position.y=screenHeight-character.size.height/2
+            boundaryy=true
         }
+        if(boundaryx||boundaryy){
+        if (boundaryx&&boundaryy){
+            self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
+        }
+        if boundaryx{
+            self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(self.joystick.velocity.y))
+        }
+        if boundaryy{
+            self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y)
+        }
+        } else {
         self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y + (self.joystick.velocity.y))
+        }
+        
         }
     
     
