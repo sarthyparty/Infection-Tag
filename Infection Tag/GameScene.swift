@@ -17,6 +17,7 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         joystick.position = CGPoint(x: 100, y: 100)
+        character.position = CGPoint(x: screenWidth/2, y: screenHeight/2)
         joystick.alpha = 0.5
 //        joystick.name = "joystick"
         self.addChild(joystick)
