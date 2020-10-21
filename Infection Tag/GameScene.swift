@@ -96,7 +96,19 @@ class GameScene: SKScene {
             
     }
     override func update(_ currentTime: TimeInterval) {
-            self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y + (self.joystick.velocity.y))
+        if (self.character.position.x + (self.joystick.velocity.x)<0){
+            self.character.position.x=0
+        }
+        if (self.character.position.y + (self.joystick.velocity.y)<0){
+            self.character.position.y=0
+        }
+        if (self.character.position.x + (self.joystick.velocity.x)>screenWidth){
+            self.character.position.x=screenWidth
+        }
+        if (self.character.position.y + (self.joystick.velocity.y)>screenHeight){
+            self.character.position.y=screenHeight
+        }
+        self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y + (self.joystick.velocity.y))
         }
     
     
