@@ -12,7 +12,7 @@ class Character: SKNode {
     var isInfected: Bool
     override init() {
         if isInfected {
-            
+            //heyoooooooo
         }
     }
     
