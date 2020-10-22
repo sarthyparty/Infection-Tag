@@ -18,7 +18,7 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         super.didMove(to: view)
-        joystick.position = CGPoint(x: screenWidth/4, y: screenHeight/4)
+        joystick.position = CGPoint(x: screenWidth/6, y: screenHeight/6)
         character.position = CGPoint(x: screenWidth/2, y: screenHeight/2)
         character.size = CGSize(width:character.size.width/2, height:character.size.height/2)
         joystick.alpha = 0.5
@@ -133,7 +133,7 @@ class GameScene: SKScene {
             self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y + (self.joystick.velocity.y))
         }
         camera?.position = character.position
-        joystick.position = CGPoint(x:camera!.position.x/2, y: camera!.position.y/2)
+        joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
         
     }
     
