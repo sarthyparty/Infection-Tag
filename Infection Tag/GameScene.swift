@@ -116,18 +116,18 @@ class GameScene: SKScene {
             boundaryy=true
         }
         if(boundaryx||boundaryy){
-        if (boundaryx&&boundaryy){
-            self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
-        }
-        if boundaryx{
-            self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(self.joystick.velocity.y))
-        }
-        if boundaryy{
-            self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y)
-        }
-        } else {
-        self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y + (self.joystick.velocity.y))
-        }
+            if (boundaryx&&boundaryy){
+//                self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
+            }
+            else if boundaryx{
+                self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(self.joystick.velocity.y))
+            }
+            else if boundaryy{
+                self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y)
+            }
+            } else {
+                self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y + (self.joystick.velocity.y))
+            }
         
         }
     
