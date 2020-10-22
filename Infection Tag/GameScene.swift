@@ -14,12 +14,16 @@ import GameplayKit
 class GameScene: SKScene {
     var joystick = TLAnalogJoystick(withDiameter: 100)
     var character = Character(isInfected: false)
+    var cam = SKCameraNode()
     
     override func didMove(to view: SKView) {
-        joystick.position = CGPoint(x: 100, y: 100)
+        super.didMove(to: view)
+        joystick.position = CGPoint(x: screenWidth/4, y: screenHeight/4)
         character.position = CGPoint(x: screenWidth/2, y: screenHeight/2)
         character.size = CGSize(width:character.size.width/2, height:character.size.height/2)
         joystick.alpha = 0.5
+        self.camera = cam
+        self.addChild(cam)
         //        joystick.name = "joystick"
         self.addChild(joystick)
         self.addChild(character)
@@ -128,6 +132,8 @@ class GameScene: SKScene {
         } else {
             self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y + (self.joystick.velocity.y))
         }
+        camera?.position = character.position
+        joystick.position = CGPoint(x:camera!.position.x/2, y: camera!.position.y/2)
         
     }
     
