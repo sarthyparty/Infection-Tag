@@ -109,20 +109,20 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         var boundaryx=false
         var boundaryy=false
-        if (self.character.position.x + (self.joystick.velocity.x)-screenWidth/2<character.size.width/2){
-            self.character.position.x=character.size.width/2+screenWidth/2
+        if (self.character.position.x + (self.joystick.velocity.x)<character.size.width/2){
+            self.character.position.x=character.size.width/2
             boundaryx=true
         }
-        if (self.character.position.y + (self.joystick.velocity.y)-screenHeight/2<character.size.height/2){
-            self.character.position.y=character.size.height/2+screenHeight/2
+        if (self.character.position.y + (self.joystick.velocity.y)<character.size.height/2){
+            self.character.position.y=character.size.height/2
             boundaryy=true
         }
-        if (self.character.position.x + (self.joystick.velocity.x)+screenWidth/2>test.size.width-character.size.width/2){
-            self.character.position.x=test.size.width-character.size.width/2-screenWidth/2
+        if (self.character.position.x + (self.joystick.velocity.x)>test.size.width-character.size.width/2){
+            self.character.position.x=test.size.width-character.size.width/2
             boundaryx=true
         }
-        if (self.character.position.y + (self.joystick.velocity.y)+screenHeight/2>test.size.height-character.size.height/2){
-            self.character.position.y=test.size.height-character.size.height/2-screenHeight/2
+        if (self.character.position.y + (self.joystick.velocity.y)>test.size.height-character.size.height/2){
+            self.character.position.y=test.size.height-character.size.height/2
             boundaryy=true
         }
         if(boundaryx||boundaryy){
