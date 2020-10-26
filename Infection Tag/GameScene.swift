@@ -143,6 +143,7 @@ class GameScene: SKScene {
         } else {
             self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y + (self.joystick.velocity.y))
         }
+        character.zRotation=joystick.angular
         camera?.position = character.position
         joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
         
