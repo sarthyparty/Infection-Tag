@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D39D02D22540827D00BDAC1E /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39D02D12540827D00BDAC1E /* Character.swift */; };
+		D39D02D725471C9700BDAC1E /* wall.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39D02D625471C9700BDAC1E /* wall.swift */; };
 		D3CF0C4D2537500F00394F79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CF0C4C2537500F00394F79 /* AppDelegate.swift */; };
 		D3CF0C4F2537500F00394F79 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D3CF0C4E2537500F00394F79 /* GameScene.sks */; };
 		D3CF0C512537500F00394F79 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = D3CF0C502537500F00394F79 /* Actions.sks */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		D39D02D12540827D00BDAC1E /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		D39D02D625471C9700BDAC1E /* wall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wall.swift; sourceTree = "<group>"; };
 		D3CF0C492537500F00394F79 /* Infection Tag.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Infection Tag.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3CF0C4C2537500F00394F79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D3CF0C4E2537500F00394F79 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				D3CF0C80253753FF00394F79 /* TFAnalogJoystick.swift */,
 				D3CF0C522537500F00394F79 /* GameScene.swift */,
 				D39D02D12540827D00BDAC1E /* Character.swift */,
+				D39D02D625471C9700BDAC1E /* wall.swift */,
 				D3CF0C562537500F00394F79 /* Main.storyboard */,
 				D3CF0C542537500F00394F79 /* GameViewController.swift */,
 				D3CF0C592537501400394F79 /* Assets.xcassets */,
@@ -287,6 +290,7 @@
 				D3CF0C532537500F00394F79 /* GameScene.swift in Sources */,
 				D3CF0C81253753FF00394F79 /* TFAnalogJoystick.swift in Sources */,
 				D39D02D22540827D00BDAC1E /* Character.swift in Sources */,
+				D39D02D725471C9700BDAC1E /* wall.swift in Sources */,
 				D3CF0C552537500F00394F79 /* GameViewController.swift in Sources */,
 				D3CF0C4D2537500F00394F79 /* AppDelegate.swift in Sources */,
 			);
