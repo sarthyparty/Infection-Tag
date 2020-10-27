@@ -15,23 +15,27 @@ class GameScene: SKScene {
     var joystick = TLAnalogJoystick(withDiameter: 100)
     var character = Character(isInfected: false)
     var cam = SKCameraNode()
-    var test=SKSpriteNode(imageNamed: "test")
-    var walls = [Wall]()
+    var map=SKSpriteNode(imageNamed: "mapv1")
+    var scaleChar=CGFloat(0.3)
+    
+    
     
     
     override func didMove(to view: SKView) {
+        let scaleMap=CGFloat(10*scaleChar)
         super.didMove(to: view)
-        test.anchorPoint=CGPoint(x:0,y:0)
-        test.position=CGPoint(x:0,y:0)
+        map.anchorPoint=CGPoint(x:0,y:0)
+        map.position=CGPoint(x:0,y:0)
         joystick.position = CGPoint(x: screenWidth/6, y: screenHeight/6)
         character.position = CGPoint(x: screenWidth/2, y: screenHeight/2)
-        character.size = CGSize(width:character.size.width/2, height:character.size.height/2)
+        character.size = CGSize(width:character.size.width*scaleChar, height:character.size.height*scaleChar)
+        map.size = CGSize(width:map.size.width*scaleMap, height:map.size.height*scaleMap)
         joystick.alpha = 0.5
         self.camera = cam
         
         self.addChild(cam)
         //        joystick.name = "joystick"
-        self.addChild(test)
+        self.addChild(map)
         self.addChild(joystick)
         self.addChild(character)
         //Joystick movement handlers
@@ -121,12 +125,12 @@ class GameScene: SKScene {
             self.character.position.y=character.size.height/2
             boundaryy=true
         }
-        if (self.character.position.x + (self.joystick.velocity.x)>test.size.width-character.size.width/2){
-            self.character.position.x=test.size.width-character.size.width/2
+        if (self.character.position.x + (self.joystick.velocity.x)>map.size.width-character.size.width/2){
+            self.character.position.x=map.size.width-character.size.width/2
             boundaryx=true
         }
-        if (self.character.position.y + (self.joystick.velocity.y)>test.size.height-character.size.height/2){
-            self.character.position.y=test.size.height-character.size.height/2
+        if (self.character.position.y + (self.joystick.velocity.y)>map.size.height-character.size.height/2){
+            self.character.position.y=map.size.height-character.size.height/2
             boundaryy=true
         }
         if(boundaryx||boundaryy){
@@ -142,6 +146,7 @@ class GameScene: SKScene {
         } else {
             self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y + (self.joystick.velocity.y))
         }
+        character.zRotation=joystick.angular
         camera?.position = character.position
         joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
         
