@@ -91,10 +91,10 @@ class GameScene: SKScene {
         borderindicator.alpha = 0.5
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: rect)
         self.addChild(borderindicator)
-        for wall in self.walls {
-            self.addChild(wall)
-        }
-        
+//        for wall in self.walls {
+//            self.addChild(wall)
+//        }
+//        
         //            physicsWorld.contactDelegate = self
         //
         //            // Initially spawn enemies
