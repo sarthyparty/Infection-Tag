@@ -17,6 +17,7 @@ class GameScene: SKScene {
     var cam = SKCameraNode()
     var map=SKSpriteNode(imageNamed: "mapv1")
     var scaleChar=CGFloat(0.3)
+    var ind=0
     
     
     
@@ -149,8 +150,15 @@ class GameScene: SKScene {
         character.zRotation=joystick.angular
         camera?.position = character.position
         joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
-        
+        if(joystick.velocity == CGPoint(x: 0,y: 0)){
+            ind=2
+            character.texture = arraySprites[ind]
+        } else {
+            if ind>7{
+                ind=0
+            }
+            character.texture = arraySprites[ind]
+            ind+=1
+        }
     }
-    
-    
 }
