@@ -16,6 +16,7 @@ class GameScene: SKScene {
     var character = Character(isInfected: false)
     var cam = SKCameraNode()
     var test=SKSpriteNode(imageNamed: "test")
+    var walls = [Wall]()
     
     
     override func didMove(to view: SKView) {
@@ -85,6 +86,9 @@ class GameScene: SKScene {
         borderindicator.alpha = 0.5
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: rect)
         self.addChild(borderindicator)
+        for wall in self.walls {
+            self.addChild(wall)
+        }
         
         //            physicsWorld.contactDelegate = self
         //
