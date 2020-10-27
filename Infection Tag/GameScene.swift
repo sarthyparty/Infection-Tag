@@ -15,7 +15,7 @@ class GameScene: SKScene {
     var joystick = TLAnalogJoystick(withDiameter: 100)
     var character = Character(isInfected: false)
     var cam = SKCameraNode()
-    var map=SKSpriteNode(imageNamed: "mapv1")
+    var map=SKSpriteNode(imageNamed: "mapv2")
     var scaleChar=CGFloat(0.3)
     var ind=0
     
