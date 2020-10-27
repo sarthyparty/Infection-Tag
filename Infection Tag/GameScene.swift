@@ -151,13 +151,13 @@ class GameScene: SKScene {
         camera?.position = character.position
         joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
         if(joystick.velocity == CGPoint(x: 0,y: 0)){
-            ind=2
-            character.texture = arraySprites[ind]
+            ind=8
+            character.texture = arraySprites[(ind-(ind%4))/4]
         } else {
-            if ind>7{
+            if ind>31{
                 ind=0
             }
-            character.texture = arraySprites[ind]
+            character.texture = arraySprites[(ind-(ind%4))/4]
             ind+=1
         }
     }
