@@ -11,6 +11,13 @@ let screenHeight = screenSize.height
 import SpriteKit
 import GameplayKit
 
+struct PhysicsCategory {
+  static let none      : UInt32 = 0
+  static let all       : UInt32 = UInt32.max
+  static let character   : UInt32 = 0b1       // 1
+  static let wall: UInt32 = 0b10      // 2
+}
+
 class GameScene: SKScene {
     var joystick = TLAnalogJoystick(withDiameter: 100)
     var character = Character(isInfected: false)
@@ -39,50 +46,15 @@ class GameScene: SKScene {
         self.addChild(map)
         self.addChild(joystick)
         self.addChild(character)
-        //Joystick movement handlers
-        //        joystick.on(.move) { [unowned self] joystick in
-        //            self.isTracking = true
-        //        }
-        //        joystick.on(.end) { [unowned self] joystick in
-        //            self.isTracking = false
-        //        }
+        
+        physicsWorld.gravity = .zero
+        physicsWorld.contactDelegate = self
     }
     override func sceneDidLoad() {
-        //            //Importing sprites from GameScene.sks
-        //            healthtext = camera?.childNode(withName: "health") as! SKLabelNode
-        //            scorelabel = camera?.childNode(withName: "scorelabel") as! SKLabelNode
-        //
-        //            ship = Ship(texture: SKTexture(imageNamed: "playerShip1_blue.png"), isPlayer: true)
-        //            ship.zPosition = 1
-        //            camera?.addChild(ship.healthbar)
-        //
-        //            setButtonPositions()
-        //            self.addChild(ship)
-        //
-        //            // Show fire effect on ship
-        //            fireeffect1.position = CGPoint(x: -25, y: -45)
-        //            fireeffect2.position = CGPoint(x: 25, y: -45)
-        //            fireeffect1.zRotation = CGFloat.pi
-        //            fireeffect2.zRotation = CGFloat.pi
-        //            fireeffect1.alpha = 0.0
-        //            fireeffect2.alpha = 0.0
-        //            ship.addChild(fireeffect1)
-        //            ship.addChild(fireeffect2)
-        
         joystick.handleImage = UIImage(named: "shadedDark01.png")
         joystick.baseImage = UIImage(named: "shadedDark07.png")
         joystick.alpha = 0.5
         camera?.addChild(joystick)
-        //Joystick movement handlers
-        //            joystick.on(.move) { [unowned self] joystick in
-        //                self.isTracking = true
-        //            }
-        //            joystick.on(.end) { [unowned self] joystick in
-        //                self.isTracking = false
-        //            }
-        
-        //            camera?.addChild(firebutton)
-        //            firebutton.addChild(firelabel)
         
         //Creating rectangle level border
         let rect = CGRect(origin: CGPoint(x: -2500, y: -2500), size: CGSize(width: 5000, height: 5000))
@@ -91,30 +63,19 @@ class GameScene: SKScene {
         borderindicator.alpha = 0.5
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: rect)
         self.addChild(borderindicator)
-//        for wall in self.walls {
-//            self.addChild(wall)
-//        }
-//        
-        //            physicsWorld.contactDelegate = self
-        //
-        //            // Initially spawn enemies
-        //            for _ in 0 ..< 5 {
-        //                spawnenemy()
-        //            }
-        //            //Enemy spawning
-        //            let createenemies = SKAction.repeatForever(SKAction.sequence([SKAction.run {
-        //                self.spawnenemy()
-        //                } , SKAction.wait(forDuration: 4.0)]))
-        //            self.run(createenemies)
-        //            //health pack spawning
-        //            let createpowerups = SKAction.repeatForever(SKAction.sequence([SKAction.run {
-        //                self.spawnhealthkit()
-        //                } , SKAction.wait(forDuration: 10.0)]))
-        //            self.run(createpowerups)
-        //
+        character.physicsBody = SKPhysicsBody(circleOfRadius: character.size.height/2) // 1
+        character.physicsBody?.isDynamic = true // 2
+        character.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
+        character.physicsBody?.contactTestBitMask = PhysicsCategory.wall // 4
+        character.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         
         
     }
+    
+    func characterHitWall(wall: SKShapeNode, character: SKSpriteNode) {
+      print("COLLISION DETECTED")
+    }
+    
     override func update(_ currentTime: TimeInterval) {
         var boundaryx=false
         var boundaryy=false
@@ -160,5 +121,31 @@ class GameScene: SKScene {
             character.texture = arraySprites[(ind-(ind%4))/4]
             ind+=1
         }
+    }
+    
+    
+}
+extension GameScene: SKPhysicsContactDelegate {
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+      // 1
+      var firstBody: SKPhysicsBody
+      var secondBody: SKPhysicsBody
+      if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+        firstBody = contact.bodyA
+        secondBody = contact.bodyB
+      } else {
+        firstBody = contact.bodyB
+        secondBody = contact.bodyA
+      }
+     
+      // 2
+      if ((firstBody.categoryBitMask & PhysicsCategory.character != 0) &&
+          (secondBody.categoryBitMask & PhysicsCategory.wall != 0)) {
+        if let character = firstBody.node as? SKSpriteNode,
+          let wall = secondBody.node as? SKShapeNode {
+          characterHitWall(wall: wall, character: character)
+        }
+      }
     }
 }
