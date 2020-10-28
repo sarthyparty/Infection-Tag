@@ -25,7 +25,7 @@ class GameScene: SKScene {
     var map=SKSpriteNode(imageNamed: "mapv2")
     var scaleChar=CGFloat(0.3)
     var ind=0
-    
+    var testWall=Wall(imageName: "test", siz: CGSize(width:100, height:200), Position: CGPoint(x:0,y:200))
     
     
     
@@ -40,12 +40,12 @@ class GameScene: SKScene {
         map.size = CGSize(width:map.size.width*scaleMap, height:map.size.height*scaleMap)
         joystick.alpha = 0.5
         self.camera = cam
-        
         self.addChild(cam)
         //        joystick.name = "joystick"
         self.addChild(map)
         self.addChild(joystick)
         self.addChild(character)
+        self.addChild(testWall)
         
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
@@ -68,12 +68,17 @@ class GameScene: SKScene {
         character.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
         character.physicsBody?.contactTestBitMask = PhysicsCategory.wall // 4
         character.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
+        testWall.physicsBody = SKPhysicsBody(rectangleOf:CGSize(width:200, height:200)) // 1
+        testWall.physicsBody?.isDynamic = true // 2
+        testWall.physicsBody?.categoryBitMask =  PhysicsCategory.wall// 3
+        testWall.physicsBody?.contactTestBitMask = PhysicsCategory.character // 4
+        testWall.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         
         
     }
     
-    func characterHitWall(wall: SKShapeNode, character: SKSpriteNode) {
-      print("COLLISION DETECTED")
+    func characterHitWall(wall: SKSpriteNode, character: SKSpriteNode) {
+        character.size=(CGSize(width: 100, height: 100))
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -143,7 +148,7 @@ extension GameScene: SKPhysicsContactDelegate {
       if ((firstBody.categoryBitMask & PhysicsCategory.character != 0) &&
           (secondBody.categoryBitMask & PhysicsCategory.wall != 0)) {
         if let character = firstBody.node as? SKSpriteNode,
-          let wall = secondBody.node as? SKShapeNode {
+          let wall = secondBody.node as? SKSpriteNode {
           characterHitWall(wall: wall, character: character)
         }
       }

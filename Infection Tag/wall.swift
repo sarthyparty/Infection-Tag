@@ -9,12 +9,12 @@ import SpriteKit
 
 class Wall: SKSpriteNode {
 
-    init(imageName: String, Position: CGPoint) {
+    init(imageName: String, siz: CGSize, Position: CGPoint) {
         // Make a texture from an image, a color, and size
         let texture = SKTexture(imageNamed: imageName)
 
         let color = UIColor.clear
-        let size = texture.size()
+        let size = siz
 
         // Call the designated initializer
         super.init(texture: texture, color: color, size: size)
@@ -24,7 +24,7 @@ class Wall: SKSpriteNode {
 //        physicsBody?.categoryBitMask = 1
 //        physicsBody?.friction = 0.6
 //        physicsBody?.mass = 0.5
-        self.position = Position
+        self.position = CGPoint(x: Position.x+siz.width/2, y: Position.y-siz.height/2)
     }
 
     required init?(coder aDecoder: NSCoder) {
