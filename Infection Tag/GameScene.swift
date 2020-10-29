@@ -28,8 +28,8 @@ class GameScene: SKScene {
     var boundaryx=false
     var boundaryy=false
     var testWall=Wall(imageName: "test", siz: CGSize(width:100, height:200), Position: CGPoint(x:1000,y:1000))
-    var prevX=screenWidth/2
-    var prevY=screenHeight/2
+    var hitwallx = false
+    var hitwally = false
     
     
     
@@ -82,25 +82,21 @@ class GameScene: SKScene {
     }
     
     func characterHitWall(wall: SKSpriteNode, character: SKSpriteNode) {
-//        if (self.character.position.x + (self.joystick.velocity.x)<wall.size.width+wall.position.x+character.size.width/2){
-//            self.character.position.x=character.size.width/2
-//            boundaryx=true
-//        }
-//        if (self.character.position.y + (self.joystick.velocity.y)<wall.position.y + character.size.height/2){
-//            self.character.position.y=character.size.height/2
-//            boundaryy=true
-//        }
-//        if (self.character.position.x + (self.joystick.velocity.x)>wall.position.x-character.size.width/2){
-//            self.character.position.x=wall.position.x-character.size.width/2
-//            boundaryx=true
-//        }
-//        if (self.character.position.y + (self.joystick.velocity.y)>wall.position.y-wall.size.height-character.size.height/2){
-//            self.character.position.y=prevY
-//            boundaryy=true
-//        }
-        boundaryy=true
-        
-        character.position = CGPoint(x: 500, y: 500)
+        if (self.character.position.x + (self.joystick.velocity.x)<wall.size.width+wall.position.x+character.size.width/2){
+            self.character.position.x=character.size.width/2
+            hitwallx=true
+        }
+        if (self.character.position.y + (self.joystick.velocity.y)<wall.position.y + character.size.height/2){
+            self.character.position.y=character.size.height/2
+            hitwally=true
+        }
+        if (self.character.position.x + (self.joystick.velocity.x)>wall.position.x-character.size.width/2){
+            self.character.position.x=wall.position.x-character.size.width/2
+            hitwallx=true
+        }
+        if (self.character.position.y + (self.joystick.velocity.y)>wall.position.y-wall.size.height-character.size.height/2){
+            hitwally=true
+        }
 //        character.size=(CGSize(width: 100, height: 100))
     }
     
@@ -153,8 +149,17 @@ class GameScene: SKScene {
             ind+=1
             character.zRotation=joystick.angular
         }
-        prevX=character.position.x
-        prevY=character.position.y
+        
+        if hitwallx == true {
+            self.character.position = CGPoint(x: self.character.position.x-(self.joystick.velocity.x), y: self.character.position.y)
+        }
+        
+        if hitwally == true {
+            self.character.position = CGPoint(x: self.character.position.x , y: self.character.position.y-(self.joystick.velocity.y))
+        }
+        boundaryx = false
+        boundaryy = false
+
     }
     
     
