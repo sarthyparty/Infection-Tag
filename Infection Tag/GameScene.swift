@@ -152,10 +152,12 @@ class GameScene: SKScene {
         
         if hitwallx == true {
             self.character.position = CGPoint(x: self.character.position.x-(self.joystick.velocity.x), y: self.character.position.y)
+            hitwallx = false
         }
         
         if hitwally == true {
             self.character.position = CGPoint(x: self.character.position.x , y: self.character.position.y-(self.joystick.velocity.y))
+            hitwally = false
         }
         boundaryx = false
         boundaryy = false
