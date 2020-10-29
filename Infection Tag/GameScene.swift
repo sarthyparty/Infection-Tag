@@ -25,6 +25,8 @@ class GameScene: SKScene {
     var map=SKSpriteNode(imageNamed: "mapv2")
     var scaleChar=CGFloat(0.3)
     var ind=0
+    var boundaryx=false
+    var boundaryy=false
     var testWall=Wall(imageName: "test", siz: CGSize(width:100, height:200), Position: CGPoint(x:0,y:200))
     
     
@@ -68,7 +70,7 @@ class GameScene: SKScene {
         character.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
         character.physicsBody?.contactTestBitMask = PhysicsCategory.wall // 4
         character.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
-        testWall.physicsBody = SKPhysicsBody(rectangleOf:CGSize(width:200, height:200)) // 1
+        testWall.physicsBody = SKPhysicsBody(rectangleOf:testWall.size) // 1
         testWall.physicsBody?.isDynamic = true // 2
         testWall.physicsBody?.categoryBitMask =  PhysicsCategory.wall// 3
         testWall.physicsBody?.contactTestBitMask = PhysicsCategory.character // 4
@@ -78,12 +80,27 @@ class GameScene: SKScene {
     }
     
     func characterHitWall(wall: SKSpriteNode, character: SKSpriteNode) {
-        character.size=(CGSize(width: 100, height: 100))
+        if (self.character.position.x + (self.joystick.velocity.x)<wall.position.x + character.size.width/2){
+            self.character.position.x=character.size.width/2
+            boundaryx=true
+        }
+        if (self.character.position.y + (self.joystick.velocity.y)<wall.position.y + character.size.height/2){
+            self.character.position.y=character.size.height/2
+            boundaryy=true
+        }
+        if (self.character.position.x + (self.joystick.velocity.x)>wall.position.x-character.size.width/2){
+            self.character.position.x=wall.position.x-character.size.width/2
+            boundaryx=true
+        }
+        if (self.character.position.y + (self.joystick.velocity.y)>wall.position.y-character.size.height/2){
+            self.character.position.y=wall.position.y-character.size.height/2
+            boundaryy=true
+        }
+//        character.size=(CGSize(width: 100, height: 100))
     }
     
     override func update(_ currentTime: TimeInterval) {
-        var boundaryx=false
-        var boundaryy=false
+        
         if (self.character.position.x + (self.joystick.velocity.x)<character.size.width/2){
             self.character.position.x=character.size.width/2
             boundaryx=true
@@ -113,7 +130,6 @@ class GameScene: SKScene {
         } else {
             self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y + (self.joystick.velocity.y))
         }
-        character.zRotation=joystick.angular
         camera?.position = character.position
         joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
         if(joystick.velocity == CGPoint(x: 0,y: 0)){
@@ -125,7 +141,10 @@ class GameScene: SKScene {
             }
             character.texture = arraySprites[(ind-(ind%4))/4]
             ind+=1
+            character.zRotation=joystick.angular
         }
+        boundaryy = false
+        boundaryx = false
     }
     
     
