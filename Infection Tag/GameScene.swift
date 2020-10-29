@@ -27,7 +27,9 @@ class GameScene: SKScene {
     var ind=0
     var boundaryx=false
     var boundaryy=false
-    var testWall=Wall(imageName: "test", siz: CGSize(width:100, height:200), Position: CGPoint(x:0,y:200))
+    var testWall=Wall(imageName: "test", siz: CGSize(width:100, height:200), Position: CGPoint(x:1000,y:1000))
+    var prevX=screenWidth/2
+    var prevY=screenHeight/2
     
     
     
@@ -38,7 +40,7 @@ class GameScene: SKScene {
         map.position=CGPoint(x:0,y:0)
         joystick.position = CGPoint(x: screenWidth/6, y: screenHeight/6)
         character.position = CGPoint(x: screenWidth/2, y: screenHeight/2)
-        character.size = CGSize(width:character.size.width*scaleChar, height:character.size.height*scaleChar)
+        character.size = CGSize(width:180*scaleChar, height:180*scaleChar)
         map.size = CGSize(width:map.size.width*scaleMap, height:map.size.height*scaleMap)
         joystick.alpha = 0.5
         self.camera = cam
@@ -65,7 +67,7 @@ class GameScene: SKScene {
         borderindicator.alpha = 0.5
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: rect)
         self.addChild(borderindicator)
-        character.physicsBody = SKPhysicsBody(circleOfRadius: character.size.height/2) // 1
+        character.physicsBody = SKPhysicsBody(circleOfRadius: 180/4, center: character.position) // 1
         character.physicsBody?.isDynamic = true // 2
         character.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
         character.physicsBody?.contactTestBitMask = PhysicsCategory.wall // 4
@@ -80,42 +82,50 @@ class GameScene: SKScene {
     }
     
     func characterHitWall(wall: SKSpriteNode, character: SKSpriteNode) {
-        if (self.character.position.x + (self.joystick.velocity.x)<wall.position.x + character.size.width/2){
-            self.character.position.x=character.size.width/2
-            boundaryx=true
-        }
-        if (self.character.position.y + (self.joystick.velocity.y)<wall.position.y + character.size.height/2){
-            self.character.position.y=character.size.height/2
-            boundaryy=true
-        }
-        if (self.character.position.x + (self.joystick.velocity.x)>wall.position.x-character.size.width/2){
-            self.character.position.x=wall.position.x-character.size.width/2
-            boundaryx=true
-        }
-        if (self.character.position.y + (self.joystick.velocity.y)>wall.position.y-character.size.height/2){
-            self.character.position.y=wall.position.y-character.size.height/2
-            boundaryy=true
-        }
+//        if (self.character.position.x + (self.joystick.velocity.x)<wall.size.width+wall.position.x+character.size.width/2){
+//            self.character.position.x=character.size.width/2
+//            boundaryx=true
+//        }
+//        if (self.character.position.y + (self.joystick.velocity.y)<wall.position.y + character.size.height/2){
+//            self.character.position.y=character.size.height/2
+//            boundaryy=true
+//        }
+//        if (self.character.position.x + (self.joystick.velocity.x)>wall.position.x-character.size.width/2){
+//            self.character.position.x=wall.position.x-character.size.width/2
+//            boundaryx=true
+//        }
+//        if (self.character.position.y + (self.joystick.velocity.y)>wall.position.y-wall.size.height-character.size.height/2){
+//            self.character.position.y=prevY
+//            boundaryy=true
+//        }
+        boundaryy=true
+        
+        character.position = CGPoint(x: 500, y: 500)
 //        character.size=(CGSize(width: 100, height: 100))
     }
     
     override func update(_ currentTime: TimeInterval) {
-        
+        if(boundaryx==false){
         if (self.character.position.x + (self.joystick.velocity.x)<character.size.width/2){
             self.character.position.x=character.size.width/2
             boundaryx=true
+        } else if (self.character.position.x + (self.joystick.velocity.x)>map.size.width-character.size.width/2){
+            self.character.position.x=map.size.width-character.size.width/2
+            boundaryx=true
+        } else {
+            boundaryx=false
         }
+        }
+        if(boundaryy==false){
         if (self.character.position.y + (self.joystick.velocity.y)<character.size.height/2){
             self.character.position.y=character.size.height/2
             boundaryy=true
-        }
-        if (self.character.position.x + (self.joystick.velocity.x)>map.size.width-character.size.width/2){
-            self.character.position.x=map.size.width-character.size.width/2
-            boundaryx=true
-        }
-        if (self.character.position.y + (self.joystick.velocity.y)>map.size.height-character.size.height/2){
+        } else if (self.character.position.y + (self.joystick.velocity.y)>map.size.height-character.size.height/2){
             self.character.position.y=map.size.height-character.size.height/2
             boundaryy=true
+        } else {
+            boundaryy=false
+        }
         }
         if(boundaryx||boundaryy){
             if (boundaryx&&boundaryy){
@@ -143,8 +153,8 @@ class GameScene: SKScene {
             ind+=1
             character.zRotation=joystick.angular
         }
-        boundaryy = false
-        boundaryx = false
+        prevX=character.position.x
+        prevY=character.position.y
     }
     
     
