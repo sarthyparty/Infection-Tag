@@ -82,25 +82,36 @@ class GameScene: SKScene {
     }
     
     func characterHitWall(wall: SKSpriteNode, character: SKSpriteNode) {
-        if (self.character.position.x + (self.joystick.velocity.x)<wall.size.width+wall.position.x+character.size.width/2){
+        if (self.character.position.x<wall.size.width+wall.position.x+character.size.width/2){
             self.character.position.x=character.size.width/2
             hitwallx=true
         }
-        if (self.character.position.y + (self.joystick.velocity.y)<wall.position.y + character.size.height/2){
+        if (self.character.position.y<wall.position.y + character.size.height/2){
             self.character.position.y=character.size.height/2
             hitwally=true
         }
-        if (self.character.position.x + (self.joystick.velocity.x)>wall.position.x-character.size.width/2){
+        if (self.character.position.x>wall.position.x-character.size.width/2){
             self.character.position.x=wall.position.x-character.size.width/2
             hitwallx=true
         }
-        if (self.character.position.y + (self.joystick.velocity.y)>wall.position.y-wall.size.height-character.size.height/2){
+        if (self.character.position.y>wall.position.y-wall.size.height-character.size.height/2){
             hitwally=true
         }
 //        character.size=(CGSize(width: 100, height: 100))
     }
     
     override func update(_ currentTime: TimeInterval) {
+        if hitwallx == true {
+            self.character.position = CGPoint(x: self.character.position.x-(self.joystick.velocity.x), y: self.character.position.y)
+            hitwallx = false
+            boundaryx = true
+        }
+        
+        if hitwally == true {
+            self.character.position = CGPoint(x: self.character.position.x , y: self.character.position.y-(self.joystick.velocity.y))
+            boundaryy = true
+            
+        }
         if(boundaryx==false){
         if (self.character.position.x + (self.joystick.velocity.x)<character.size.width/2){
             self.character.position.x=character.size.width/2
@@ -150,15 +161,7 @@ class GameScene: SKScene {
             character.zRotation=joystick.angular
         }
         
-        if hitwallx == true {
-            self.character.position = CGPoint(x: self.character.position.x-(self.joystick.velocity.x), y: self.character.position.y)
-            hitwallx = false
-        }
         
-        if hitwally == true {
-            self.character.position = CGPoint(x: self.character.position.x , y: self.character.position.y-(self.joystick.velocity.y))
-            hitwally = false
-        }
         boundaryx = false
         boundaryy = false
 
