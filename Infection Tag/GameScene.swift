@@ -84,16 +84,16 @@ class GameScene: SKScene {
     }
     
     func characterHitWall(wall: SKSpriteNode, character: SKSpriteNode) {
-        if (self.character.position.x<wall.position.x){
+        if (self.character.position.x+27<wall.position.x-wall.size.width/2){
             hitwallleft=true
         }
-        if (self.character.position.y<wall.position.y){
+        if (self.character.position.y+27<wall.position.y-wall.size.height/2){
             hitwallbottom=true
         }
-        if (self.character.position.x>wall.position.x){
+        if (self.character.position.x-27>wall.position.x+wall.size.width/2){
             hitwallright=true
         }
-        if (self.character.position.y>wall.position.y){
+        if (self.character.position.y-27>wall.position.y+wall.size.height/2){
             hitwalltop=true
         }
     }
@@ -143,22 +143,22 @@ class GameScene: SKScene {
                 }
             }
         } else {
-            var xmovement = false
-            var ymovement = false
+            var xmovement = true
+            var ymovement = true
             if ((hitwallright&&self.joystick.velocity.x<0)||(hitwallleft&&self.joystick.velocity.x>0)) {
-                xmovement = true
+                xmovement = false
             }
             if ((hitwallright&&self.joystick.velocity.x<0)||(hitwallleft&&self.joystick.velocity.x>0)) {
-                ymovement = true
+                ymovement = false
             }
             if (xmovement&&ymovement) {
-                self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
+                self.character.position = CGPoint(x: self.character.position.x+(self.joystick.velocity.x), y: self.character.position.y+(self.joystick.velocity.y))
             } else if (xmovement) {
                 self.character.position = CGPoint(x: self.character.position.x+(self.joystick.velocity.x), y: self.character.position.y)
             } else if (ymovement) {
                 self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(self.joystick.velocity.y))
             } else {
-                self.character.position = CGPoint(x: self.character.position.x+(self.joystick.velocity.x), y: self.character.position.y+(self.joystick.velocity.y))
+                self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
             }
         }
         camera?.position = character.position
