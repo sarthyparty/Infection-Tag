@@ -24,7 +24,7 @@ class Wall: SKSpriteNode {
 //        physicsBody?.categoryBitMask = 1
 //        physicsBody?.friction = 0.6
 //        physicsBody?.mass = 0.5
-        self.position = CGPoint(x: Position.x+siz.width/2, y: Position.y-siz.height/2)
+        self.position = Position
     }
 
     required init?(coder aDecoder: NSCoder) {

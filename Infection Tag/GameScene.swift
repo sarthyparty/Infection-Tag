@@ -28,8 +28,10 @@ class GameScene: SKScene {
     var boundaryx=false
     var boundaryy=false
     var testWall=Wall(imageName: "test", siz: CGSize(width:100, height:200), Position: CGPoint(x:1000,y:1000))
-    var hitwallx = false
-    var hitwally = false
+    var hitwallleft = false
+    var hitwallright = false
+    var hitwalltop = false
+    var hitwallbottom = false
     
     
     
@@ -67,7 +69,7 @@ class GameScene: SKScene {
         borderindicator.alpha = 0.5
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: rect)
         self.addChild(borderindicator)
-        character.physicsBody = SKPhysicsBody(circleOfRadius: 180/4, center: character.position) // 1
+        character.physicsBody = SKPhysicsBody(circleOfRadius: self.character.size.width/5, center: character.position) // 1
         character.physicsBody?.isDynamic = true // 2
         character.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
         character.physicsBody?.contactTestBitMask = PhysicsCategory.wall // 4
@@ -82,36 +84,24 @@ class GameScene: SKScene {
     }
     
     func characterHitWall(wall: SKSpriteNode, character: SKSpriteNode) {
-        if (self.character.position.x<wall.size.width+wall.position.x+character.size.width/2){
-            self.character.position.x=character.size.width/2
-            hitwallx=true
+        if (self.character.position.x<wall.position.x){
+            hitwallleft=true
         }
-        if (self.character.position.y<wall.position.y + character.size.height/2){
-            self.character.position.y=character.size.height/2
-            hitwally=true
+        if (self.character.position.y<wall.position.y){
+            hitwallbottom=true
         }
-        if (self.character.position.x>wall.position.x-character.size.width/2){
-            self.character.position.x=wall.position.x-character.size.width/2
-            hitwallx=true
+        if (self.character.position.x>wall.position.x){
+            hitwallright=true
         }
-        if (self.character.position.y>wall.position.y-wall.size.height-character.size.height/2){
-            hitwally=true
+        if (self.character.position.y>wall.position.y){
+            hitwalltop=true
         }
-//        character.size=(CGSize(width: 100, height: 100))
+    }
+    func characterLeftWall(wall: SKSpriteNode, character: SKSpriteNode) {
+        hitwallleft = false; hitwalltop = false; hitwallbottom = false; hitwallright = false;
     }
     
     override func update(_ currentTime: TimeInterval) {
-        if hitwallx == true {
-            self.character.position = CGPoint(x: self.character.position.x-(self.joystick.velocity.x), y: self.character.position.y)
-            hitwallx = false
-            boundaryx = true
-        }
-        
-        if hitwally == true {
-            self.character.position = CGPoint(x: self.character.position.x , y: self.character.position.y-(self.joystick.velocity.y))
-            boundaryy = true
-            
-        }
         if(boundaryx==false){
         if (self.character.position.x + (self.joystick.velocity.x)<character.size.width/2){
             self.character.position.x=character.size.width/2
@@ -139,13 +129,37 @@ class GameScene: SKScene {
                 self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
             }
             else if boundaryx{
-                self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(self.joystick.velocity.y))
+                if ((hitwalltop&&self.joystick.velocity.y<0)||(hitwallbottom&&self.joystick.velocity.y>0)) {
+                    self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
+                } else {
+                    self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(self.joystick.velocity.y))
+                }
             }
             else if boundaryy{
-                self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y)
+                if ((hitwallright&&self.joystick.velocity.x<0)||(hitwallleft&&self.joystick.velocity.x>0)) {
+                    self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
+                } else {
+                    self.character.position = CGPoint(x: self.character.position.x+(self.joystick.velocity.x), y: self.character.position.y)
+                }
             }
         } else {
-            self.character.position = CGPoint(x: self.character.position.x + (self.joystick.velocity.x), y: self.character.position.y + (self.joystick.velocity.y))
+            var xmovement = false
+            var ymovement = false
+            if ((hitwallright&&self.joystick.velocity.x<0)||(hitwallleft&&self.joystick.velocity.x>0)) {
+                xmovement = true
+            }
+            if ((hitwallright&&self.joystick.velocity.x<0)||(hitwallleft&&self.joystick.velocity.x>0)) {
+                ymovement = true
+            }
+            if (xmovement&&ymovement) {
+                self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
+            } else if (xmovement) {
+                self.character.position = CGPoint(x: self.character.position.x+(self.joystick.velocity.x), y: self.character.position.y)
+            } else if (ymovement) {
+                self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(self.joystick.velocity.y))
+            } else {
+                self.character.position = CGPoint(x: self.character.position.x+(self.joystick.velocity.x), y: self.character.position.y+(self.joystick.velocity.y))
+            }
         }
         camera?.position = character.position
         joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
@@ -189,6 +203,27 @@ extension GameScene: SKPhysicsContactDelegate {
         if let character = firstBody.node as? SKSpriteNode,
           let wall = secondBody.node as? SKSpriteNode {
           characterHitWall(wall: wall, character: character)
+        }
+      }
+    }
+    func didEnd(_ contact: SKPhysicsContact) {
+      // 1
+      var firstBody: SKPhysicsBody
+      var secondBody: SKPhysicsBody
+      if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+        firstBody = contact.bodyA
+        secondBody = contact.bodyB
+      } else {
+        firstBody = contact.bodyB
+        secondBody = contact.bodyA
+      }
+     
+      // 2
+      if ((firstBody.categoryBitMask & PhysicsCategory.character != 0) &&
+          (secondBody.categoryBitMask & PhysicsCategory.wall != 0)) {
+        if let character = firstBody.node as? SKSpriteNode,
+          let wall = secondBody.node as? SKSpriteNode {
+          characterLeftWall(wall: wall, character: character)
         }
       }
     }
