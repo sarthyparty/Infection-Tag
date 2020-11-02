@@ -69,7 +69,7 @@ class GameScene: SKScene {
         borderindicator.alpha = 0.5
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: rect)
         self.addChild(borderindicator)
-        character.physicsBody = SKPhysicsBody(circleOfRadius: self.character.size.width/5, center: character.position) // 1
+        character.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: character.position) // 1
         character.physicsBody?.isDynamic = true // 2
         character.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
         character.physicsBody?.contactTestBitMask = PhysicsCategory.wall // 4
