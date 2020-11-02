@@ -84,16 +84,16 @@ class GameScene: SKScene {
     }
     
     func characterHitWall(wall: SKSpriteNode, character: SKSpriteNode) {
-        if (self.character.position.x+27<wall.position.x-wall.size.width/2){
-            hitwallleft=true
-        }
-        if (self.character.position.y+27<wall.position.y-wall.size.height/2){
+        if ((self.character.position.y+27<=wall.position.y-wall.size.height/2+5)&&(self.character.position.x+27>=wall.position.x-wall.size.width/2)&&(self.character.position.x-27<=wall.position.x+wall.size.width/2)){
             hitwallbottom=true
-        }
-        if (self.character.position.x-27>wall.position.x+wall.size.width/2){
+        }else
+        if ((self.character.position.x+27<=wall.position.x-wall.size.width/2+5)&&(self.character.position.y+27>=wall.position.y-wall.size.height/2)&&(self.character.position.y-27<=wall.position.x+wall.size.height/2)){
+            hitwallleft=true
+        }else
+        if ((self.character.position.x-27>=wall.position.x+wall.size.width/2-5)&&(self.character.position.y+27>=wall.position.y-wall.size.height/2)&&(self.character.position.y-27<=wall.position.x+wall.size.height/2)){
             hitwallright=true
-        }
-        if (self.character.position.y-27>wall.position.y+wall.size.height/2){
+        }else
+        if ((self.character.position.y-27>=wall.position.y+wall.size.height/2-5)&&(self.character.position.x+27>=wall.position.x-wall.size.width/2)&&(self.character.position.x-27<=wall.position.x+wall.size.width/2)){
             hitwalltop=true
         }
     }
@@ -148,7 +148,7 @@ class GameScene: SKScene {
             if ((hitwallright&&self.joystick.velocity.x<0)||(hitwallleft&&self.joystick.velocity.x>0)) {
                 xmovement = false
             }
-            if ((hitwallright&&self.joystick.velocity.x<0)||(hitwallleft&&self.joystick.velocity.x>0)) {
+            if ((hitwalltop&&self.joystick.velocity.y<0)||(hitwallbottom&&self.joystick.velocity.y>0)) {
                 ymovement = false
             }
             if (xmovement&&ymovement) {
