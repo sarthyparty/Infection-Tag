@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D39D02D22540827D00BDAC1E /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39D02D12540827D00BDAC1E /* Character.swift */; };
 		D39D02D725471C9700BDAC1E /* wall.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39D02D625471C9700BDAC1E /* wall.swift */; };
+		D3C6224A2550675000CC1BCF /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3C622492550675000CC1BCF /* CloudKit.framework */; };
 		D3CF0C4D2537500F00394F79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CF0C4C2537500F00394F79 /* AppDelegate.swift */; };
 		D3CF0C4F2537500F00394F79 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D3CF0C4E2537500F00394F79 /* GameScene.sks */; };
 		D3CF0C512537500F00394F79 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = D3CF0C502537500F00394F79 /* Actions.sks */; };
@@ -41,6 +42,8 @@
 /* Begin PBXFileReference section */
 		D39D02D12540827D00BDAC1E /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		D39D02D625471C9700BDAC1E /* wall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wall.swift; sourceTree = "<group>"; };
+		D3C622442550674D00CC1BCF /* Infection Tag.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Infection Tag.entitlements"; sourceTree = "<group>"; };
+		D3C622492550675000CC1BCF /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		D3CF0C492537500F00394F79 /* Infection Tag.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Infection Tag.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3CF0C4C2537500F00394F79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D3CF0C4E2537500F00394F79 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -64,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3C6224A2550675000CC1BCF /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,6 +103,14 @@
 			path = Scene1;
 			sourceTree = "<group>";
 		};
+		D3C622482550675000CC1BCF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D3C622492550675000CC1BCF /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D3CF0C402537500F00394F79 = {
 			isa = PBXGroup;
 			children = (
@@ -106,6 +118,7 @@
 				D3CF0C632537501500394F79 /* Infection TagTests */,
 				D3CF0C6E2537501500394F79 /* Infection TagUITests */,
 				D3CF0C4A2537500F00394F79 /* Products */,
+				D3C622482550675000CC1BCF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -122,6 +135,7 @@
 		D3CF0C4B2537500F00394F79 /* Infection Tag */ = {
 			isa = PBXGroup;
 			children = (
+				D3C622442550674D00CC1BCF /* Infection Tag.entitlements */,
 				D3CF0C4C2537500F00394F79 /* AppDelegate.swift */,
 				D3CF0C4E2537500F00394F79 /* GameScene.sks */,
 				D3CF0C502537500F00394F79 /* Actions.sks */,
@@ -460,10 +474,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Infection Tag/Infection Tag.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 883DK65VTV;
 				INFOPLIST_FILE = "Infection Tag/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -480,10 +495,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Infection Tag/Infection Tag.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 883DK65VTV;
 				INFOPLIST_FILE = "Infection Tag/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
