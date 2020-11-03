@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D36E9ADD2551B0DB005CA83B /* Infection Tag.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D36E9ADB2551B0DB005CA83B /* Infection Tag.xcdatamodeld */; };
+		D36E9AE22551B104005CA83B /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36E9AE12551B104005CA83B /* Room.swift */; };
 		D39D02D22540827D00BDAC1E /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39D02D12540827D00BDAC1E /* Character.swift */; };
 		D39D02D725471C9700BDAC1E /* wall.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39D02D625471C9700BDAC1E /* wall.swift */; };
 		D3C6224A2550675000CC1BCF /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3C622492550675000CC1BCF /* CloudKit.framework */; };
@@ -40,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D36E9ADC2551B0DB005CA83B /* Infection Tag.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Infection Tag.xcdatamodel"; sourceTree = "<group>"; };
+		D36E9AE12551B104005CA83B /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		D39D02D12540827D00BDAC1E /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		D39D02D625471C9700BDAC1E /* wall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wall.swift; sourceTree = "<group>"; };
 		D3C622442550674D00CC1BCF /* Infection Tag.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Infection Tag.entitlements"; sourceTree = "<group>"; };
@@ -103,6 +107,15 @@
 			path = Scene1;
 			sourceTree = "<group>";
 		};
+		D36E9ADA2551B084005CA83B /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				D36E9ADB2551B0DB005CA83B /* Infection Tag.xcdatamodeld */,
+				D36E9AE12551B104005CA83B /* Room.swift */,
+			);
+			path = "Core Data";
+			sourceTree = "<group>";
+		};
 		D3C622482550675000CC1BCF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +159,7 @@
 				D39D02D625471C9700BDAC1E /* wall.swift */,
 				D3CF0C562537500F00394F79 /* Main.storyboard */,
 				D3CF0C542537500F00394F79 /* GameViewController.swift */,
+				D36E9ADA2551B084005CA83B /* Core Data */,
 				D3CF0C592537501400394F79 /* Assets.xcassets */,
 				D3CF0C5B2537501400394F79 /* Info.plist */,
 			);
@@ -302,6 +316,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3CF0C532537500F00394F79 /* GameScene.swift in Sources */,
+				D36E9ADD2551B0DB005CA83B /* Infection Tag.xcdatamodeld in Sources */,
+				D36E9AE22551B104005CA83B /* Room.swift in Sources */,
 				D3CF0C81253753FF00394F79 /* TFAnalogJoystick.swift in Sources */,
 				D39D02D22540827D00BDAC1E /* Character.swift in Sources */,
 				D39D02D725471C9700BDAC1E /* wall.swift in Sources */,
@@ -635,6 +651,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D36E9ADB2551B0DB005CA83B /* Infection Tag.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D36E9ADC2551B0DB005CA83B /* Infection Tag.xcdatamodel */,
+			);
+			currentVersion = D36E9ADC2551B0DB005CA83B /* Infection Tag.xcdatamodel */;
+			path = "Infection Tag.xcdatamodeld";
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D3CF0C412537500F00394F79 /* Project object */;
 }
