@@ -84,16 +84,16 @@ class GameScene: SKScene {
     }
     
     func characterHitWall(wall: SKSpriteNode, character: SKSpriteNode) {
-        if ((self.character.position.y+27<=wall.position.y-wall.size.height/2+5)&&(self.character.position.x+27>=wall.position.x-wall.size.width/2)&&(self.character.position.x-27<=wall.position.x+wall.size.width/2)){
+        if (self.character.position.y+27<=wall.position.y-wall.size.height/2+5){
             hitwallbottom=true
         }else
-        if ((self.character.position.x+27<=wall.position.x-wall.size.width/2+5)&&(self.character.position.y+27>=wall.position.y-wall.size.height/2)&&(self.character.position.y-27<=wall.position.x+wall.size.height/2)){
+        if (self.character.position.x+27<=wall.position.x-wall.size.width/2+5){
             hitwallleft=true
         }else
-        if ((self.character.position.x-27>=wall.position.x+wall.size.width/2-5)&&(self.character.position.y+27>=wall.position.y-wall.size.height/2)&&(self.character.position.y-27<=wall.position.x+wall.size.height/2)){
+        if (self.character.position.x-27>=wall.position.x+wall.size.width/2-5){
             hitwallright=true
         }else
-        if ((self.character.position.y-27>=wall.position.y+wall.size.height/2-5)&&(self.character.position.x+27>=wall.position.x-wall.size.width/2)&&(self.character.position.x-27<=wall.position.x+wall.size.width/2)){
+        if (self.character.position.y-27>=wall.position.y+wall.size.height/2-5){
             hitwalltop=true
         }
     }
