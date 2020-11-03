@@ -22,7 +22,8 @@ class GameScene: SKScene {
     var joystick = TLAnalogJoystick(withDiameter: 100)
     var character = Character(isInfected: false)
     var cam = SKCameraNode()
-    var map=SKSpriteNode(imageNamed: "mapv2")
+    var map=SKSpriteNode(imageNamed: "mapFINAL")
+    var back=SKSpriteNode(imageNamed: "black")
     var scaleChar=CGFloat(0.3)
     var ind=0
     var boundaryx=false
@@ -41,12 +42,16 @@ class GameScene: SKScene {
         super.didMove(to: view)
         map.anchorPoint=CGPoint(x:0,y:0)
         map.position=CGPoint(x:0,y:0)
+        back.anchorPoint=CGPoint(x:0,y:0)
+        back.position=CGPoint(x:-screenWidth/2,y:-screenHeight/2)
         joystick.position = CGPoint(x: screenWidth/6, y: screenHeight/6)
         character.position = CGPoint(x: screenWidth/2, y: screenHeight/2)
         character.size = CGSize(width:180*scaleChar, height:180*scaleChar)
+        back.size = CGSize(width:map.size.width*scaleMap+screenWidth,height:map.size.height*scaleMap+screenHeight)
         map.size = CGSize(width:map.size.width*scaleMap, height:map.size.height*scaleMap)
         joystick.alpha = 0.5
         self.camera = cam
+        self.addChild(back)
         self.addChild(cam)
         //        joystick.name = "joystick"
         self.addChild(map)
