@@ -28,7 +28,7 @@ class GameScene: SKScene {
     var ind=0
     var boundaryx=false
     var boundaryy=false
-    var testWall=Wall(imageName: "test", siz: CGSize(width:100, height:200), Position: CGPoint(x:1000,y:1000))
+    var testWall=Wall(imageName: "mapFINAL", siz: CGSize(width:100, height:200), Position: CGPoint(x:0,y:0))
     var hitwallleft = false
     var hitwallright = false
     var hitwalltop = false
