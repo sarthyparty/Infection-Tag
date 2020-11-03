@@ -32,6 +32,7 @@ class GameScene: SKScene {
     var hitwallright = false
     var hitwalltop = false
     var hitwallbottom = false
+    var hitcornerbl = false
     
     
     
@@ -84,16 +85,16 @@ class GameScene: SKScene {
     }
     
     func characterHitWall(wall: SKSpriteNode, character: SKSpriteNode) {
-        if (self.character.position.y+27<=wall.position.y-wall.size.height/2+5){
+        if (self.character.position.y+27<=wall.position.y-wall.size.height/2+15){
             hitwallbottom=true
         }else
-        if (self.character.position.x+27<=wall.position.x-wall.size.width/2+5){
+        if (self.character.position.x+27<=wall.position.x-wall.size.width/2+15){
             hitwallleft=true
         }else
-        if (self.character.position.x-27>=wall.position.x+wall.size.width/2-5){
+        if (self.character.position.x-27>=wall.position.x+wall.size.width/2-15){
             hitwallright=true
         }else
-        if (self.character.position.y-27>=wall.position.y+wall.size.height/2-5){
+        if (self.character.position.y-27>=wall.position.y+wall.size.height/2-15){
             hitwalltop=true
         }
     }
@@ -178,7 +179,9 @@ class GameScene: SKScene {
         
         boundaryx = false
         boundaryy = false
-
+        if(hitcornerbl){
+            character.size=(CGSize(width: 100, height: 100))
+        }
     }
     
     
