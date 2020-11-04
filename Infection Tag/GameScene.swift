@@ -28,12 +28,13 @@ class GameScene: SKScene {
     var ind=0
     var boundaryx=false
     var boundaryy=false
-    var testWall=Wall(imageName: "mapFINAL", siz: CGSize(width:100, height:100), Position: CGPoint(x:200,y:200))
     var hitwallleft = false
     var hitwallright = false
     var hitwalltop = false
     var hitwallbottom = false
     var hitcornerbl = false
+    var testWall:Wall?
+    var arrayWall :[Wall] = [Wall]()
     
     
     
@@ -57,8 +58,9 @@ class GameScene: SKScene {
         self.addChild(map)
         self.addChild(joystick)
         self.addChild(character)
-        self.addChild(testWall)
-        
+        for w in arrayWall{
+            self.addChild(w)
+        }
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
     }
@@ -67,7 +69,7 @@ class GameScene: SKScene {
         joystick.baseImage = UIImage(named: "shadedDark07.png")
         joystick.alpha = 0.5
         camera?.addChild(joystick)
-        
+        makeWalls()
         //Creating rectangle level border
         let rect = CGRect(origin: CGPoint(x: -2500, y: -2500), size: CGSize(width: 5000, height: 5000))
         let borderindicator = SKShapeNode(rect: rect)
@@ -80,11 +82,13 @@ class GameScene: SKScene {
         character.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
         character.physicsBody?.contactTestBitMask = PhysicsCategory.wall // 4
         character.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
-        testWall.physicsBody = SKPhysicsBody(rectangleOf:testWall.size) // 1
-        testWall.physicsBody?.isDynamic = true // 2
-        testWall.physicsBody?.categoryBitMask =  PhysicsCategory.wall// 3
-        testWall.physicsBody?.contactTestBitMask = PhysicsCategory.character // 4
-        testWall.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
+        for w in arrayWall{
+            w.physicsBody = SKPhysicsBody(rectangleOf:w.size) // 1
+            w.physicsBody?.isDynamic = true // 2
+            w.physicsBody?.categoryBitMask =  PhysicsCategory.wall// 3
+            w.physicsBody?.contactTestBitMask = PhysicsCategory.character // 4
+            w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
+        }
         
         
     }
@@ -189,6 +193,10 @@ class GameScene: SKScene {
         }
     }
     
+    func makeWalls(){
+        arrayWall.append(Wall(imageName: "mapFINAL", siz: CGSize(width:37.44, height:414.72), Position: CGPoint(x:362.88,y:map.size.height*3-135.36)))
+        arrayWall.append(Wall(imageName: "mapFINAL", siz: CGSize(width:239.04, height:37.44), Position: CGPoint(x:123.84,y:map.size.height*3-368.64)))
+    }
     
 }
 extension GameScene: SKPhysicsContactDelegate {
