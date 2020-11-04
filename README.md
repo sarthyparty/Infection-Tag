@@ -1,0 +1,1 @@
+This game is built off of SpriteKit technology. Players have to avoid becoming infected through the using of powerups, abilities, and outmanuevering other players. As of right now, a connection to the AWS DynamoDB is being setup using cocoapods.
