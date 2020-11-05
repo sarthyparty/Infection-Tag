@@ -209,7 +209,7 @@ class GameScene: SKScene {
     }
     
     func makeWalls(){
-        let imgName="mapFINAL"
+        let imgName="black"
         let h=map.size.height*3
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:1.44*288), Position: CGPoint(x:1.26*288,y:h-0.47*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.83*288, height:0.13*288), Position: CGPoint(x:0.43*288,y:h-1.28*288)))
