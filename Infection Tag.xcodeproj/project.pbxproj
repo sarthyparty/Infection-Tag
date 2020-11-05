@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -49,8 +49,8 @@
 		63B8AA277B058D88F6C9DA42 /* Pods_Infection_TagTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Infection_TagTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A0D5FD515B62451B2B35075 /* Pods-Infection Tag.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Infection Tag.release.xcconfig"; path = "Target Support Files/Pods-Infection Tag/Pods-Infection Tag.release.xcconfig"; sourceTree = "<group>"; };
 		8576CADE4D763903F976DE1C /* Pods_Infection_Tag_Infection_TagUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Infection_Tag_Infection_TagUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9CE0D882DA2948719FAF4AFB /* amplifytools.xcconfig */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.xcconfig; name = amplifytools.xcconfig; path = amplifytools.xcconfig; sourceTree = "<group>"; };
-		AEA9FCDCA5044E0788630044 /* amplifyconfiguration.json */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = amplifyconfiguration.json; path = amplifyconfiguration.json; sourceTree = "<group>"; };
+		9CE0D882DA2948719FAF4AFB /* amplifytools.xcconfig */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.xcconfig; path = amplifytools.xcconfig; sourceTree = "<group>"; };
+		AEA9FCDCA5044E0788630044 /* amplifyconfiguration.json */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; path = amplifyconfiguration.json; sourceTree = "<group>"; };
 		CC2B8DEC88FAC14F23FC9E7C /* Pods-Infection Tag-Infection TagUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Infection Tag-Infection TagUITests.debug.xcconfig"; path = "Target Support Files/Pods-Infection Tag-Infection TagUITests/Pods-Infection Tag-Infection TagUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		CD10EEDC2E3F46E7BB3BAE46 /* schema.graphql */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text; name = schema.graphql; path = amplify/backend/api/amplifyDatasource/schema.graphql; sourceTree = "<group>"; };
 		D1168C85DE6F504476301690 /* Pods-Infection Tag.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Infection Tag.debug.xcconfig"; path = "Target Support Files/Pods-Infection Tag/Pods-Infection Tag.debug.xcconfig"; sourceTree = "<group>"; };
@@ -74,7 +74,7 @@
 		D3CF0C80253753FF00394F79 /* TFAnalogJoystick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TFAnalogJoystick.swift; sourceTree = "<group>"; };
 		DFBA5CFCA8CCC685B16B6947 /* Pods_Infection_Tag.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Infection_Tag.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7ECBACB952F361216243598 /* Pods-Infection Tag-Infection TagUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Infection Tag-Infection TagUITests.release.xcconfig"; path = "Target Support Files/Pods-Infection Tag-Infection TagUITests/Pods-Infection Tag-Infection TagUITests.release.xcconfig"; sourceTree = "<group>"; };
-		F846BFFE335D47FE92DF79A7 /* awsconfiguration.json */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = awsconfiguration.json; path = awsconfiguration.json; sourceTree = "<group>"; };
+		F846BFFE335D47FE92DF79A7 /* awsconfiguration.json */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; path = awsconfiguration.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,7 +127,6 @@
 				0029E6822D2DDF78DE83674D /* Pods-Infection TagTests.debug.xcconfig */,
 				1C3ACD24DCDA542BF83C08A0 /* Pods-Infection TagTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -634,7 +633,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 883DK65VTV;
 				INFOPLIST_FILE = "Infection Tag/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -655,7 +654,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 883DK65VTV;
 				INFOPLIST_FILE = "Infection Tag/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
