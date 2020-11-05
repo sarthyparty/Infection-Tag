@@ -8,6 +8,8 @@
 import SpriteKit
 
 class Wall: SKSpriteNode {
+    
+    var side: String = ""
 
     init(imageName: String, siz: CGSize, Position: CGPoint) {
         // Make a texture from an image, a color, and size

@@ -93,22 +93,37 @@ class GameScene: SKScene {
         
     }
     
-    func characterHitWall(wall: SKSpriteNode, character: SKSpriteNode) {
+    func characterHitWall(wall: Wall, character: SKSpriteNode) {
         if (self.character.position.y+27<=wall.position.y-wall.size.height/2+15){
             hitwallbottom=true
+            wall.side = "bottom"
         }else
         if (self.character.position.x+27<=wall.position.x-wall.size.width/2+15){
             hitwallleft=true
+            wall.side = "left"
         }else
         if (self.character.position.x-27>=wall.position.x+wall.size.width/2-15){
             hitwallright=true
+            wall.side = "right"
         }else
         if (self.character.position.y-27>=wall.position.y+wall.size.height/2-15){
             hitwalltop=true
+            wall.side = "top"
         }
     }
-    func characterLeftWall(wall: SKSpriteNode, character: SKSpriteNode) {
-        hitwallleft = false; hitwalltop = false; hitwallbottom = false; hitwallright = false;
+    func characterLeftWall(wall: Wall, character: SKSpriteNode) {
+        if (wall.side == "bottom"){
+            hitwallbottom=false
+        }else
+        if (wall.side == "left"){
+            hitwallleft=false
+        }else
+        if (wall.side == "right"){
+            hitwallright=false
+        }else
+        if (wall.side == "top"){
+            hitwalltop=false
+        }
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -218,7 +233,7 @@ extension GameScene: SKPhysicsContactDelegate {
           (secondBody.categoryBitMask & PhysicsCategory.wall != 0)) {
         if let character = firstBody.node as? SKSpriteNode,
           let wall = secondBody.node as? SKSpriteNode {
-          characterHitWall(wall: wall, character: character)
+            characterHitWall(wall: wall as! Wall, character: character)
         }
       }
     }
@@ -239,7 +254,7 @@ extension GameScene: SKPhysicsContactDelegate {
           (secondBody.categoryBitMask & PhysicsCategory.wall != 0)) {
         if let character = firstBody.node as? SKSpriteNode,
           let wall = secondBody.node as? SKSpriteNode {
-          characterLeftWall(wall: wall, character: character)
+            characterLeftWall(wall: wall as! Wall, character: character)
         }
       }
     }
