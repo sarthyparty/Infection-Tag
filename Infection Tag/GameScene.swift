@@ -222,10 +222,45 @@ class GameScene: SKScene {
     }
     
     func makeWalls(){
-        let imgName="black"
+        let imgName="mapFINAL"
         let h=map.size.height*3
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:1.44*288), Position: CGPoint(x:1.26*288,y:h-0.47*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.83*288, height:0.13*288), Position: CGPoint(x:0.43*288,y:h-1.28*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:1.44*288), Position: CGPoint(x:1.9*288,y:h-0*288)))
+        
+        //Library area
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:1.73*288), Position: CGPoint(x:2.39*288,y:h-0.87*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:1.73*288), Position: CGPoint(x:3.01*288,y:h-0.87*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:1.73*288), Position: CGPoint(x:3.63*288,y:h-0.87*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:2.76*288), Position: CGPoint(x:4.2*288,y:h-0.49*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.93*288, height:0.13*288), Position: CGPoint(x:1.9*288,y:h-3.24*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:3.73*288), Position: CGPoint(x:1.26*288,y:h-2.48*288)))
+        //rest of left stuff
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.78*288, height:0.13*288), Position: CGPoint(x:0*288,y:h-3.96*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:0.64*288), Position: CGPoint(x:0.78*288,y:h-5.39*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:0.64*288), Position: CGPoint(x:0.3*288,y:h-4.41*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:0.64*288), Position: CGPoint(x:0.3*288,y:h-6.5*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:0.73*288), Position: CGPoint(x:1.26*288,y:h-6.78*288)))
+        //park walls
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:2.43*288, height:0.13*288), Position: CGPoint(x:1.9*288,y:h-5.19*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:1.01*288), Position: CGPoint(x:1.9*288,y:h-5.19*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:0.71*288), Position: CGPoint(x:1.9*288,y:h-6.79*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:4.08*288, height:0.13*288), Position: CGPoint(x:4.85*288,y:h-5.19*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.8*288, height:0.8*288), Position: CGPoint(x:4.89*288,y:h-6.09*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.38*288, height:0.52*288), Position: CGPoint(x:6.96*288,y:h-6.23*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.38*288, height:0.52*288), Position: CGPoint(x:7.79*288,y:h-6.23*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.38*288, height:0.52*288), Position: CGPoint(x:8.62*288,y:h-6.23*288)))
+        //lake walls
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.58*288, height:0.47*288), Position: CGPoint(x:2.32*288,y:h-3.73*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:2.25*288, height:0.47*288), Position: CGPoint(x:4.2*288,y:h-3.73*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.99*288, height:0.47*288), Position: CGPoint(x:6.75*288,y:h-3.73*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:1.17*288), Position: CGPoint(x:1.9*288,y:h-3.38*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:0.96*288), Position: CGPoint(x:9.08*288,y:h-3.24*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:2.44*288, height:0.13*288), Position: CGPoint(x:4.2*288,y:h-3.24*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.55*288, height:0.13*288), Position: CGPoint(x:7.55*288,y:h-3.24*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:4*288, height:0.13*288), Position: CGPoint(x:2.02*288,y:h-4.55*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.97*288, height:0.13*288), Position: CGPoint(x:6.74*288,y:h-4.55*288)))
+
     }
     
 }
