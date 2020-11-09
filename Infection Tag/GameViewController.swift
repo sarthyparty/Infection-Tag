@@ -8,50 +8,27 @@
 import UIKit
 import SpriteKit
 import GameplayKit
-
-//class GameViewController: UIViewController {
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//
-//        if let view = self.view as! SKView? {
-//            // Load the SKScene from 'GameScene.sks'
-//            if let scene = SKScene(fileNamed: "GameScene") {
-//                // Set the scale mode to scale to fit the window
-//                scene.scaleMode = .aspectFill
-//
-//                // Present the scene
-//                view.presentScene(scene)
-//            }
-//
-//            view.ignoresSiblingOrder = true
-//
-//            view.showsFPS = true
-//            view.showsNodeCount = true
-//        }
-//    }
-//
-//    override var shouldAutorotate: Bool {
-//        return true
-//    }
-//
-//    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-//        if UIDevice.current.userInterfaceIdiom == .phone {
-//            return .allButUpsideDown
-//        } else {
-//            return .all
-//        }
-//    }
-//
-//    override var prefersStatusBarHidden: Bool {
-//        return true
-//    }
-//}
+import Amplify
+import AmplifyPlugins
 
 class GameViewController: UIViewController {
     override func viewDidLoad() {
+        print("Hey")
+        configureAmplify()
         let scene = GameScene(size: view.frame.size)
         let skView = view as! SKView
         skView.presentScene(scene)
+    }
+    
+    func configureAmplify() {
+       let dataStorePlugin = AWSDataStorePlugin(modelRegistration: AmplifyModels())
+       do {
+           try Amplify.add(plugin: dataStorePlugin)
+           try Amplify.configure()
+           print("Initialized Amplify");
+       } catch {
+           // simplified error handling for the tutorial
+           print("Could not initialize Amplify: \(error)")
+       }
     }
 }

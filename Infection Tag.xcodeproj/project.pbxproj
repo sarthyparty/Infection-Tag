@@ -24,6 +24,9 @@
 		D3CF0C702537501500394F79 /* Infection_TagUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CF0C6F2537501500394F79 /* Infection_TagUITests.swift */; };
 		D3CF0C81253753FF00394F79 /* TFAnalogJoystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CF0C80253753FF00394F79 /* TFAnalogJoystick.swift */; };
 		F4F26BB8E4EFBBECCF30F6C5 /* Pods_Infection_Tag.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFBA5CFCA8CCC685B16B6947 /* Pods_Infection_Tag.framework */; };
+		665F511F5CC14557814D13F7 /* AmplifyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33BEA968A74B448AB1727BFA /* AmplifyModels.swift */; };
+		B1B8A351C2404C679C786F7C /* PlayerPos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F0A3225B2E4070B9229C7C /* PlayerPos.swift */; };
+		E708F1EC0B5642FF9EF8A235 /* PlayerPos+Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D519E64BD0A46CB94DA82B5 /* PlayerPos+Schema.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +78,9 @@
 		DFBA5CFCA8CCC685B16B6947 /* Pods_Infection_Tag.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Infection_Tag.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7ECBACB952F361216243598 /* Pods-Infection Tag-Infection TagUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Infection Tag-Infection TagUITests.release.xcconfig"; path = "Target Support Files/Pods-Infection Tag-Infection TagUITests/Pods-Infection Tag-Infection TagUITests.release.xcconfig"; sourceTree = "<group>"; };
 		F846BFFE335D47FE92DF79A7 /* awsconfiguration.json */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; path = awsconfiguration.json; sourceTree = "<group>"; };
+		33BEA968A74B448AB1727BFA /* AmplifyModels.swift */ = {isa = PBXFileReference; name = "AmplifyModels.swift"; path = "amplify/generated/models/AmplifyModels.swift"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.swift; explicitFileType = undefined; includeInIndex = 0; };
+		35F0A3225B2E4070B9229C7C /* PlayerPos.swift */ = {isa = PBXFileReference; name = "PlayerPos.swift"; path = "amplify/generated/models/PlayerPos.swift"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.swift; explicitFileType = undefined; includeInIndex = 0; };
+		6D519E64BD0A46CB94DA82B5 /* PlayerPos+Schema.swift */ = {isa = PBXFileReference; name = "PlayerPos+Schema.swift"; path = "amplify/generated/models/PlayerPos+Schema.swift"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.swift; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +154,7 @@
 		D3CF0C402537500F00394F79 = {
 			isa = PBXGroup;
 			children = (
+				BC9BB13847BD4AACA0A70642 /* AmplifyModels */,
 				2972DD8B43D54BA9A44D9AEB /* AmplifyConfig */,
 				D3CF0C4B2537500F00394F79 /* Infection Tag */,
 				D3CF0C632537501500394F79 /* Infection TagTests */,
@@ -213,6 +220,25 @@
 				63B8AA277B058D88F6C9DA42 /* Pods_Infection_TagTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BC9BB13847BD4AACA0A70642 /* AmplifyModels */ = {
+			isa = PBXGroup;
+			children = (
+				33BEA968A74B448AB1727BFA /* AmplifyModels.swift */,
+				35F0A3225B2E4070B9229C7C /* PlayerPos.swift */,
+				6D519E64BD0A46CB94DA82B5 /* PlayerPos+Schema.swift */,
+			);
+			name = AmplifyModels;
+			path = .;
+			sourceTree = "<group>";
+		};
+		3F1BAB18FC9F4ADBBEC70721 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			path = undefined;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -462,6 +488,9 @@
 				D39D02D725471C9700BDAC1E /* wall.swift in Sources */,
 				D3CF0C552537500F00394F79 /* GameViewController.swift in Sources */,
 				D3CF0C4D2537500F00394F79 /* AppDelegate.swift in Sources */,
+				665F511F5CC14557814D13F7 /* AmplifyModels.swift in Sources */,
+				B1B8A351C2404C679C786F7C /* PlayerPos.swift in Sources */,
+				E708F1EC0B5642FF9EF8A235 /* PlayerPos+Schema.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

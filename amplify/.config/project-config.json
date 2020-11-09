@@ -1,8 +1,8 @@
 {
-    "projectName": "Infection-Tag",
-    "version": "2.0",
-    "frontend": "ios",
-    "providers": [
-        "awscloudformation"
-    ]
+  "projectName": "Infection-Tag",
+  "version": "3.0",
+  "frontend": "ios",
+  "providers": [
+    "awscloudformation"
+  ]
 }
