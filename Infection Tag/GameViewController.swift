@@ -13,7 +13,6 @@ import AmplifyPlugins
 
 class GameViewController: UIViewController {
     override func viewDidLoad() {
-        print("Hey")
         configureAmplify()
         let scene = GameScene(size: view.frame.size)
         let skView = view as! SKView
