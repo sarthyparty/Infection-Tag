@@ -92,6 +92,17 @@ class GameScene: SKScene {
             w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         }
         
+//        let player = PlayerPos(x:character.position.x, y:character.position.y, frame: self.ind)
+//
+//        Amplify.DataStore.save(player) { result in
+//            switch(result) {
+//                case .success(let savedItem):
+//                    print("Saved item: \(savedItem.name)")
+//                case .failure(let error):
+//                    print("Could not save item to datastore: \(error)")
+//            }
+//        }
+        
         
     }
     
