@@ -14,10 +14,8 @@ import AmplifyPlugins
 class GameViewController: UIViewController {
     override func viewDidLoad() {
         configureAmplify()
-        if let scene = MainMenu(fileNamed: "MainMenu") {
-            scene.scaleMode = .aspectFill
-        }
-        
+        let scene = GameScene(size: view.frame.size)
+        let skView = view as! SKView
         skView.presentScene(scene)
     }
     
