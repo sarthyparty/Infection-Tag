@@ -21,8 +21,8 @@ extension PlayerPos {
     
     model.fields(
       .id(),
-      .field(playerPos.x, is: .required, ofType: .int),
-      .field(playerPos.y, is: .required, ofType: .int),
+      .field(playerPos.x, is: .required, ofType: .double),
+      .field(playerPos.y, is: .required, ofType: .double),
       .field(playerPos.frame, is: .required, ofType: .int)
     )
     }

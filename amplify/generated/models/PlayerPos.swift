@@ -4,13 +4,13 @@ import Foundation
 
 public struct PlayerPos: Model {
   public let id: String
-  public var x: Int
-  public var y: Int
+  public var x: Double
+  public var y: Double
   public var frame: Int
   
   public init(id: String = UUID().uuidString,
-      x: Int,
-      y: Int,
+      x: Double,
+      y: Double,
       frame: Int) {
       self.id = id
       self.x = x

@@ -92,7 +92,7 @@ class GameScene: SKScene {
             w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         }
         
-//        let player = PlayerPos(x:character.position.x, y:character.position.y, frame: self.ind)
+//        let player = PlayerPos(x:self.character.position.x, y:self.character.position.y, frame: self.ind)
 //
 //        Amplify.DataStore.save(player) { result in
 //            switch(result) {
