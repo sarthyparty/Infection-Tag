@@ -71,9 +71,6 @@ class GameScene: SKScene {
         
     }
     override func sceneDidLoad() {
-        for char in otherCharacters {
-            self.addChild(char)
-        }
         
         joystick.handleImage = UIImage(named: "shadedDark01.png")
         joystick.baseImage = UIImage(named: "shadedDark07.png")
@@ -123,6 +120,10 @@ class GameScene: SKScene {
                 case .failure(let error):
                     print("Could not save item to datastore: \(error)")
             }
+        }
+        
+        for char in otherCharacters {
+            self.addChild(char)
         }
         
         
