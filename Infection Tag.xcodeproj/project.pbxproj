@@ -11,8 +11,6 @@
 		57ABCA48CB996DC7B18E7A87 /* Pods_Infection_Tag_Infection_TagUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8576CADE4D763903F976DE1C /* Pods_Infection_Tag_Infection_TagUITests.framework */; };
 		665F511F5CC14557814D13F7 /* AmplifyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33BEA968A74B448AB1727BFA /* AmplifyModels.swift */; };
 		74E97CA3118EB66CAD643816 /* Pods_Infection_TagTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B8AA277B058D88F6C9DA42 /* Pods_Infection_TagTests.framework */; };
-		8121C19025599F9400EE1F06 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8121C18F25599F9400EE1F06 /* MainMenu.sks */; };
-		8121C1952559A07900EE1F06 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8121C1942559A07900EE1F06 /* MSButtonNode.swift */; };
 		8121C19A2559A67900EE1F06 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8121C1992559A67900EE1F06 /* MainMenu.swift */; };
 		B1B8A351C2404C679C786F7C /* PlayerPos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F0A3225B2E4070B9229C7C /* PlayerPos.swift */; };
 		C5ABA07FD6DE42DBBC6C2E00 /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = F846BFFE335D47FE92DF79A7 /* awsconfiguration.json */; };
@@ -57,8 +55,6 @@
 		63B8AA277B058D88F6C9DA42 /* Pods_Infection_TagTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Infection_TagTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A0D5FD515B62451B2B35075 /* Pods-Infection Tag.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Infection Tag.release.xcconfig"; path = "Target Support Files/Pods-Infection Tag/Pods-Infection Tag.release.xcconfig"; sourceTree = "<group>"; };
 		6D519E64BD0A46CB94DA82B5 /* PlayerPos+Schema.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "PlayerPos+Schema.swift"; path = "amplify/generated/models/PlayerPos+Schema.swift"; sourceTree = "<group>"; };
-		8121C18F25599F9400EE1F06 /* MainMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenu.sks; sourceTree = "<group>"; };
-		8121C1942559A07900EE1F06 /* MSButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSButtonNode.swift; sourceTree = "<group>"; };
 		8121C1992559A67900EE1F06 /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		8576CADE4D763903F976DE1C /* Pods_Infection_Tag_Infection_TagUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Infection_Tag_Infection_TagUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CE0D882DA2948719FAF4AFB /* amplifytools.xcconfig */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.xcconfig; path = amplifytools.xcconfig; sourceTree = "<group>"; };
@@ -205,9 +201,7 @@
 				D39D02D625471C9700BDAC1E /* wall.swift */,
 				D3CF0C562537500F00394F79 /* Main.storyboard */,
 				D3CF0C542537500F00394F79 /* GameViewController.swift */,
-				8121C18F25599F9400EE1F06 /* MainMenu.sks */,
 				8121C1992559A67900EE1F06 /* MainMenu.swift */,
-				8121C1942559A07900EE1F06 /* MSButtonNode.swift */,
 				D3CF0C592537501400394F79 /* Assets.xcassets */,
 				D3CF0C5B2537501400394F79 /* Info.plist */,
 			);
@@ -355,7 +349,6 @@
 				D3CF0C5A2537501400394F79 /* Assets.xcassets in Resources */,
 				D3CF0C512537500F00394F79 /* Actions.sks in Resources */,
 				2BF0A799B4CE4C8FA59A6E57 /* amplifyconfiguration.json in Resources */,
-				8121C19025599F9400EE1F06 /* MainMenu.sks in Resources */,
 				C5ABA07FD6DE42DBBC6C2E00 /* awsconfiguration.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -494,7 +487,6 @@
 				665F511F5CC14557814D13F7 /* AmplifyModels.swift in Sources */,
 				B1B8A351C2404C679C786F7C /* PlayerPos.swift in Sources */,
 				E708F1EC0B5642FF9EF8A235 /* PlayerPos+Schema.swift in Sources */,
-				8121C1952559A07900EE1F06 /* MSButtonNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
