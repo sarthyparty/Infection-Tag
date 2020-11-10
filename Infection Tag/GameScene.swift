@@ -13,6 +13,8 @@ import GameplayKit
 import Amplify
 import AmplifyPlugins
 
+var myID: String? = nil
+
 struct PhysicsCategory {
   static let none      : UInt32 = 0
   static let all       : UInt32 = UInt32.max
@@ -22,7 +24,7 @@ struct PhysicsCategory {
 
 class GameScene: SKScene {
     var joystick = TLAnalogJoystick(withDiameter: 100)
-    var character = Character(isInfected: false)
+    var character = Character(isInfected: false, ID: "Player")
     var cam = SKCameraNode()
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
@@ -37,6 +39,7 @@ class GameScene: SKScene {
     var hitcornerbl = false
     var testWall:Wall?
     var arrayWall :[Wall] = [Wall]()
+    var otherCharacters :[Character] = [Character]()
     
     
     
@@ -65,8 +68,13 @@ class GameScene: SKScene {
         }
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
+        
     }
     override func sceneDidLoad() {
+        for char in otherCharacters {
+            self.addChild(char)
+        }
+        
         joystick.handleImage = UIImage(named: "shadedDark01.png")
         joystick.baseImage = UIImage(named: "shadedDark07.png")
         joystick.alpha = 0.5
@@ -91,17 +99,32 @@ class GameScene: SKScene {
             w.physicsBody?.contactTestBitMask = PhysicsCategory.character // 4
             w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         }
+
+        Amplify.DataStore.query(PlayerPos.self) { result in
+            switch(result) {
+            case .success(let players):
+                for player in players {
+                    let character = Character(isInfected: false, ID: player.id)
+                    character.position = CGPoint(x: CGFloat(player.x), y: CGFloat(player.y))
+                    otherCharacters.append(character)
+                }
+            case .failure(let error):
+                print("Could not query DataStore: \(error)")
+            }
+        }
         
-//        let player = PlayerPos(x:self.character.position.x, y:self.character.position.y, frame: self.ind)
-//
-//        Amplify.DataStore.save(player) { result in
-//            switch(result) {
-//                case .success(let savedItem):
-//                    print("Saved item: \(savedItem.name)")
-//                case .failure(let error):
-//                    print("Could not save item to datastore: \(error)")
-//            }
-//        }
+        let player = PlayerPos(x:Double(self.character.position.x), y:Double(self.character.position.y), frameNum: Int(self.ind))
+        
+        Amplify.DataStore.save(player) { result in
+            switch(result) {
+                case .success(let savedItem):
+                    print("Created player: \(savedItem.id)")
+                    myID = savedItem.id
+                case .failure(let error):
+                    print("Could not save item to datastore: \(error)")
+            }
+        }
+        
         
         
     }
@@ -218,6 +241,41 @@ class GameScene: SKScene {
         boundaryy = false
         if(hitcornerbl){
             character.size=(CGSize(width: 100, height: 100))
+        }
+        
+        Amplify.DataStore.query(PlayerPos.self,
+                                where: PlayerPos.keys.id.eq(myID)) { result in
+            switch(result) {
+            case .success(let players):
+                var playerUpdate = players.first
+                playerUpdate?.x = Double(self.character.position.x)
+                playerUpdate?.y = Double(self.character.position.x)
+                playerUpdate?.frameNum = self.ind
+                Amplify.DataStore.save(playerUpdate!) { result in
+                    switch(result) {
+                    case .success(let savedPlayer):
+                        print("Updated player: \(savedPlayer.id)")
+                    case .failure(let error):
+                        print("Could not update data in Datastore: \(error)")
+                    }
+                }
+            case .failure(let error):
+                print("Could not query DataStore: \(error)")
+            }
+        }
+        for player in otherCharacters {
+            Amplify.DataStore.query(PlayerPos.self,
+                                    where: PlayerPos.keys.id.eq(player.id)) { result in
+                switch(result) {
+                case .success(let players):
+                    let playerData = players.first
+                    player.position.x = CGFloat(playerData!.x)
+                    player.position.y = CGFloat(playerData!.y)
+                    player.texture = arraySprites[(playerData!.frameNum-(playerData!.frameNum%4))/4]
+                case .failure(let error):
+                    print("Could not query DataStore: \(error)")
+                }
+            }
         }
     }
     

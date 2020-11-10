@@ -6,15 +6,15 @@ public struct PlayerPos: Model {
   public let id: String
   public var x: Double
   public var y: Double
-  public var frame: Int
+  public var frameNum: Int
   
   public init(id: String = UUID().uuidString,
       x: Double,
       y: Double,
-      frame: Int) {
+      frameNum: Int) {
       self.id = id
       self.x = x
       self.y = y
-      self.frame = frame
+      self.frameNum = frameNum
   }
 }

@@ -2,5 +2,5 @@ type PlayerPos @model {
   id: ID!
   x: Float!
   y: Float!
-  frame: Int!
+  frameNum: Int!
 }

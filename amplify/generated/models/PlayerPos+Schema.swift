@@ -8,7 +8,7 @@ extension PlayerPos {
     case id
     case x
     case y
-    case frame
+    case frameNum
   }
   
   public static let keys = CodingKeys.self
@@ -23,7 +23,7 @@ extension PlayerPos {
       .id(),
       .field(playerPos.x, is: .required, ofType: .double),
       .field(playerPos.y, is: .required, ofType: .double),
-      .field(playerPos.frame, is: .required, ofType: .int)
+      .field(playerPos.frameNum, is: .required, ofType: .int)
     )
     }
 }

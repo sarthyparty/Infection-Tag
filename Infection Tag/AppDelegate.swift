@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Amplify
+import AmplifyPlugins
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,6 +17,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        let models = AmplifyModels()
+        let apiPlugin = AWSAPIPlugin(modelRegistration: models)
+        let dataStorePlugin = AWSDataStorePlugin(modelRegistration: models)
+        do {
+            try Amplify.add(plugin: apiPlugin)
+            try Amplify.add(plugin: dataStorePlugin)
+            try Amplify.configure()
+            print("Initialized Amplify");
+        } catch {
+            print("Could not initialize Amplify: \(error)")
+        }
         return true
     }
 
@@ -33,6 +46,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    }
+    func applicationWillTerminate(_ application: UIApplication) {
+        Amplify.DataStore.query(PlayerPos.self,
+                                where: PlayerPos.keys.id.eq(myID)) { result in
+            switch(result) {
+            case .success(let players):
+                guard players.count == 1, let toDeletePlayer = players.first else {
+                    print("Did not find exactly one player, bailing")
+                    return
+                }
+                Amplify.DataStore.delete(toDeletePlayer) { result in
+                    switch(result) {
+                    case .success:
+                        print("Deleted item: \(toDeletePlayer.id)")
+                    case .failure(let error):
+                        print("Could not update data in Datastore: \(error)")
+                    }
+                }
+            case .failure(let error):
+                print("Could not query DataStore: \(error)")
+            }
+       }
     }
 
 
