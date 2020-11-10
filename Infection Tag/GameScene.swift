@@ -164,18 +164,42 @@ class GameScene: SKScene {
     }
     func characterLeftWall(wall: Wall, character: SKSpriteNode) {
         if (wall.side == "bottom"){
-            hitwallbottom=false
+          hitwallbottom=false
+          wall.side = " "
+          for w in arrayWall{
+            if(w.side == "bottom"){
+              hitwallbottom=true
+            }
+          }
         }else
         if (wall.side == "left"){
-            hitwallleft=false
+          hitwallleft=false
+          wall.side = " "
+          for w in arrayWall{
+            if(w.side == "left"){
+              hitwallleft=true
+            }
+          }
         }else
         if (wall.side == "right"){
-            hitwallright=false
+          hitwallright=false
+          wall.side = " "
+          for w in arrayWall{
+            if(w.side == "right"){
+              hitwallright=true
+            }
+          }
         }else
         if (wall.side == "top"){
-            hitwalltop=false
+          hitwalltop=false
+          wall.side = " "
+          for w in arrayWall{
+            if(w.side == "top"){
+              hitwalltop=true
+            }
+          }
         }
-    }
+      }
     
     override func update(_ currentTime: TimeInterval) {
         if(boundaryx==false){
