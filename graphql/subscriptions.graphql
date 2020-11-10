@@ -1,0 +1,40 @@
+# this is an auto generated file. This will be overwritten
+subscription OnCreatePlayerPos {
+  onCreatePlayerPos {
+    id
+    x
+    y
+    frameNum
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnUpdatePlayerPos {
+  onUpdatePlayerPos {
+    id
+    x
+    y
+    frameNum
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnDeletePlayerPos {
+  onDeletePlayerPos {
+    id
+    x
+    y
+    frameNum
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "infection": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-infection-tag-infection-190407-authRole",
+      "UnauthRoleArn": "arn:aws:iam::289911967337:role/amplify-infection-tag-infection-190407-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::289911967337:role/amplify-infection-tag-infection-190407-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-infection-tag-infection-190407-deployment",
+      "UnauthRoleName": "amplify-infection-tag-infection-190407-unauthRole",
+      "StackName": "amplify-infection-tag-infection-190407",
+      "StackId": "arn:aws:cloudformation:us-east-2:289911967337:stack/amplify-infection-tag-infection-190407/a3fe9cc0-22f0-11eb-a988-0ac225ff6c98",
+      "AmplifyAppId": "d1936685grt1hp"
+    }
+  }
+}
