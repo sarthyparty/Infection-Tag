@@ -48,26 +48,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
     func applicationWillTerminate(_ application: UIApplication) {
-        Amplify.DataStore.query(PlayerPos.self,
-                                where: PlayerPos.keys.id.eq(myID)) { result in
-            switch(result) {
-            case .success(let players):
-                guard players.count == 1, let toDeletePlayer = players.first else {
-                    print("Did not find exactly one player, bailing")
-                    return
-                }
-                Amplify.DataStore.delete(toDeletePlayer) { result in
-                    switch(result) {
-                    case .success:
-                        print("Deleted item: \(toDeletePlayer.id)")
-                    case .failure(let error):
-                        print("Could not update data in Datastore: \(error)")
+        print("HI")
+        Amplify.API.query(request: .get(PlayerPos.self, byId: myID)) { event in
+            switch event {
+            case .success(let result):
+                switch result {
+                case .success(let player):
+                    guard let player = player else {
+                        print("Could not find player")
+                        return
                     }
+                    print("Successfully retrieved player: \(player)")
+                    Amplify.API.mutate(request: .delete(player)) { event in
+                        switch event {
+                        case .success(let result):
+                            switch result {
+                            case .success(let player):
+                                print("Successfully deleted player: \(player)")
+                            case .failure(let error):
+                                print("Got failed result with \(error.errorDescription)")
+                            }
+                        case .failure(let error):
+                            print("Got failed event with error \(error)")
+                        }
+                    }
+                case .failure(let error):
+                    print("Got failed result with \(error.errorDescription)")
                 }
             case .failure(let error):
-                print("Could not query DataStore: \(error)")
+                print("Got failed event with error \(error)")
             }
-       }
+        }
     }
 
 
