@@ -49,6 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     func applicationWillTerminate(_ application: UIApplication) {
         print("HI")
+        print(myID)
         Amplify.API.query(request: .get(PlayerPos.self, byId: myID)) { event in
             switch event {
             case .success(let result):
