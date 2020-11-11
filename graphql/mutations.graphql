@@ -8,9 +8,6 @@ mutation CreatePlayerPos(
     x
     y
     frameNum
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -24,9 +21,6 @@ mutation UpdatePlayerPos(
     x
     y
     frameNum
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -40,9 +34,6 @@ mutation DeletePlayerPos(
     x
     y
     frameNum
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }

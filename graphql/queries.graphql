@@ -1,40 +1,10 @@
 # this is an auto generated file. This will be overwritten
-query SyncPlayerPos(
-  $filter: ModelPlayerPosFilterInput
-  $limit: Int
-  $nextToken: String
-  $lastSync: AWSTimestamp
-) {
-  syncPlayerPos(
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-    lastSync: $lastSync
-  ) {
-    items {
-      id
-      x
-      y
-      frameNum
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    nextToken
-    startedAt
-  }
-}
 query GetPlayerPos($id: ID!) {
   getPlayerPos(id: $id) {
     id
     x
     y
     frameNum
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -50,13 +20,9 @@ query ListPlayerPoss(
       x
       y
       frameNum
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
     nextToken
-    startedAt
   }
 }

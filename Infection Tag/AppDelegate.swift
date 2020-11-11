@@ -19,10 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         let models = AmplifyModels()
         let apiPlugin = AWSAPIPlugin(modelRegistration: models)
-        let dataStorePlugin = AWSDataStorePlugin(modelRegistration: models)
         do {
             try Amplify.add(plugin: apiPlugin)
-            try Amplify.add(plugin: dataStorePlugin)
             try Amplify.configure()
             print("Initialized Amplify");
         } catch {
@@ -83,24 +81,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //
 //            }
 //        }
-        Amplify.DataStore.query(PlayerPos.self, byId: myID) {
-            switch $0 {
-            case .success(let result):
-                // result will be a single object of type Post?
-                print("Players: \(String(describing: result))")
-                let player = result
-                Amplify.DataStore.delete(player!) {
-                    switch $0 {
-                    case .success:
-                        print("Player deleted!")
-                    case .failure(let error):
-                        print("Error deleting player - \(error.localizedDescription)")
-                    }
-                }
-            case .failure(let error):
-                print("Error on query() for type PlayerPos - \(error.localizedDescription)")
-            }
-        }
+//        Amplify.DataStore.query(PlayerPos.self, byId: myID) {
+//            switch $0 {
+//            case .success(let result):
+//                // result will be a single object of type Post?
+//                print("Pslayers: \(String(describing: result))")
+//                let player = result
+//                Amplify.DataStore.delete(player!) {
+//                    switch $0 {
+//                    case .success:
+//                        print("Player deleted!")
+//                    case .failure(let error):
+//                        print("Error deleting player - \(error.localizedDescription)")
+//                    }
+//                }
+//            case .failure(let error):
+//                print("Error on query() for type PlayerPos - \(error.localizedDescription)")
+//            }
+//        }
         
     }
 

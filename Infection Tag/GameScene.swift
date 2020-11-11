@@ -97,20 +97,29 @@ class GameScene: SKScene {
             w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         }
 
-//        Amplify.DataStore.query(PlayerPos.self) { result in
-//            switch(result) {
-//            case .success(let players):
-//                for player in players {
-//                    let character = Character(isInfected: false, ID: player.id)
-//                    character.position = CGPoint(x: CGFloat(player.x), y: CGFloat(player.y))
-//                    otherCharacters.append(character)
-//                }
-//            case .failure(let error):
-//                print("Could not query DataStore: \(error)")
-//            }
-//        }
-//
-        let player = PlayerPos(x:Double(self.character.position.x), y:Double(self.character.position.y), frameNum: Int(self.ind))
+        
+        
+        Amplify.API.query(request: .list(PlayerPos.self)) { event in
+            switch event {
+            case .success(let result):
+                switch result {
+                case .success(let players):
+                    print("Successfully retrieved list of players: \(players.count)")
+                    for player in players {
+                        let char = Character(isInfected: false, ID: player.id)
+                        self.otherCharacters.append(char)
+                        self.addChild(char)
+                    }
+
+                case .failure(let error):
+                    print("Got failed result with \(error.errorDescription)")
+                }
+            case .failure(let error):
+                print("Got failed event with error \(error)")
+            }
+        }
+        
+        let player = PlayerPos(x: 400, y: 400, frameNum: 3)
         Amplify.API.mutate(request: .create(player)) { event in
             switch event {
             case .success(let result):
@@ -125,20 +134,6 @@ class GameScene: SKScene {
                 print("Got failed event with error \(error)")
             }
         }
-//
-//        Amplify.DataStore.save(player) { result in
-//            switch(result) {
-//                case .success(let savedItem):
-//                    print("Created player: \(savedItem.id)")
-//                    myID = savedItem.id
-//                case .failure(let error):
-//                    print("Could not save item to datastore: \(error)")
-//            }
-//        }
-        
-//        for char in otherCharacters {
-//            self.addChild(char)
-//        }
         
         
         
@@ -281,41 +276,64 @@ class GameScene: SKScene {
         if(hitcornerbl){
             character.size=(CGSize(width: 100, height: 100))
         }
-        
-//        Amplify.API.query(PlayerPos.self,
-//                                where: PlayerPos.keys.id.eq(myID)) { result in
-//            switch(result) {
-//            case .success(let players):
-//                var playerUpdate = players.first
-//                playerUpdate?.x = Double(self.character.position.x)
-//                playerUpdate?.y = Double(self.character.position.x)
-//                playerUpdate?.frameNum = self.ind
-//                Amplify.DataStore.save(playerUpdate!) { result in
-//                    switch(result) {
-//                    case .success(let savedPlayer):
-//                        print("Updated player: \(savedPlayer.id)")
-//                    case .failure(let error):
-//                        print("Could not update data in Datastore: \(error)")
+//        Amplify.API.query(request: .get(PlayerPos.self, byId: myID)) { event in
+//            switch event {
+//            case .success(let result):
+//                switch result {
+//                case .success(let player):
+//                    guard var player = player else {
+//                        print("Could not find todo")
+//                        return
 //                    }
+//                    print("Successfully retrieved todo: \(player.id)")
+//                    player.x = Double(self.character.position.x)
+//                    player.y = Double(self.character.position.y)
+//                    Amplify.API.mutate(request: .update(player)) { event in
+//                        switch event {
+//                        case .success(let result):
+//                            switch result {
+//                            case .success(let player):
+//                                print("Successfully updated player: \(player.id)")
+//                                myID = player.id
+//                            case .failure(let error):
+//                                print("Got failed result with \(error.errorDescription)")
+//                            }
+//                        case .failure(let error):
+//                            print("Got failed event with error \(error)")
+//                        }
+//                    }
+//                case .failure(let error):
+//                    print("Got failed result with \(error.errorDescription)")
 //                }
 //            case .failure(let error):
-//                print("Could not query DataStore: \(error)")
+//                print("Got failed event with error \(error)")
 //            }
 //        }
-//        for player in otherCharacters {
-//            Amplify.DataStore.query(PlayerPos.self,
-//                                    where: PlayerPos.keys.id.eq(player.id)) { result in
-//                switch(result) {
-//                case .success(let players):
-//                    let playerData = players.first
-//                    player.position.x = CGFloat(playerData!.x)
-//                    player.position.y = CGFloat(playerData!.y)
-//                    player.texture = arraySprites[(playerData!.frameNum-(playerData!.frameNum%4))/4]
-//                case .failure(let error):
-//                    print("Could not query DataStore: \(error)")
-//                }
-//            }
-//        }
+        
+        
+
+        for player in otherCharacters {
+            Amplify.API.query(request: .get(PlayerPos.self, byId: player.id)) { event in
+                switch event {
+                case .success(let result):
+                    switch result {
+                    case .success(let queriedPlayer):
+                        guard let queriedPlayer = queriedPlayer else {
+                            print("Could not find player")
+                            return
+                        }
+                        print("Successfully retrieved player: \(player.id)")
+                        player.position.x = CGFloat(queriedPlayer.x)
+                        player.position.y = CGFloat(queriedPlayer.y)
+                    case .failure(let error):
+                        print("Got failed result with \(error.errorDescription)")
+                    }
+                case .failure(let error):
+                    print("Got failed event with error \(error)")
+                }
+            }
+        }
+        
     }
     
     func makeWalls(){

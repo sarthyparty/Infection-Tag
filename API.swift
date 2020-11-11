@@ -5,8 +5,8 @@ import AWSAppSync
 public struct CreatePlayerPosInput: GraphQLMapConvertible {
   public var graphQLMap: GraphQLMap
 
-  public init(id: GraphQLID? = nil, x: Double, y: Double, frameNum: Int, version: Int? = nil) {
-    graphQLMap = ["id": id, "x": x, "y": y, "frameNum": frameNum, "_version": version]
+  public init(id: GraphQLID? = nil, x: Double, y: Double, frameNum: Int) {
+    graphQLMap = ["id": id, "x": x, "y": y, "frameNum": frameNum]
   }
 
   public var id: GraphQLID? {
@@ -42,15 +42,6 @@ public struct CreatePlayerPosInput: GraphQLMapConvertible {
     }
     set {
       graphQLMap.updateValue(newValue, forKey: "frameNum")
-    }
-  }
-
-  public var version: Int? {
-    get {
-      return graphQLMap["_version"] as! Int?
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "_version")
     }
   }
 }
@@ -363,8 +354,8 @@ public struct ModelIntInput: GraphQLMapConvertible {
 public struct UpdatePlayerPosInput: GraphQLMapConvertible {
   public var graphQLMap: GraphQLMap
 
-  public init(id: GraphQLID, x: Double? = nil, y: Double? = nil, frameNum: Int? = nil, version: Int? = nil) {
-    graphQLMap = ["id": id, "x": x, "y": y, "frameNum": frameNum, "_version": version]
+  public init(id: GraphQLID, x: Double? = nil, y: Double? = nil, frameNum: Int? = nil) {
+    graphQLMap = ["id": id, "x": x, "y": y, "frameNum": frameNum]
   }
 
   public var id: GraphQLID {
@@ -402,22 +393,13 @@ public struct UpdatePlayerPosInput: GraphQLMapConvertible {
       graphQLMap.updateValue(newValue, forKey: "frameNum")
     }
   }
-
-  public var version: Int? {
-    get {
-      return graphQLMap["_version"] as! Int?
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "_version")
-    }
-  }
 }
 
 public struct DeletePlayerPosInput: GraphQLMapConvertible {
   public var graphQLMap: GraphQLMap
 
-  public init(id: GraphQLID? = nil, version: Int? = nil) {
-    graphQLMap = ["id": id, "_version": version]
+  public init(id: GraphQLID? = nil) {
+    graphQLMap = ["id": id]
   }
 
   public var id: GraphQLID? {
@@ -426,15 +408,6 @@ public struct DeletePlayerPosInput: GraphQLMapConvertible {
     }
     set {
       graphQLMap.updateValue(newValue, forKey: "id")
-    }
-  }
-
-  public var version: Int? {
-    get {
-      return graphQLMap["_version"] as! Int?
-    }
-    set {
-      graphQLMap.updateValue(newValue, forKey: "_version")
     }
   }
 }
@@ -708,7 +681,7 @@ public struct ModelSizeInput: GraphQLMapConvertible {
 
 public final class CreatePlayerPosMutation: GraphQLMutation {
   public static let operationString =
-    "mutation CreatePlayerPos($input: CreatePlayerPosInput!, $condition: ModelPlayerPosConditionInput) {\n  createPlayerPos(input: $input, condition: $condition) {\n    __typename\n    id\n    x\n    y\n    frameNum\n    _version\n    _deleted\n    _lastChangedAt\n    createdAt\n    updatedAt\n  }\n}"
+    "mutation CreatePlayerPos($input: CreatePlayerPosInput!, $condition: ModelPlayerPosConditionInput) {\n  createPlayerPos(input: $input, condition: $condition) {\n    __typename\n    id\n    x\n    y\n    frameNum\n    createdAt\n    updatedAt\n  }\n}"
 
   public var input: CreatePlayerPosInput
   public var condition: ModelPlayerPosConditionInput?
@@ -757,9 +730,6 @@ public final class CreatePlayerPosMutation: GraphQLMutation {
         GraphQLField("x", type: .nonNull(.scalar(Double.self))),
         GraphQLField("y", type: .nonNull(.scalar(Double.self))),
         GraphQLField("frameNum", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("_version", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("_deleted", type: .scalar(Bool.self)),
-        GraphQLField("_lastChangedAt", type: .nonNull(.scalar(Int.self))),
         GraphQLField("createdAt", type: .nonNull(.scalar(String.self))),
         GraphQLField("updatedAt", type: .nonNull(.scalar(String.self))),
       ]
@@ -770,8 +740,8 @@ public final class CreatePlayerPosMutation: GraphQLMutation {
         self.snapshot = snapshot
       }
 
-      public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, version: Int, deleted: Bool? = nil, lastChangedAt: Int, createdAt: String, updatedAt: String) {
-        self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "_version": version, "_deleted": deleted, "_lastChangedAt": lastChangedAt, "createdAt": createdAt, "updatedAt": updatedAt])
+      public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, createdAt: String, updatedAt: String) {
+        self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "createdAt": createdAt, "updatedAt": updatedAt])
       }
 
       public var __typename: String {
@@ -819,33 +789,6 @@ public final class CreatePlayerPosMutation: GraphQLMutation {
         }
       }
 
-      public var version: Int {
-        get {
-          return snapshot["_version"]! as! Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_version")
-        }
-      }
-
-      public var deleted: Bool? {
-        get {
-          return snapshot["_deleted"] as? Bool
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_deleted")
-        }
-      }
-
-      public var lastChangedAt: Int {
-        get {
-          return snapshot["_lastChangedAt"]! as! Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_lastChangedAt")
-        }
-      }
-
       public var createdAt: String {
         get {
           return snapshot["createdAt"]! as! String
@@ -869,7 +812,7 @@ public final class CreatePlayerPosMutation: GraphQLMutation {
 
 public final class UpdatePlayerPosMutation: GraphQLMutation {
   public static let operationString =
-    "mutation UpdatePlayerPos($input: UpdatePlayerPosInput!, $condition: ModelPlayerPosConditionInput) {\n  updatePlayerPos(input: $input, condition: $condition) {\n    __typename\n    id\n    x\n    y\n    frameNum\n    _version\n    _deleted\n    _lastChangedAt\n    createdAt\n    updatedAt\n  }\n}"
+    "mutation UpdatePlayerPos($input: UpdatePlayerPosInput!, $condition: ModelPlayerPosConditionInput) {\n  updatePlayerPos(input: $input, condition: $condition) {\n    __typename\n    id\n    x\n    y\n    frameNum\n    createdAt\n    updatedAt\n  }\n}"
 
   public var input: UpdatePlayerPosInput
   public var condition: ModelPlayerPosConditionInput?
@@ -918,9 +861,6 @@ public final class UpdatePlayerPosMutation: GraphQLMutation {
         GraphQLField("x", type: .nonNull(.scalar(Double.self))),
         GraphQLField("y", type: .nonNull(.scalar(Double.self))),
         GraphQLField("frameNum", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("_version", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("_deleted", type: .scalar(Bool.self)),
-        GraphQLField("_lastChangedAt", type: .nonNull(.scalar(Int.self))),
         GraphQLField("createdAt", type: .nonNull(.scalar(String.self))),
         GraphQLField("updatedAt", type: .nonNull(.scalar(String.self))),
       ]
@@ -931,8 +871,8 @@ public final class UpdatePlayerPosMutation: GraphQLMutation {
         self.snapshot = snapshot
       }
 
-      public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, version: Int, deleted: Bool? = nil, lastChangedAt: Int, createdAt: String, updatedAt: String) {
-        self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "_version": version, "_deleted": deleted, "_lastChangedAt": lastChangedAt, "createdAt": createdAt, "updatedAt": updatedAt])
+      public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, createdAt: String, updatedAt: String) {
+        self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "createdAt": createdAt, "updatedAt": updatedAt])
       }
 
       public var __typename: String {
@@ -980,33 +920,6 @@ public final class UpdatePlayerPosMutation: GraphQLMutation {
         }
       }
 
-      public var version: Int {
-        get {
-          return snapshot["_version"]! as! Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_version")
-        }
-      }
-
-      public var deleted: Bool? {
-        get {
-          return snapshot["_deleted"] as? Bool
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_deleted")
-        }
-      }
-
-      public var lastChangedAt: Int {
-        get {
-          return snapshot["_lastChangedAt"]! as! Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_lastChangedAt")
-        }
-      }
-
       public var createdAt: String {
         get {
           return snapshot["createdAt"]! as! String
@@ -1030,7 +943,7 @@ public final class UpdatePlayerPosMutation: GraphQLMutation {
 
 public final class DeletePlayerPosMutation: GraphQLMutation {
   public static let operationString =
-    "mutation DeletePlayerPos($input: DeletePlayerPosInput!, $condition: ModelPlayerPosConditionInput) {\n  deletePlayerPos(input: $input, condition: $condition) {\n    __typename\n    id\n    x\n    y\n    frameNum\n    _version\n    _deleted\n    _lastChangedAt\n    createdAt\n    updatedAt\n  }\n}"
+    "mutation DeletePlayerPos($input: DeletePlayerPosInput!, $condition: ModelPlayerPosConditionInput) {\n  deletePlayerPos(input: $input, condition: $condition) {\n    __typename\n    id\n    x\n    y\n    frameNum\n    createdAt\n    updatedAt\n  }\n}"
 
   public var input: DeletePlayerPosInput
   public var condition: ModelPlayerPosConditionInput?
@@ -1079,9 +992,6 @@ public final class DeletePlayerPosMutation: GraphQLMutation {
         GraphQLField("x", type: .nonNull(.scalar(Double.self))),
         GraphQLField("y", type: .nonNull(.scalar(Double.self))),
         GraphQLField("frameNum", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("_version", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("_deleted", type: .scalar(Bool.self)),
-        GraphQLField("_lastChangedAt", type: .nonNull(.scalar(Int.self))),
         GraphQLField("createdAt", type: .nonNull(.scalar(String.self))),
         GraphQLField("updatedAt", type: .nonNull(.scalar(String.self))),
       ]
@@ -1092,8 +1002,8 @@ public final class DeletePlayerPosMutation: GraphQLMutation {
         self.snapshot = snapshot
       }
 
-      public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, version: Int, deleted: Bool? = nil, lastChangedAt: Int, createdAt: String, updatedAt: String) {
-        self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "_version": version, "_deleted": deleted, "_lastChangedAt": lastChangedAt, "createdAt": createdAt, "updatedAt": updatedAt])
+      public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, createdAt: String, updatedAt: String) {
+        self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "createdAt": createdAt, "updatedAt": updatedAt])
       }
 
       public var __typename: String {
@@ -1141,33 +1051,6 @@ public final class DeletePlayerPosMutation: GraphQLMutation {
         }
       }
 
-      public var version: Int {
-        get {
-          return snapshot["_version"]! as! Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_version")
-        }
-      }
-
-      public var deleted: Bool? {
-        get {
-          return snapshot["_deleted"] as? Bool
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_deleted")
-        }
-      }
-
-      public var lastChangedAt: Int {
-        get {
-          return snapshot["_lastChangedAt"]! as! Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_lastChangedAt")
-        }
-      }
-
       public var createdAt: String {
         get {
           return snapshot["createdAt"]! as! String
@@ -1189,231 +1072,9 @@ public final class DeletePlayerPosMutation: GraphQLMutation {
   }
 }
 
-public final class SyncPlayerPosQuery: GraphQLQuery {
-  public static let operationString =
-    "query SyncPlayerPos($filter: ModelPlayerPosFilterInput, $limit: Int, $nextToken: String, $lastSync: AWSTimestamp) {\n  syncPlayerPos(filter: $filter, limit: $limit, nextToken: $nextToken, lastSync: $lastSync) {\n    __typename\n    items {\n      __typename\n      id\n      x\n      y\n      frameNum\n      _version\n      _deleted\n      _lastChangedAt\n      createdAt\n      updatedAt\n    }\n    nextToken\n    startedAt\n  }\n}"
-
-  public var filter: ModelPlayerPosFilterInput?
-  public var limit: Int?
-  public var nextToken: String?
-  public var lastSync: Int?
-
-  public init(filter: ModelPlayerPosFilterInput? = nil, limit: Int? = nil, nextToken: String? = nil, lastSync: Int? = nil) {
-    self.filter = filter
-    self.limit = limit
-    self.nextToken = nextToken
-    self.lastSync = lastSync
-  }
-
-  public var variables: GraphQLMap? {
-    return ["filter": filter, "limit": limit, "nextToken": nextToken, "lastSync": lastSync]
-  }
-
-  public struct Data: GraphQLSelectionSet {
-    public static let possibleTypes = ["Query"]
-
-    public static let selections: [GraphQLSelection] = [
-      GraphQLField("syncPlayerPos", arguments: ["filter": GraphQLVariable("filter"), "limit": GraphQLVariable("limit"), "nextToken": GraphQLVariable("nextToken"), "lastSync": GraphQLVariable("lastSync")], type: .object(SyncPlayerPo.selections)),
-    ]
-
-    public var snapshot: Snapshot
-
-    public init(snapshot: Snapshot) {
-      self.snapshot = snapshot
-    }
-
-    public init(syncPlayerPos: SyncPlayerPo? = nil) {
-      self.init(snapshot: ["__typename": "Query", "syncPlayerPos": syncPlayerPos.flatMap { $0.snapshot }])
-    }
-
-    public var syncPlayerPos: SyncPlayerPo? {
-      get {
-        return (snapshot["syncPlayerPos"] as? Snapshot).flatMap { SyncPlayerPo(snapshot: $0) }
-      }
-      set {
-        snapshot.updateValue(newValue?.snapshot, forKey: "syncPlayerPos")
-      }
-    }
-
-    public struct SyncPlayerPo: GraphQLSelectionSet {
-      public static let possibleTypes = ["ModelPlayerPosConnection"]
-
-      public static let selections: [GraphQLSelection] = [
-        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLField("items", type: .list(.object(Item.selections))),
-        GraphQLField("nextToken", type: .scalar(String.self)),
-        GraphQLField("startedAt", type: .scalar(Int.self)),
-      ]
-
-      public var snapshot: Snapshot
-
-      public init(snapshot: Snapshot) {
-        self.snapshot = snapshot
-      }
-
-      public init(items: [Item?]? = nil, nextToken: String? = nil, startedAt: Int? = nil) {
-        self.init(snapshot: ["__typename": "ModelPlayerPosConnection", "items": items.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, "nextToken": nextToken, "startedAt": startedAt])
-      }
-
-      public var __typename: String {
-        get {
-          return snapshot["__typename"]! as! String
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "__typename")
-        }
-      }
-
-      public var items: [Item?]? {
-        get {
-          return (snapshot["items"] as? [Snapshot?]).flatMap { $0.map { $0.flatMap { Item(snapshot: $0) } } }
-        }
-        set {
-          snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "items")
-        }
-      }
-
-      public var nextToken: String? {
-        get {
-          return snapshot["nextToken"] as? String
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "nextToken")
-        }
-      }
-
-      public var startedAt: Int? {
-        get {
-          return snapshot["startedAt"] as? Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "startedAt")
-        }
-      }
-
-      public struct Item: GraphQLSelectionSet {
-        public static let possibleTypes = ["PlayerPos"]
-
-        public static let selections: [GraphQLSelection] = [
-          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
-          GraphQLField("x", type: .nonNull(.scalar(Double.self))),
-          GraphQLField("y", type: .nonNull(.scalar(Double.self))),
-          GraphQLField("frameNum", type: .nonNull(.scalar(Int.self))),
-          GraphQLField("_version", type: .nonNull(.scalar(Int.self))),
-          GraphQLField("_deleted", type: .scalar(Bool.self)),
-          GraphQLField("_lastChangedAt", type: .nonNull(.scalar(Int.self))),
-          GraphQLField("createdAt", type: .nonNull(.scalar(String.self))),
-          GraphQLField("updatedAt", type: .nonNull(.scalar(String.self))),
-        ]
-
-        public var snapshot: Snapshot
-
-        public init(snapshot: Snapshot) {
-          self.snapshot = snapshot
-        }
-
-        public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, version: Int, deleted: Bool? = nil, lastChangedAt: Int, createdAt: String, updatedAt: String) {
-          self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "_version": version, "_deleted": deleted, "_lastChangedAt": lastChangedAt, "createdAt": createdAt, "updatedAt": updatedAt])
-        }
-
-        public var __typename: String {
-          get {
-            return snapshot["__typename"]! as! String
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "__typename")
-          }
-        }
-
-        public var id: GraphQLID {
-          get {
-            return snapshot["id"]! as! GraphQLID
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "id")
-          }
-        }
-
-        public var x: Double {
-          get {
-            return snapshot["x"]! as! Double
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "x")
-          }
-        }
-
-        public var y: Double {
-          get {
-            return snapshot["y"]! as! Double
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "y")
-          }
-        }
-
-        public var frameNum: Int {
-          get {
-            return snapshot["frameNum"]! as! Int
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "frameNum")
-          }
-        }
-
-        public var version: Int {
-          get {
-            return snapshot["_version"]! as! Int
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "_version")
-          }
-        }
-
-        public var deleted: Bool? {
-          get {
-            return snapshot["_deleted"] as? Bool
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "_deleted")
-          }
-        }
-
-        public var lastChangedAt: Int {
-          get {
-            return snapshot["_lastChangedAt"]! as! Int
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "_lastChangedAt")
-          }
-        }
-
-        public var createdAt: String {
-          get {
-            return snapshot["createdAt"]! as! String
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "createdAt")
-          }
-        }
-
-        public var updatedAt: String {
-          get {
-            return snapshot["updatedAt"]! as! String
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "updatedAt")
-          }
-        }
-      }
-    }
-  }
-}
-
 public final class GetPlayerPosQuery: GraphQLQuery {
   public static let operationString =
-    "query GetPlayerPos($id: ID!) {\n  getPlayerPos(id: $id) {\n    __typename\n    id\n    x\n    y\n    frameNum\n    _version\n    _deleted\n    _lastChangedAt\n    createdAt\n    updatedAt\n  }\n}"
+    "query GetPlayerPos($id: ID!) {\n  getPlayerPos(id: $id) {\n    __typename\n    id\n    x\n    y\n    frameNum\n    createdAt\n    updatedAt\n  }\n}"
 
   public var id: GraphQLID
 
@@ -1460,9 +1121,6 @@ public final class GetPlayerPosQuery: GraphQLQuery {
         GraphQLField("x", type: .nonNull(.scalar(Double.self))),
         GraphQLField("y", type: .nonNull(.scalar(Double.self))),
         GraphQLField("frameNum", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("_version", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("_deleted", type: .scalar(Bool.self)),
-        GraphQLField("_lastChangedAt", type: .nonNull(.scalar(Int.self))),
         GraphQLField("createdAt", type: .nonNull(.scalar(String.self))),
         GraphQLField("updatedAt", type: .nonNull(.scalar(String.self))),
       ]
@@ -1473,8 +1131,8 @@ public final class GetPlayerPosQuery: GraphQLQuery {
         self.snapshot = snapshot
       }
 
-      public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, version: Int, deleted: Bool? = nil, lastChangedAt: Int, createdAt: String, updatedAt: String) {
-        self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "_version": version, "_deleted": deleted, "_lastChangedAt": lastChangedAt, "createdAt": createdAt, "updatedAt": updatedAt])
+      public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, createdAt: String, updatedAt: String) {
+        self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "createdAt": createdAt, "updatedAt": updatedAt])
       }
 
       public var __typename: String {
@@ -1522,33 +1180,6 @@ public final class GetPlayerPosQuery: GraphQLQuery {
         }
       }
 
-      public var version: Int {
-        get {
-          return snapshot["_version"]! as! Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_version")
-        }
-      }
-
-      public var deleted: Bool? {
-        get {
-          return snapshot["_deleted"] as? Bool
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_deleted")
-        }
-      }
-
-      public var lastChangedAt: Int {
-        get {
-          return snapshot["_lastChangedAt"]! as! Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_lastChangedAt")
-        }
-      }
-
       public var createdAt: String {
         get {
           return snapshot["createdAt"]! as! String
@@ -1572,7 +1203,7 @@ public final class GetPlayerPosQuery: GraphQLQuery {
 
 public final class ListPlayerPossQuery: GraphQLQuery {
   public static let operationString =
-    "query ListPlayerPoss($filter: ModelPlayerPosFilterInput, $limit: Int, $nextToken: String) {\n  listPlayerPoss(filter: $filter, limit: $limit, nextToken: $nextToken) {\n    __typename\n    items {\n      __typename\n      id\n      x\n      y\n      frameNum\n      _version\n      _deleted\n      _lastChangedAt\n      createdAt\n      updatedAt\n    }\n    nextToken\n    startedAt\n  }\n}"
+    "query ListPlayerPoss($filter: ModelPlayerPosFilterInput, $limit: Int, $nextToken: String) {\n  listPlayerPoss(filter: $filter, limit: $limit, nextToken: $nextToken) {\n    __typename\n    items {\n      __typename\n      id\n      x\n      y\n      frameNum\n      createdAt\n      updatedAt\n    }\n    nextToken\n  }\n}"
 
   public var filter: ModelPlayerPosFilterInput?
   public var limit: Int?
@@ -1621,7 +1252,6 @@ public final class ListPlayerPossQuery: GraphQLQuery {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("items", type: .list(.object(Item.selections))),
         GraphQLField("nextToken", type: .scalar(String.self)),
-        GraphQLField("startedAt", type: .scalar(Int.self)),
       ]
 
       public var snapshot: Snapshot
@@ -1630,8 +1260,8 @@ public final class ListPlayerPossQuery: GraphQLQuery {
         self.snapshot = snapshot
       }
 
-      public init(items: [Item?]? = nil, nextToken: String? = nil, startedAt: Int? = nil) {
-        self.init(snapshot: ["__typename": "ModelPlayerPosConnection", "items": items.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, "nextToken": nextToken, "startedAt": startedAt])
+      public init(items: [Item?]? = nil, nextToken: String? = nil) {
+        self.init(snapshot: ["__typename": "ModelPlayerPosConnection", "items": items.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, "nextToken": nextToken])
       }
 
       public var __typename: String {
@@ -1661,15 +1291,6 @@ public final class ListPlayerPossQuery: GraphQLQuery {
         }
       }
 
-      public var startedAt: Int? {
-        get {
-          return snapshot["startedAt"] as? Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "startedAt")
-        }
-      }
-
       public struct Item: GraphQLSelectionSet {
         public static let possibleTypes = ["PlayerPos"]
 
@@ -1679,9 +1300,6 @@ public final class ListPlayerPossQuery: GraphQLQuery {
           GraphQLField("x", type: .nonNull(.scalar(Double.self))),
           GraphQLField("y", type: .nonNull(.scalar(Double.self))),
           GraphQLField("frameNum", type: .nonNull(.scalar(Int.self))),
-          GraphQLField("_version", type: .nonNull(.scalar(Int.self))),
-          GraphQLField("_deleted", type: .scalar(Bool.self)),
-          GraphQLField("_lastChangedAt", type: .nonNull(.scalar(Int.self))),
           GraphQLField("createdAt", type: .nonNull(.scalar(String.self))),
           GraphQLField("updatedAt", type: .nonNull(.scalar(String.self))),
         ]
@@ -1692,8 +1310,8 @@ public final class ListPlayerPossQuery: GraphQLQuery {
           self.snapshot = snapshot
         }
 
-        public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, version: Int, deleted: Bool? = nil, lastChangedAt: Int, createdAt: String, updatedAt: String) {
-          self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "_version": version, "_deleted": deleted, "_lastChangedAt": lastChangedAt, "createdAt": createdAt, "updatedAt": updatedAt])
+        public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, createdAt: String, updatedAt: String) {
+          self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "createdAt": createdAt, "updatedAt": updatedAt])
         }
 
         public var __typename: String {
@@ -1741,33 +1359,6 @@ public final class ListPlayerPossQuery: GraphQLQuery {
           }
         }
 
-        public var version: Int {
-          get {
-            return snapshot["_version"]! as! Int
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "_version")
-          }
-        }
-
-        public var deleted: Bool? {
-          get {
-            return snapshot["_deleted"] as? Bool
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "_deleted")
-          }
-        }
-
-        public var lastChangedAt: Int {
-          get {
-            return snapshot["_lastChangedAt"]! as! Int
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "_lastChangedAt")
-          }
-        }
-
         public var createdAt: String {
           get {
             return snapshot["createdAt"]! as! String
@@ -1792,7 +1383,7 @@ public final class ListPlayerPossQuery: GraphQLQuery {
 
 public final class OnCreatePlayerPosSubscription: GraphQLSubscription {
   public static let operationString =
-    "subscription OnCreatePlayerPos {\n  onCreatePlayerPos {\n    __typename\n    id\n    x\n    y\n    frameNum\n    _version\n    _deleted\n    _lastChangedAt\n    createdAt\n    updatedAt\n  }\n}"
+    "subscription OnCreatePlayerPos {\n  onCreatePlayerPos {\n    __typename\n    id\n    x\n    y\n    frameNum\n    createdAt\n    updatedAt\n  }\n}"
 
   public init() {
   }
@@ -1832,9 +1423,6 @@ public final class OnCreatePlayerPosSubscription: GraphQLSubscription {
         GraphQLField("x", type: .nonNull(.scalar(Double.self))),
         GraphQLField("y", type: .nonNull(.scalar(Double.self))),
         GraphQLField("frameNum", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("_version", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("_deleted", type: .scalar(Bool.self)),
-        GraphQLField("_lastChangedAt", type: .nonNull(.scalar(Int.self))),
         GraphQLField("createdAt", type: .nonNull(.scalar(String.self))),
         GraphQLField("updatedAt", type: .nonNull(.scalar(String.self))),
       ]
@@ -1845,8 +1433,8 @@ public final class OnCreatePlayerPosSubscription: GraphQLSubscription {
         self.snapshot = snapshot
       }
 
-      public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, version: Int, deleted: Bool? = nil, lastChangedAt: Int, createdAt: String, updatedAt: String) {
-        self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "_version": version, "_deleted": deleted, "_lastChangedAt": lastChangedAt, "createdAt": createdAt, "updatedAt": updatedAt])
+      public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, createdAt: String, updatedAt: String) {
+        self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "createdAt": createdAt, "updatedAt": updatedAt])
       }
 
       public var __typename: String {
@@ -1894,33 +1482,6 @@ public final class OnCreatePlayerPosSubscription: GraphQLSubscription {
         }
       }
 
-      public var version: Int {
-        get {
-          return snapshot["_version"]! as! Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_version")
-        }
-      }
-
-      public var deleted: Bool? {
-        get {
-          return snapshot["_deleted"] as? Bool
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_deleted")
-        }
-      }
-
-      public var lastChangedAt: Int {
-        get {
-          return snapshot["_lastChangedAt"]! as! Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_lastChangedAt")
-        }
-      }
-
       public var createdAt: String {
         get {
           return snapshot["createdAt"]! as! String
@@ -1944,7 +1505,7 @@ public final class OnCreatePlayerPosSubscription: GraphQLSubscription {
 
 public final class OnUpdatePlayerPosSubscription: GraphQLSubscription {
   public static let operationString =
-    "subscription OnUpdatePlayerPos {\n  onUpdatePlayerPos {\n    __typename\n    id\n    x\n    y\n    frameNum\n    _version\n    _deleted\n    _lastChangedAt\n    createdAt\n    updatedAt\n  }\n}"
+    "subscription OnUpdatePlayerPos {\n  onUpdatePlayerPos {\n    __typename\n    id\n    x\n    y\n    frameNum\n    createdAt\n    updatedAt\n  }\n}"
 
   public init() {
   }
@@ -1984,9 +1545,6 @@ public final class OnUpdatePlayerPosSubscription: GraphQLSubscription {
         GraphQLField("x", type: .nonNull(.scalar(Double.self))),
         GraphQLField("y", type: .nonNull(.scalar(Double.self))),
         GraphQLField("frameNum", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("_version", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("_deleted", type: .scalar(Bool.self)),
-        GraphQLField("_lastChangedAt", type: .nonNull(.scalar(Int.self))),
         GraphQLField("createdAt", type: .nonNull(.scalar(String.self))),
         GraphQLField("updatedAt", type: .nonNull(.scalar(String.self))),
       ]
@@ -1997,8 +1555,8 @@ public final class OnUpdatePlayerPosSubscription: GraphQLSubscription {
         self.snapshot = snapshot
       }
 
-      public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, version: Int, deleted: Bool? = nil, lastChangedAt: Int, createdAt: String, updatedAt: String) {
-        self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "_version": version, "_deleted": deleted, "_lastChangedAt": lastChangedAt, "createdAt": createdAt, "updatedAt": updatedAt])
+      public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, createdAt: String, updatedAt: String) {
+        self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "createdAt": createdAt, "updatedAt": updatedAt])
       }
 
       public var __typename: String {
@@ -2046,33 +1604,6 @@ public final class OnUpdatePlayerPosSubscription: GraphQLSubscription {
         }
       }
 
-      public var version: Int {
-        get {
-          return snapshot["_version"]! as! Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_version")
-        }
-      }
-
-      public var deleted: Bool? {
-        get {
-          return snapshot["_deleted"] as? Bool
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_deleted")
-        }
-      }
-
-      public var lastChangedAt: Int {
-        get {
-          return snapshot["_lastChangedAt"]! as! Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_lastChangedAt")
-        }
-      }
-
       public var createdAt: String {
         get {
           return snapshot["createdAt"]! as! String
@@ -2096,7 +1627,7 @@ public final class OnUpdatePlayerPosSubscription: GraphQLSubscription {
 
 public final class OnDeletePlayerPosSubscription: GraphQLSubscription {
   public static let operationString =
-    "subscription OnDeletePlayerPos {\n  onDeletePlayerPos {\n    __typename\n    id\n    x\n    y\n    frameNum\n    _version\n    _deleted\n    _lastChangedAt\n    createdAt\n    updatedAt\n  }\n}"
+    "subscription OnDeletePlayerPos {\n  onDeletePlayerPos {\n    __typename\n    id\n    x\n    y\n    frameNum\n    createdAt\n    updatedAt\n  }\n}"
 
   public init() {
   }
@@ -2136,9 +1667,6 @@ public final class OnDeletePlayerPosSubscription: GraphQLSubscription {
         GraphQLField("x", type: .nonNull(.scalar(Double.self))),
         GraphQLField("y", type: .nonNull(.scalar(Double.self))),
         GraphQLField("frameNum", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("_version", type: .nonNull(.scalar(Int.self))),
-        GraphQLField("_deleted", type: .scalar(Bool.self)),
-        GraphQLField("_lastChangedAt", type: .nonNull(.scalar(Int.self))),
         GraphQLField("createdAt", type: .nonNull(.scalar(String.self))),
         GraphQLField("updatedAt", type: .nonNull(.scalar(String.self))),
       ]
@@ -2149,8 +1677,8 @@ public final class OnDeletePlayerPosSubscription: GraphQLSubscription {
         self.snapshot = snapshot
       }
 
-      public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, version: Int, deleted: Bool? = nil, lastChangedAt: Int, createdAt: String, updatedAt: String) {
-        self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "_version": version, "_deleted": deleted, "_lastChangedAt": lastChangedAt, "createdAt": createdAt, "updatedAt": updatedAt])
+      public init(id: GraphQLID, x: Double, y: Double, frameNum: Int, createdAt: String, updatedAt: String) {
+        self.init(snapshot: ["__typename": "PlayerPos", "id": id, "x": x, "y": y, "frameNum": frameNum, "createdAt": createdAt, "updatedAt": updatedAt])
       }
 
       public var __typename: String {
@@ -2195,33 +1723,6 @@ public final class OnDeletePlayerPosSubscription: GraphQLSubscription {
         }
         set {
           snapshot.updateValue(newValue, forKey: "frameNum")
-        }
-      }
-
-      public var version: Int {
-        get {
-          return snapshot["_version"]! as! Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_version")
-        }
-      }
-
-      public var deleted: Bool? {
-        get {
-          return snapshot["_deleted"] as? Bool
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_deleted")
-        }
-      }
-
-      public var lastChangedAt: Int {
-        get {
-          return snapshot["_lastChangedAt"]! as! Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_lastChangedAt")
         }
       }
 
