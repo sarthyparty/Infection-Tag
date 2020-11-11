@@ -41,9 +41,63 @@ class GameScene: SKScene {
     var testWall:Wall?
     var arrayWall :[Wall] = [Wall]()
     var otherCharacters :[Character] = [Character]()
+    var subscriptionUpdate: GraphQLSubscriptionOperation<PlayerPos>?
+    var subscriptionCreate: GraphQLSubscriptionOperation<PlayerPos>?
     
     
-    
+    func createSubscriptions() {
+        subscriptionCreate = Amplify.API.subscribe(request: .subscription(of: PlayerPos.self, type: .onCreate), valueListener: { (subscriptionEvent) in
+            switch subscriptionEvent {
+            case .connection(let subscriptionConnectionState):
+                print("Subscription connect state is \(subscriptionConnectionState)")
+            case .data(let result):
+                switch result {
+                case .success(let createdPlayer):
+                    print("Successfully got todo from subscription: \(createdPlayer.id)")
+                    let char = Character(isInfected: false, ID: createdPlayer.id)
+                    char.size = CGSize(width:180*self.scaleChar, height:180*self.scaleChar)
+                    self.otherCharacters.append(char)
+                    self.addChild(char)
+                case .failure(let error):
+                    print("Got failed result with \(error.errorDescription)")
+                }
+            }
+        }) { result in
+            switch result {
+            case .success:
+                print("Subscription has been closed successfully")
+            case .failure(let apiError):
+                print("Subscription has terminated with \(apiError)")
+            }
+        }
+        
+        subscriptionUpdate = Amplify.API.subscribe(request: .subscription(of: PlayerPos.self, type: .onUpdate), valueListener: { (subscriptionEvent) in
+            switch subscriptionEvent {
+            case .connection(let subscriptionConnectionState):
+                print("Subscription connect state is \(subscriptionConnectionState)")
+            case .data(let result):
+                switch result {
+                case .success(let updatedPlayer):
+                    for char in self.otherCharacters {
+                        if updatedPlayer.id == char.id {
+                            char.position.x = CGFloat(updatedPlayer.x)
+                            char.position.y = CGFloat(updatedPlayer.y)
+                            break
+                        }
+                    }
+                case .failure(let error):
+                    print("Got failed result with \(error.errorDescription)")
+                }
+            }
+        }) { result in
+            switch result {
+            case .success:
+                print("Subscription has been closed successfully")
+            case .failure(let apiError):
+                print("Subscription has terminated with \(apiError)")
+            }
+        }
+    }
     override func didMove(to view: SKView) {
         let scaleMap=CGFloat(10*scaleChar)
         super.didMove(to: view)
@@ -72,7 +126,6 @@ class GameScene: SKScene {
         
     }
     override func sceneDidLoad() {
-        
         joystick.handleImage = UIImage(named: "shadedDark01.png")
         joystick.baseImage = UIImage(named: "shadedDark07.png")
         joystick.alpha = 0.5
@@ -97,8 +150,6 @@ class GameScene: SKScene {
             w.physicsBody?.contactTestBitMask = PhysicsCategory.character // 4
             w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         }
-
-        
         
         Amplify.API.query(request: .list(PlayerPos.self)) { event in
             switch event {
@@ -123,7 +174,7 @@ class GameScene: SKScene {
                 print("Got failed event with error \(error)")
             }
         }
-        
+
         let player = PlayerPos(x: 400, y: 400, frameNum: 3)
         Amplify.API.mutate(request: .create(player)) { event in
             switch event {
@@ -140,6 +191,12 @@ class GameScene: SKScene {
                 print("Got failed event with error \(error)")
             }
         }
+        
+        
+        createSubscriptions()
+
+        
+        
         
         
         
@@ -301,27 +358,6 @@ class GameScene: SKScene {
             }
         }
         
-
-        for player in otherCharacters {
-            Amplify.API.query(request: .get(PlayerPos.self, byId: player.id)) { event in
-                switch event {
-                case .success(let result):
-                    switch result {
-                    case .success(let queriedPlayer):
-                        guard let queriedPlayer = queriedPlayer else {
-                            print("Could not find player")
-                            return
-                        }
-                        player.position.x = CGFloat(queriedPlayer.x)
-                        player.position.y = CGFloat(queriedPlayer.y)
-                    case .failure(let error):
-                        print("Got failed result with \(error.errorDescription)")
-                    }
-                case .failure(let error):
-                    print("Got failed event with error \(error)")
-                }
-            }
-        }
         
     }
     
