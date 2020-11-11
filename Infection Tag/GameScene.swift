@@ -54,10 +54,12 @@ class GameScene: SKScene {
                 switch result {
                 case .success(let createdPlayer):
                     print("Successfully got todo from subscription: \(createdPlayer.id)")
-                    let char = Character(isInfected: false, ID: createdPlayer.id)
-                    char.size = CGSize(width:180*self.scaleChar, height:180*self.scaleChar)
-                    self.otherCharacters.append(char)
-                    self.addChild(char)
+                    if createdPlayer.id != myID {
+                        let char = Character(isInfected: false, ID: createdPlayer.id)
+                        char.size = CGSize(width:180*self.scaleChar, height:180*self.scaleChar)
+                        self.otherCharacters.append(char)
+                        self.addChild(char)
+                    }
                 case .failure(let error):
                     print("Got failed result with \(error.errorDescription)")
                 }
