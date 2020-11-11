@@ -14,6 +14,7 @@ import Amplify
 import AmplifyPlugins
 
 var myID = ""
+var playInDB: PlayerPos? = nil
 
 struct PhysicsCategory {
   static let none      : UInt32 = 0
@@ -106,7 +107,11 @@ class GameScene: SKScene {
                 case .success(let players):
                     print("Successfully retrieved list of players: \(players.count)")
                     for player in players {
+                        if player.id == myID {
+                            continue
+                        }
                         let char = Character(isInfected: false, ID: player.id)
+                        char.size = CGSize(width:180*self.scaleChar, height:180*self.scaleChar)
                         self.otherCharacters.append(char)
                         self.addChild(char)
                     }
@@ -127,6 +132,7 @@ class GameScene: SKScene {
                 case .success(let player):
                     print("Successfully created player: \(player.id)")
                     myID = player.id
+                    playInDB = player
                 case .failure(let error):
                     print("Got failed result with \(error.errorDescription)")
                 }
@@ -276,40 +282,24 @@ class GameScene: SKScene {
         if(hitcornerbl){
             character.size=(CGSize(width: 100, height: 100))
         }
-//        Amplify.API.query(request: .get(PlayerPos.self, byId: myID)) { event in
-//            switch event {
-//            case .success(let result):
-//                switch result {
-//                case .success(let player):
-//                    guard var player = player else {
-//                        print("Could not find todo")
-//                        return
-//                    }
-//                    print("Successfully retrieved todo: \(player.id)")
-//                    player.x = Double(self.character.position.x)
-//                    player.y = Double(self.character.position.y)
-//                    Amplify.API.mutate(request: .update(player)) { event in
-//                        switch event {
-//                        case .success(let result):
-//                            switch result {
-//                            case .success(let player):
-//                                print("Successfully updated player: \(player.id)")
-//                                myID = player.id
-//                            case .failure(let error):
-//                                print("Got failed result with \(error.errorDescription)")
-//                            }
-//                        case .failure(let error):
-//                            print("Got failed event with error \(error)")
-//                        }
-//                    }
-//                case .failure(let error):
-//                    print("Got failed result with \(error.errorDescription)")
-//                }
-//            case .failure(let error):
-//                print("Got failed event with error \(error)")
-//            }
-//        }
-        
+
+        playInDB?.x = Double(self.character.position.x)
+        playInDB?.y = Double(self.character.position.y)
+        if (playInDB != nil) {
+            Amplify.API.mutate(request: .update(playInDB!)) { event in
+                switch event {
+                case .success(let result):
+                    switch result {
+                    case .success(let player):
+                        myID = player.id
+                    case .failure(let error):
+                        print("Got failed result with \(error.errorDescription)")
+                    }
+                case .failure(let error):
+                    print("Got failed event with error \(error)")
+                }
+            }
+        }
         
 
         for player in otherCharacters {
@@ -322,7 +312,6 @@ class GameScene: SKScene {
                             print("Could not find player")
                             return
                         }
-                        print("Successfully retrieved player: \(player.id)")
                         player.position.x = CGFloat(queriedPlayer.x)
                         player.position.y = CGFloat(queriedPlayer.y)
                     case .failure(let error):
