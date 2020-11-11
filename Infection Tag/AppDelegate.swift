@@ -48,20 +48,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
     func applicationWillTerminate(_ application: UIApplication) {
-        print("HI")
-        print(myID)
-        Amplify.API.query(request: .get(PlayerPos.self, byId: "1DF45C82-BC18-41CC-BD9B-BFD0EB282C3C")) { event in
-            switch event {
-            case .success(let result):
-                print("hello?")
-                switch result {
-                
-                case .success(let player):
-                    guard let player = player else {
-                        print("Could not find player")
-                        return
-                    }
-                    print("Successfully retrieved player: \(player)")
+//        print("HI")
+//        print(myID)
+//        Amplify.API.query(request: .get(PlayerPos.self, byId: "1DF45C82-BC18-41CC-BD9B-BFD0EB282C3C")) { event in
+//            switch event {
+//            case .success(let result):
+//                print("hello?")
+//                switch result {
+//
+//                case .success(let player):
+//                    guard let player = player else {
+//                        print("Could not find player")
+//                        return
+//                    }
+//                    print("Successfully retrieved player: \(player)")
 //                    Amplify.API.mutate(request: .delete(player)) { event in
 //                        switch event {
 //                        case .success(let result):
@@ -75,14 +75,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                            print("Got failed event with error \(error)")
 //                        }
 //                    }
-                case .failure(let error):
-                    print("Got failed result with \(error.errorDescription)")
+//                case .failure(let error):
+//                    print("Got failed result with \(error.errorDescription)")
+//                }
+//            default:
+//                print("Got failed event with error")
+//
+//            }
+//        }
+        Amplify.DataStore.query(PlayerPos.self, byId: myID) {
+            switch $0 {
+            case .success(let result):
+                // result will be a single object of type Post?
+                print("Players: \(String(describing: result))")
+                let player = result
+                Amplify.DataStore.delete(player!) {
+                    switch $0 {
+                    case .success:
+                        print("Player deleted!")
+                    case .failure(let error):
+                        print("Error deleting player - \(error.localizedDescription)")
+                    }
                 }
-            default:
-                print("Got failed event with error")
-            
+            case .failure(let error):
+                print("Error on query() for type PlayerPos - \(error.localizedDescription)")
             }
         }
+        
     }
 
 
