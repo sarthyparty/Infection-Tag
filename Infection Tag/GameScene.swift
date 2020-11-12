@@ -38,6 +38,8 @@ class GameScene: SKScene {
     var hitwalltop = false
     var hitwallbottom = false
     var hitcornerbl = false
+    var xmovement = true
+    var ymovement = true
     var testWall:Wall?
     var arrayWall :[Wall] = [Wall]()
     var otherCharacters :[Character] = [Character]()
@@ -303,8 +305,8 @@ class GameScene: SKScene {
                 }
             }
         } else {
-            var xmovement = true
-            var ymovement = true
+            xmovement = true
+            ymovement = true
             if ((hitwallright&&self.joystick.velocity.x<0)||(hitwallleft&&self.joystick.velocity.x>0)) {
                 xmovement = false
             }
@@ -344,7 +346,7 @@ class GameScene: SKScene {
 
         playInDB?.x = Double(self.character.position.x)
         playInDB?.y = Double(self.character.position.y)
-        if (playInDB != nil) {
+        if (playInDB != nil&&self.ymovement==false&&self.xmovement==false) {
             Amplify.API.mutate(request: .update(playInDB!)) { event in
                 switch event {
                 case .success(let result):
@@ -359,6 +361,7 @@ class GameScene: SKScene {
                 }
             }
         }
+        
         
         
     }
