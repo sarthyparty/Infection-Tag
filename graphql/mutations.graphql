@@ -1,0 +1,40 @@
+# this is an auto generated file. This will be overwritten
+mutation CreatePlayerPos(
+  $input: CreatePlayerPosInput!
+  $condition: ModelPlayerPosConditionInput
+) {
+  createPlayerPos(input: $input, condition: $condition) {
+    id
+    x
+    y
+    frameNum
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdatePlayerPos(
+  $input: UpdatePlayerPosInput!
+  $condition: ModelPlayerPosConditionInput
+) {
+  updatePlayerPos(input: $input, condition: $condition) {
+    id
+    x
+    y
+    frameNum
+    createdAt
+    updatedAt
+  }
+}
+mutation DeletePlayerPos(
+  $input: DeletePlayerPosInput!
+  $condition: ModelPlayerPosConditionInput
+) {
+  deletePlayerPos(input: $input, condition: $condition) {
+    id
+    x
+    y
+    frameNum
+    createdAt
+    updatedAt
+  }
+}

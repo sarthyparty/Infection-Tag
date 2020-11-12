@@ -14,6 +14,7 @@ import Amplify
 import AmplifyPlugins
 
 var myID = ""
+var playInDB: PlayerPos? = nil
 
 struct PhysicsCategory {
   static let none      : UInt32 = 0
@@ -37,12 +38,70 @@ class GameScene: SKScene {
     var hitwalltop = false
     var hitwallbottom = false
     var hitcornerbl = false
+    var xmovement = true
+    var ymovement = true
     var testWall:Wall?
     var arrayWall :[Wall] = [Wall]()
     var otherCharacters :[Character] = [Character]()
+    var subscriptionUpdate: GraphQLSubscriptionOperation<PlayerPos>?
+    var subscriptionCreate: GraphQLSubscriptionOperation<PlayerPos>?
     
     
-    
+    func createSubscriptions() {
+        subscriptionCreate = Amplify.API.subscribe(request: .subscription(of: PlayerPos.self, type: .onCreate), valueListener: { (subscriptionEvent) in
+            switch subscriptionEvent {
+            case .connection(let subscriptionConnectionState):
+                print("Subscription connect state is \(subscriptionConnectionState)")
+            case .data(let result):
+                switch result {
+                case .success(let createdPlayer):
+                    print("Successfully got todo from subscription: \(createdPlayer.id)")
+                    if createdPlayer.id != myID {
+                        let char = Character(isInfected: false, ID: createdPlayer.id)
+                        char.size = CGSize(width:180*self.scaleChar, height:180*self.scaleChar)
+                        self.otherCharacters.append(char)
+                        self.addChild(char)
+                    }
+                case .failure(let error):
+                    print("Got failed result with \(error.errorDescription)")
+                }
+            }
+        }) { result in
+            switch result {
+            case .success:
+                print("Subscription has been closed successfully")
+            case .failure(let apiError):
+                print("Subscription has terminated with \(apiError)")
+            }
+        }
+        
+        subscriptionUpdate = Amplify.API.subscribe(request: .subscription(of: PlayerPos.self, type: .onUpdate), valueListener: { (subscriptionEvent) in
+            switch subscriptionEvent {
+            case .connection(let subscriptionConnectionState):
+                print("Subscription connect state is \(subscriptionConnectionState)")
+            case .data(let result):
+                switch result {
+                case .success(let updatedPlayer):
+                    for char in self.otherCharacters {
+                        if updatedPlayer.id == char.id {
+                            char.position.x = CGFloat(updatedPlayer.x)
+                            char.position.y = CGFloat(updatedPlayer.y)
+                            break
+                        }
+                    }
+                case .failure(let error):
+                    print("Got failed result with \(error.errorDescription)")
+                }
+            }
+        }) { result in
+            switch result {
+            case .success:
+                print("Subscription has been closed successfully")
+            case .failure(let apiError):
+                print("Subscription has terminated with \(apiError)")
+            }
+        }
+    }
     override func didMove(to view: SKView) {
         let scaleMap=CGFloat(10*scaleChar)
         super.didMove(to: view)
@@ -71,7 +130,6 @@ class GameScene: SKScene {
         
     }
     override func sceneDidLoad() {
-        
         joystick.handleImage = UIImage(named: "shadedDark01.png")
         joystick.baseImage = UIImage(named: "shadedDark07.png")
         joystick.alpha = 0.5
@@ -96,28 +154,23 @@ class GameScene: SKScene {
             w.physicsBody?.contactTestBitMask = PhysicsCategory.character // 4
             w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         }
-
-//        Amplify.DataStore.query(PlayerPos.self) { result in
-//            switch(result) {
-//            case .success(let players):
-//                for player in players {
-//                    let character = Character(isInfected: false, ID: player.id)
-//                    character.position = CGPoint(x: CGFloat(player.x), y: CGFloat(player.y))
-//                    otherCharacters.append(character)
-//                }
-//            case .failure(let error):
-//                print("Could not query DataStore: \(error)")
-//            }
-//        }
-//
-        let player = PlayerPos(x:Double(self.character.position.x), y:Double(self.character.position.y), frameNum: Int(self.ind))
-        Amplify.API.mutate(request: .create(player)) { event in
+        
+        Amplify.API.query(request: .list(PlayerPos.self)) { event in
             switch event {
             case .success(let result):
                 switch result {
-                case .success(let player):
-                    print("Successfully created player: \(player.id)")
-                    myID = player.id
+                case .success(let players):
+                    print("Successfully retrieved list of players: \(players.count)")
+                    for player in players {
+                        if player.id == myID {
+                            continue
+                        }
+                        let char = Character(isInfected: false, ID: player.id)
+                        char.size = CGSize(width:180*self.scaleChar, height:180*self.scaleChar)
+                        self.otherCharacters.append(char)
+                        self.addChild(char)
+                    }
+
                 case .failure(let error):
                     print("Got failed result with \(error.errorDescription)")
                 }
@@ -125,20 +178,29 @@ class GameScene: SKScene {
                 print("Got failed event with error \(error)")
             }
         }
-//
-//        Amplify.DataStore.save(player) { result in
-//            switch(result) {
-//                case .success(let savedItem):
-//                    print("Created player: \(savedItem.id)")
-//                    myID = savedItem.id
-//                case .failure(let error):
-//                    print("Could not save item to datastore: \(error)")
-//            }
-//        }
+
+        let player = PlayerPos(x: 400, y: 400, frameNum: 3)
+        Amplify.API.mutate(request: .create(player)) { event in
+            switch event {
+            case .success(let result):
+                switch result {
+                case .success(let player):
+                    print("Successfully created player: \(player.id)")
+                    myID = player.id
+                    playInDB = player
+                case .failure(let error):
+                    print("Got failed result with \(error.errorDescription)")
+                }
+            case .failure(let error):
+                print("Got failed event with error \(error)")
+            }
+        }
         
-//        for char in otherCharacters {
-//            self.addChild(char)
-//        }
+        
+        createSubscriptions()
+
+        
+        
         
         
         
@@ -164,18 +226,42 @@ class GameScene: SKScene {
     }
     func characterLeftWall(wall: Wall, character: SKSpriteNode) {
         if (wall.side == "bottom"){
-            hitwallbottom=false
+          hitwallbottom=false
+          wall.side = " "
+          for w in arrayWall{
+            if(w.side == "bottom"){
+              hitwallbottom=true
+            }
+          }
         }else
         if (wall.side == "left"){
-            hitwallleft=false
+          hitwallleft=false
+          wall.side = " "
+          for w in arrayWall{
+            if(w.side == "left"){
+              hitwallleft=true
+            }
+          }
         }else
         if (wall.side == "right"){
-            hitwallright=false
+          hitwallright=false
+          wall.side = " "
+          for w in arrayWall{
+            if(w.side == "right"){
+              hitwallright=true
+            }
+          }
         }else
         if (wall.side == "top"){
-            hitwalltop=false
+          hitwalltop=false
+          wall.side = " "
+          for w in arrayWall{
+            if(w.side == "top"){
+              hitwalltop=true
+            }
+          }
         }
-    }
+      }
     
     override func update(_ currentTime: TimeInterval) {
         if(boundaryx==false){
@@ -219,8 +305,8 @@ class GameScene: SKScene {
                 }
             }
         } else {
-            var xmovement = true
-            var ymovement = true
+            xmovement = true
+            ymovement = true
             if ((hitwallright&&self.joystick.velocity.x<0)||(hitwallleft&&self.joystick.velocity.x>0)) {
                 xmovement = false
             }
@@ -257,45 +343,31 @@ class GameScene: SKScene {
         if(hitcornerbl){
             character.size=(CGSize(width: 100, height: 100))
         }
+
+        playInDB?.x = Double(self.character.position.x)
+        playInDB?.y = Double(self.character.position.y)
+        if (playInDB != nil&&self.ymovement==false&&self.xmovement==false) {
+            Amplify.API.mutate(request: .update(playInDB!)) { event in
+                switch event {
+                case .success(let result):
+                    switch result {
+                    case .success(let player):
+                        myID = player.id
+                    case .failure(let error):
+                        print("Got failed result with \(error.errorDescription)")
+                    }
+                case .failure(let error):
+                    print("Got failed event with error \(error)")
+                }
+            }
+        }
         
-//        Amplify.API.query(PlayerPos.self,
-//                                where: PlayerPos.keys.id.eq(myID)) { result in
-//            switch(result) {
-//            case .success(let players):
-//                var playerUpdate = players.first
-//                playerUpdate?.x = Double(self.character.position.x)
-//                playerUpdate?.y = Double(self.character.position.x)
-//                playerUpdate?.frameNum = self.ind
-//                Amplify.DataStore.save(playerUpdate!) { result in
-//                    switch(result) {
-//                    case .success(let savedPlayer):
-//                        print("Updated player: \(savedPlayer.id)")
-//                    case .failure(let error):
-//                        print("Could not update data in Datastore: \(error)")
-//                    }
-//                }
-//            case .failure(let error):
-//                print("Could not query DataStore: \(error)")
-//            }
-//        }
-//        for player in otherCharacters {
-//            Amplify.DataStore.query(PlayerPos.self,
-//                                    where: PlayerPos.keys.id.eq(player.id)) { result in
-//                switch(result) {
-//                case .success(let players):
-//                    let playerData = players.first
-//                    player.position.x = CGFloat(playerData!.x)
-//                    player.position.y = CGFloat(playerData!.y)
-//                    player.texture = arraySprites[(playerData!.frameNum-(playerData!.frameNum%4))/4]
-//                case .failure(let error):
-//                    print("Could not query DataStore: \(error)")
-//                }
-//            }
-//        }
+        
+        
     }
     
     func makeWalls(){
-        let imgName="mapFINAL"
+        let imgName="clearPNG"
         let h=map.size.height*3
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:1.44*288), Position: CGPoint(x:1.26*288,y:h-0.47*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.83*288, height:0.13*288), Position: CGPoint(x:0.43*288,y:h-1.28*288)))
@@ -315,7 +387,7 @@ class GameScene: SKScene {
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:0.64*288), Position: CGPoint(x:0.3*288,y:h-6.5*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:0.73*288), Position: CGPoint(x:1.26*288,y:h-6.78*288)))
         //park walls
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:2.43*288, height:0.13*288), Position: CGPoint(x:1.9*288,y:h-5.19*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:2.3*288, height:0.13*288), Position: CGPoint(x:2.03*288,y:h-5.19*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:1.01*288), Position: CGPoint(x:1.9*288,y:h-5.19*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:0.71*288), Position: CGPoint(x:1.9*288,y:h-6.79*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:4.08*288, height:0.13*288), Position: CGPoint(x:4.85*288,y:h-5.19*288)))
@@ -331,7 +403,7 @@ class GameScene: SKScene {
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:0.96*288), Position: CGPoint(x:9.08*288,y:h-3.24*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:2.44*288, height:0.13*288), Position: CGPoint(x:4.2*288,y:h-3.24*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.55*288, height:0.13*288), Position: CGPoint(x:7.55*288,y:h-3.24*288)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:4*288, height:0.13*288), Position: CGPoint(x:2.02*288,y:h-4.55*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:4*288, height:0.13*288), Position: CGPoint(x:1.9*288,y:h-4.55*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.97*288, height:0.13*288), Position: CGPoint(x:6.74*288,y:h-4.55*288)))
 
     }

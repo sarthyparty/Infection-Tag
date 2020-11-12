@@ -19,10 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         let models = AmplifyModels()
         let apiPlugin = AWSAPIPlugin(modelRegistration: models)
-        let dataStorePlugin = AWSDataStorePlugin(modelRegistration: models)
         do {
             try Amplify.add(plugin: apiPlugin)
-            try Amplify.add(plugin: dataStorePlugin)
             try Amplify.configure()
             print("Initialized Amplify");
         } catch {
@@ -48,37 +46,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
     func applicationWillTerminate(_ application: UIApplication) {
-        print("HI")
-        Amplify.API.query(request: .get(PlayerPos.self, byId: myID)) { event in
-            switch event {
-            case .success(let result):
-                switch result {
-                case .success(let player):
-                    guard let player = player else {
-                        print("Could not find player")
-                        return
-                    }
-                    print("Successfully retrieved player: \(player)")
-                    Amplify.API.mutate(request: .delete(player)) { event in
-                        switch event {
-                        case .success(let result):
-                            switch result {
-                            case .success(let player):
-                                print("Successfully deleted player: \(player)")
-                            case .failure(let error):
-                                print("Got failed result with \(error.errorDescription)")
-                            }
-                        case .failure(let error):
-                            print("Got failed event with error \(error)")
-                        }
+//        print("HI")
+//        print(myID)
+        if (playInDB != nil) {
+            print("so it is running...")
+            Amplify.API.mutate(request: .delete(playInDB!)) { event in
+                switch event {
+                case .success(let result):
+                    switch result {
+                    case .success( _):
+                        print("wuaw it worked...")
+                    case .failure(let error):
+                        print("Got failed result with \(error.errorDescription)")
                     }
                 case .failure(let error):
-                    print("Got failed result with \(error.errorDescription)")
+                    print("Got failed event with error \(error)")
                 }
-            case .failure(let error):
-                print("Got failed event with error \(error)")
             }
         }
+        
     }
 
 
