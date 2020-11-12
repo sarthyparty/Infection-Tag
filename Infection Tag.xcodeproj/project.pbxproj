@@ -14,6 +14,8 @@
 		8121C19025599F9400EE1F06 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8121C18F25599F9400EE1F06 /* MainMenu.sks */; };
 		8121C1952559A07900EE1F06 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8121C1942559A07900EE1F06 /* MSButtonNode.swift */; };
 		8121C19A2559A67900EE1F06 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8121C1992559A67900EE1F06 /* MainMenu.swift */; };
+		9DCB7582255DAC4E0006FE96 /* Pods_Infection_Tag.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFBA5CFCA8CCC685B16B6947 /* Pods_Infection_Tag.framework */; };
+		9DCB7583255DAC4E0006FE96 /* Pods_Infection_Tag.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DFBA5CFCA8CCC685B16B6947 /* Pods_Infection_Tag.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B1B8A351C2404C679C786F7C /* PlayerPos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F0A3225B2E4070B9229C7C /* PlayerPos.swift */; };
 		C5ABA07FD6DE42DBBC6C2E00 /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = F846BFFE335D47FE92DF79A7 /* awsconfiguration.json */; };
 		D39D02D22540827D00BDAC1E /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39D02D12540827D00BDAC1E /* Character.swift */; };
@@ -29,7 +31,6 @@
 		D3CF0C702537501500394F79 /* Infection_TagUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CF0C6F2537501500394F79 /* Infection_TagUITests.swift */; };
 		D3CF0C81253753FF00394F79 /* TFAnalogJoystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CF0C80253753FF00394F79 /* TFAnalogJoystick.swift */; };
 		E708F1EC0B5642FF9EF8A235 /* PlayerPos+Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D519E64BD0A46CB94DA82B5 /* PlayerPos+Schema.swift */; };
-		F4F26BB8E4EFBBECCF30F6C5 /* Pods_Infection_Tag.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFBA5CFCA8CCC685B16B6947 /* Pods_Infection_Tag.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,20 @@
 			remoteInfo = "Infection Tag";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9DCB7584255DAC4E0006FE96 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9DCB7583255DAC4E0006FE96 /* Pods_Infection_Tag.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0029E6822D2DDF78DE83674D /* Pods-Infection TagTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Infection TagTests.debug.xcconfig"; path = "Target Support Files/Pods-Infection TagTests/Pods-Infection TagTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -94,7 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4F26BB8E4EFBBECCF30F6C5 /* Pods_Infection_Tag.framework in Frameworks */,
+				9DCB7582255DAC4E0006FE96 /* Pods_Infection_Tag.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,6 +269,7 @@
 				D3CF0C462537500F00394F79 /* Frameworks */,
 				D3CF0C472537500F00394F79 /* Resources */,
 				F5158BCA3DD43AC2A1EC28CB /* [CP] Embed Pods Frameworks */,
+				9DCB7584255DAC4E0006FE96 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
