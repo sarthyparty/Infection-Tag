@@ -12,7 +12,7 @@
 		<key>AWSAuthCore.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>9</integer>
+			<integer>10</integer>
 		</dict>
 		<key>AWSCognitoIdentityProvider.xcscheme</key>
 		<dict>
@@ -22,7 +22,7 @@
 		<key>AWSCognitoIdentityProvider.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>6</integer>
 		</dict>
 		<key>AWSCognitoIdentityProviderASF.xcscheme</key>
 		<dict>
@@ -32,7 +32,7 @@
 		<key>AWSCognitoIdentityProviderASF.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>8</integer>
+			<integer>12</integer>
 		</dict>
 		<key>AWSCore.xcscheme</key>
 		<dict>
@@ -42,7 +42,7 @@
 		<key>AWSCore.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>12</integer>
+			<integer>7</integer>
 		</dict>
 		<key>AWSMobileClient.xcscheme</key>
 		<dict>
@@ -52,7 +52,7 @@
 		<key>AWSMobileClient.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 		<key>AWSPluginsCore.xcscheme</key>
 		<dict>
@@ -62,7 +62,7 @@
 		<key>AWSPluginsCore.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>11</integer>
+			<integer>2</integer>
 		</dict>
 		<key>Amplify.xcscheme</key>
 		<dict>
@@ -82,7 +82,7 @@
 		<key>AmplifyPlugins.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>13</integer>
+			<integer>8</integer>
 		</dict>
 		<key>AppSyncRealTimeClient.xcscheme</key>
 		<dict>
@@ -92,7 +92,7 @@
 		<key>AppSyncRealTimeClient.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>7</integer>
+			<integer>9</integer>
 		</dict>
 		<key>Pods-Infection Tag-Infection TagUITests.xcscheme</key>
 		<dict>
@@ -102,7 +102,7 @@
 		<key>Pods-Infection Tag-Infection TagUITests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>14</integer>
+			<integer>0</integer>
 		</dict>
 		<key>Pods-Infection Tag.xcscheme</key>
 		<dict>
@@ -112,7 +112,7 @@
 		<key>Pods-Infection Tag.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>4</integer>
 		</dict>
 		<key>Pods-Infection TagTests.xcscheme</key>
 		<dict>
@@ -122,7 +122,7 @@
 		<key>Pods-Infection TagTests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>13</integer>
 		</dict>
 		<key>ReachabilitySwift.xcscheme</key>
 		<dict>
@@ -132,12 +132,12 @@
 		<key>ReachabilitySwift.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>10</integer>
+			<integer>14</integer>
 		</dict>
 		<key>SQLite.swift.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>15</integer>
+			<integer>1</integer>
 		</dict>
 		<key>Starscream.xcscheme</key>
 		<dict>
@@ -147,7 +147,7 @@
 		<key>Starscream.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>4</integer>
+			<integer>5</integer>
 		</dict>
 	</dict>
 </dict>
