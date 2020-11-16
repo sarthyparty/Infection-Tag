@@ -112,6 +112,7 @@ class GameScene: SKScene {
         joystick.position = CGPoint(x: screenWidth/6, y: screenHeight/6)
         character.position = CGPoint(x: screenWidth/2, y: screenHeight/2)
         character.size = CGSize(width:180*scaleChar, height:180*scaleChar)
+        character.isInfected=false
         back.size = CGSize(width:map.size.width*scaleMap+screenWidth,height:map.size.height*scaleMap+screenHeight)
         map.size = CGSize(width:map.size.width*scaleMap, height:map.size.height*scaleMap)
         joystick.alpha = 0.5
@@ -315,26 +316,42 @@ class GameScene: SKScene {
             }
             if (xmovement&&ymovement) {
                 self.character.position = CGPoint(x: self.character.position.x+(self.joystick.velocity.x), y: self.character.position.y+(self.joystick.velocity.y))
+                
             } else if (xmovement) {
                 self.character.position = CGPoint(x: self.character.position.x+(self.joystick.velocity.x), y: self.character.position.y)
             } else if (ymovement) {
                 self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(self.joystick.velocity.y))
             } else {
                 self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
+                character.isInfected=true
             }
         }
         camera?.position = character.position
         joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
+        if(character.isInfected){
+            if(joystick.velocity == CGPoint(x: 0,y: 0)){
+                ind=8
+                character.texture = ZwalkSprites[(ind-(ind%4))/4]
+            } else {
+                if ind>31{
+                    ind=0
+                }
+                character.texture = ZwalkSprites[(ind-(ind%4))/4]
+                ind+=1
+                character.zRotation=joystick.angular
+            }
+        }else{
         if(joystick.velocity == CGPoint(x: 0,y: 0)){
             ind=8
-            character.texture = arraySprites[(ind-(ind%4))/4]
+            character.texture = walkSprites[(ind-(ind%4))/4]
         } else {
             if ind>31{
                 ind=0
             }
-            character.texture = arraySprites[(ind-(ind%4))/4]
+            character.texture = walkSprites[(ind-(ind%4))/4]
             ind+=1
             character.zRotation=joystick.angular
+        }
         }
         
         

@@ -7,21 +7,22 @@
 
 import SpriteKit
 
-var arraySprites :[SKTexture] = [SKTexture]()
+var walkSprites :[SKTexture] = [SKTexture]()
+var ZwalkSprites :[SKTexture] = [SKTexture]()
 
 
 class Character: SKSpriteNode {
     
     var id: String
-    
+    var isInfected: Bool
     init(isInfected: Bool, ID: String) {
         self.id = ID
         // Make a texture from an image, a color, and size
-        let texture = arraySprites[2]
+        let texture = walkSprites[2]
 
         let color = UIColor.clear
         let size = texture.size()
-
+        self.isInfected=isInfected
         // Call the designated initializer
         super.init(texture: texture, color: color, size: size)
 
