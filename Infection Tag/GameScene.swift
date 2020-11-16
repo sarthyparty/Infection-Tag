@@ -42,66 +42,66 @@ class GameScene: SKScene {
     var ymovement = true
     var testWall:Wall?
     var arrayWall :[Wall] = [Wall]()
-    var otherCharacters :[Character] = [Character]()
-    var subscriptionUpdate: GraphQLSubscriptionOperation<PlayerPos>?
-    var subscriptionCreate: GraphQLSubscriptionOperation<PlayerPos>?
+//    var otherCharacters :[Character] = [Character]()
+//    var subscriptionUpdate: GraphQLSubscriptionOperation<PlayerPos>?
+//    var subscriptionCreate: GraphQLSubscriptionOperation<PlayerPos>?
     
     
-    func createSubscriptions() {
-        subscriptionCreate = Amplify.API.subscribe(request: .subscription(of: PlayerPos.self, type: .onCreate), valueListener: { (subscriptionEvent) in
-            switch subscriptionEvent {
-            case .connection(let subscriptionConnectionState):
-                print("Subscription connect state is \(subscriptionConnectionState)")
-            case .data(let result):
-                switch result {
-                case .success(let createdPlayer):
-                    print("Successfully got todo from subscription: \(createdPlayer.id)")
-                    if createdPlayer.id != myID {
-                        let char = Character(isInfected: false, ID: createdPlayer.id)
-                        char.size = CGSize(width:180*self.scaleChar, height:180*self.scaleChar)
-                        self.otherCharacters.append(char)
-                        self.addChild(char)
-                    }
-                case .failure(let error):
-                    print("Got failed result with \(error.errorDescription)")
-                }
-            }
-        }) { result in
-            switch result {
-            case .success:
-                print("Subscription has been closed successfully")
-            case .failure(let apiError):
-                print("Subscription has terminated with \(apiError)")
-            }
-        }
-        
-        subscriptionUpdate = Amplify.API.subscribe(request: .subscription(of: PlayerPos.self, type: .onUpdate), valueListener: { (subscriptionEvent) in
-            switch subscriptionEvent {
-            case .connection(let subscriptionConnectionState):
-                print("Subscription connect state is \(subscriptionConnectionState)")
-            case .data(let result):
-                switch result {
-                case .success(let updatedPlayer):
-                    for char in self.otherCharacters {
-                        if updatedPlayer.id == char.id {
-                            char.position.x = CGFloat(updatedPlayer.x)
-                            char.position.y = CGFloat(updatedPlayer.y)
-                            break
-                        }
-                    }
-                case .failure(let error):
-                    print("Got failed result with \(error.errorDescription)")
-                }
-            }
-        }) { result in
-            switch result {
-            case .success:
-                print("Subscription has been closed successfully")
-            case .failure(let apiError):
-                print("Subscription has terminated with \(apiError)")
-            }
-        }
-    }
+//    func createSubscriptions() {
+//        subscriptionCreate = Amplify.API.subscribe(request: .subscription(of: PlayerPos.self, type: .onCreate), valueListener: { (subscriptionEvent) in
+//            switch subscriptionEvent {
+//            case .connection(let subscriptionConnectionState):
+//                print("Subscription connect state is \(subscriptionConnectionState)")
+//            case .data(let result):
+//                switch result {
+//                case .success(let createdPlayer):
+//                    print("Successfully got todo from subscription: \(createdPlayer.id)")
+//                    if createdPlayer.id != myID {
+//                        let char = Character(isInfected: false, ID: createdPlayer.id)
+//                        char.size = CGSize(width:180*self.scaleChar, height:180*self.scaleChar)
+//                        self.otherCharacters.append(char)
+//                        self.addChild(char)
+//                    }
+//                case .failure(let error):
+//                    print("Got failed result with \(error.errorDescription)")
+//                }
+//            }
+//        }) { result in
+//            switch result {
+//            case .success:
+//                print("Subscription has been closed successfully")
+//            case .failure(let apiError):
+//                print("Subscription has terminated with \(apiError)")
+//            }
+//        }
+//
+//        subscriptionUpdate = Amplify.API.subscribe(request: .subscription(of: PlayerPos.self, type: .onUpdate), valueListener: { (subscriptionEvent) in
+//            switch subscriptionEvent {
+//            case .connection(let subscriptionConnectionState):
+//                print("Subscription connect state is \(subscriptionConnectionState)")
+//            case .data(let result):
+//                switch result {
+//                case .success(let updatedPlayer):
+//                    for char in self.otherCharacters {
+//                        if updatedPlayer.id == char.id {
+//                            char.position.x = CGFloat(updatedPlayer.x)
+//                            char.position.y = CGFloat(updatedPlayer.y)
+//                            break
+//                        }
+//                    }
+//                case .failure(let error):
+//                    print("Got failed result with \(error.errorDescription)")
+//                }
+//            }
+//        }) { result in
+//            switch result {
+//            case .success:
+//                print("Subscription has been closed successfully")
+//            case .failure(let apiError):
+//                print("Subscription has terminated with \(apiError)")
+//            }
+//        }
+//    }
     override func didMove(to view: SKView) {
         let scaleMap=CGFloat(10*scaleChar)
         super.didMove(to: view)
@@ -156,49 +156,49 @@ class GameScene: SKScene {
             w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         }
         
-        Amplify.API.query(request: .list(PlayerPos.self)) { event in
-            switch event {
-            case .success(let result):
-                switch result {
-                case .success(let players):
-                    print("Successfully retrieved list of players: \(players.count)")
-                    for player in players {
-                        if player.id == myID {
-                            continue
-                        }
-                        let char = Character(isInfected: false, ID: player.id)
-                        char.size = CGSize(width:180*self.scaleChar, height:180*self.scaleChar)
-                        self.otherCharacters.append(char)
-                        self.addChild(char)
-                    }
+//        Amplify.API.query(request: .list(PlayerPos.self)) { event in
+//            switch event {
+//            case .success(let result):
+//                switch result {
+//                case .success(let players):
+//                    print("Successfully retrieved list of players: \(players.count)")
+//                    for player in players {
+//                        if player.id == myID {
+//                            continue
+//                        }
+//                        let char = Character(isInfected: false, ID: player.id)
+//                        char.size = CGSize(width:180*self.scaleChar, height:180*self.scaleChar)
+//                        self.otherCharacters.append(char)
+//                        self.addChild(char)
+//                    }
+//
+//                case .failure(let error):
+//                    print("Got failed result with \(error.errorDescription)")
+//                }
+//            case .failure(let error):
+//                print("Got failed event with error \(error)")
+//            }
+//        }
 
-                case .failure(let error):
-                    print("Got failed result with \(error.errorDescription)")
-                }
-            case .failure(let error):
-                print("Got failed event with error \(error)")
-            }
-        }
-
-        let player = PlayerPos(x: 400, y: 400, frameNum: 3)
-        Amplify.API.mutate(request: .create(player)) { event in
-            switch event {
-            case .success(let result):
-                switch result {
-                case .success(let player):
-                    print("Successfully created player: \(player.id)")
-                    myID = player.id
-                    playInDB = player
-                case .failure(let error):
-                    print("Got failed result with \(error.errorDescription)")
-                }
-            case .failure(let error):
-                print("Got failed event with error \(error)")
-            }
-        }
-        
-        
-        createSubscriptions()
+//        let player = PlayerPos(x: 400, y: 400, frameNum: 3)
+//        Amplify.API.mutate(request: .create(player)) { event in
+//            switch event {
+//            case .success(let result):
+//                switch result {
+//                case .success(let player):
+//                    print("Successfully created player: \(player.id)")
+//                    myID = player.id
+//                    playInDB = player
+//                case .failure(let error):
+//                    print("Got failed result with \(error.errorDescription)")
+//                }
+//            case .failure(let error):
+//                print("Got failed event with error \(error)")
+//            }
+//        }
+//
+//
+//        createSubscriptions()
 
         
         
@@ -361,23 +361,23 @@ class GameScene: SKScene {
             character.size=(CGSize(width: 100, height: 100))
         }
 
-        playInDB?.x = Double(self.character.position.x)
-        playInDB?.y = Double(self.character.position.y)
-        if (playInDB != nil&&self.ymovement==false&&self.xmovement==false) {
-            Amplify.API.mutate(request: .update(playInDB!)) { event in
-                switch event {
-                case .success(let result):
-                    switch result {
-                    case .success(let player):
-                        myID = player.id
-                    case .failure(let error):
-                        print("Got failed result with \(error.errorDescription)")
-                    }
-                case .failure(let error):
-                    print("Got failed event with error \(error)")
-                }
-            }
-        }
+//        playInDB?.x = Double(self.character.position.x)
+//        playInDB?.y = Double(self.character.position.y)
+//        if (playInDB != nil&&self.ymovement==false&&self.xmovement==false) {
+//            Amplify.API.mutate(request: .update(playInDB!)) { event in
+//                switch event {
+//                case .success(let result):
+//                    switch result {
+//                    case .success(let player):
+//                        myID = player.id
+//                    case .failure(let error):
+//                        print("Got failed result with \(error.errorDescription)")
+//                    }
+//                case .failure(let error):
+//                    print("Got failed event with error \(error)")
+//                }
+//            }
+//        }
         
         
         

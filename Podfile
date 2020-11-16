@@ -7,8 +7,8 @@ target 'Infection Tag' do
 
   pod 'Amplify'
   pod 'AmplifyPlugins/AWSAPIPlugin'
-  pod 'AmplifyPlugins/AWSDataStorePlugin'
-
+  pod 'ParticleSetup'
+  
   target 'Infection TagTests' do
     inherit! :search_paths
     # Pods for testing

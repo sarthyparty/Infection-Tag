@@ -17,15 +17,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        let models = AmplifyModels()
-        let apiPlugin = AWSAPIPlugin(modelRegistration: models)
-        do {
-            try Amplify.add(plugin: apiPlugin)
-            try Amplify.configure()
-            print("Initialized Amplify");
-        } catch {
-            print("Could not initialize Amplify: \(error)")
-        }
+//        let models = AmplifyModels()
+//        let apiPlugin = AWSAPIPlugin(modelRegistration: models)
+//        do {
+//            try Amplify.add(plugin: apiPlugin)
+//            try Amplify.configure()
+//            print("Initialized Amplify");
+//        } catch {
+//            print("Could not initialize Amplify: \(error)")
+//        }
         return true
     }
 
@@ -48,22 +48,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
 //        print("HI")
 //        print(myID)
-        if (playInDB != nil) {
-            print("so it is running...")
-            Amplify.API.mutate(request: .delete(playInDB!)) { event in
-                switch event {
-                case .success(let result):
-                    switch result {
-                    case .success( _):
-                        print("wuaw it worked...")
-                    case .failure(let error):
-                        print("Got failed result with \(error.errorDescription)")
-                    }
-                case .failure(let error):
-                    print("Got failed event with error \(error)")
-                }
-            }
-        }
+//        if (playInDB != nil) {
+//            print("so it is running...")
+//            Amplify.API.mutate(request: .delete(playInDB!)) { event in
+//                switch event {
+//                case .success(let result):
+//                    switch result {
+//                    case .success( _):
+//                        print("wuaw it worked...")
+//                    case .failure(let error):
+//                        print("Got failed result with \(error.errorDescription)")
+//                    }
+//                case .failure(let error):
+//                    print("Got failed event with error \(error)")
+//                }
+//            }
+//        }
         
     }
 
