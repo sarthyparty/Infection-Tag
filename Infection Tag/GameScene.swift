@@ -41,8 +41,10 @@ class GameScene: SKScene {
     var xmovement = true
     var ymovement = true
     var testWall:Wall?
-    var arrayWall :[Wall] = [Wall]()
-//    var otherCharacters :[Character] = [Character]()
+    var arrayWall:[Wall] = [Wall]()
+    var actionButton : UIButton=UIButton(type: UIButton.ButtonType.custom)
+    var speedScale=CGFloat(1)
+    //    var otherCharacters :[Character] = [Character]()
 //    var subscriptionUpdate: GraphQLSubscriptionOperation<PlayerPos>?
 //    var subscriptionCreate: GraphQLSubscriptionOperation<PlayerPos>?
     
@@ -102,6 +104,10 @@ class GameScene: SKScene {
 //            }
 //        }
 //    }
+    @objc func dash() {
+        speedScale=CGFloat(3)
+    }
+    
     override func didMove(to view: SKView) {
         let scaleMap=CGFloat(10*scaleChar)
         super.didMove(to: view)
@@ -113,19 +119,24 @@ class GameScene: SKScene {
         character.position = CGPoint(x: screenWidth/2, y: screenHeight/2)
         character.size = CGSize(width:180*scaleChar, height:180*scaleChar)
         character.isInfected=false
+        actionButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 100, height: 100))
+        actionButton.setImage(UIImage(named: "test_joystick"), for: UIButton.State.normal)
+        actionButton.setImage(UIImage(named: "play button (3)"), for: UIButton.State.highlighted)
+        actionButton.addTarget(self, action: #selector(self.dash), for: UIControl.Event.allTouchEvents)
         back.size = CGSize(width:map.size.width*scaleMap+screenWidth,height:map.size.height*scaleMap+screenHeight)
         map.size = CGSize(width:map.size.width*scaleMap, height:map.size.height*scaleMap)
         joystick.alpha = 0.5
         self.camera = cam
         self.addChild(back)
         self.addChild(cam)
-        //        joystick.name = "joystick"
+                //        joystick.name = "joystick"
         self.addChild(map)
         self.addChild(joystick)
         self.addChild(character)
         for w in arrayWall{
             self.addChild(w)
         }
+        self.view?.addSubview(actionButton)
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
         
@@ -265,11 +276,13 @@ class GameScene: SKScene {
       }
     
     override func update(_ currentTime: TimeInterval) {
+        let velocityx=self.joystick.velocity.x*speedScale
+        let velocityy=self.joystick.velocity.y*speedScale
         if(boundaryx==false){
-        if (self.character.position.x + (self.joystick.velocity.x)<character.size.width/2){
+        if (self.character.position.x + (velocityx)<character.size.width/2){
             self.character.position.x=character.size.width/2
             boundaryx=true
-        } else if (self.character.position.x + (self.joystick.velocity.x)>map.size.width-character.size.width/2){
+        } else if (self.character.position.x + (velocityx)>map.size.width-character.size.width/2){
             self.character.position.x=map.size.width-character.size.width/2
             boundaryx=true
         } else {
@@ -277,10 +290,10 @@ class GameScene: SKScene {
         }
         }
         if(boundaryy==false){
-        if (self.character.position.y + (self.joystick.velocity.y)<character.size.height/2){
+        if (self.character.position.y + (velocityy)<character.size.height/2){
             self.character.position.y=character.size.height/2
             boundaryy=true
-        } else if (self.character.position.y + (self.joystick.velocity.y)>map.size.height-character.size.height/2){
+        } else if (self.character.position.y + (velocityy)>map.size.height-character.size.height/2){
             self.character.position.y=map.size.height-character.size.height/2
             boundaryy=true
         } else {
@@ -292,35 +305,35 @@ class GameScene: SKScene {
                 self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
             }
             else if boundaryx{
-                if ((hitwalltop&&self.joystick.velocity.y<0)||(hitwallbottom&&self.joystick.velocity.y>0)) {
+                if ((hitwalltop&&velocityy<0)||(hitwallbottom&&velocityy>0)) {
                     self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
                 } else {
-                    self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(self.joystick.velocity.y))
+                    self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(velocityy))
                 }
             }
             else if boundaryy{
-                if ((hitwallright&&self.joystick.velocity.x<0)||(hitwallleft&&self.joystick.velocity.x>0)) {
+                if ((hitwallright&&velocityx<0)||(hitwallleft&&velocityx>0)) {
                     self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
                 } else {
-                    self.character.position = CGPoint(x: self.character.position.x+(self.joystick.velocity.x), y: self.character.position.y)
+                    self.character.position = CGPoint(x: self.character.position.x+(velocityx), y: self.character.position.y)
                 }
             }
         } else {
             xmovement = true
             ymovement = true
-            if ((hitwallright&&self.joystick.velocity.x<0)||(hitwallleft&&self.joystick.velocity.x>0)) {
+            if ((hitwallright&&velocityx<0)||(hitwallleft&&velocityx>0)) {
                 xmovement = false
             }
-            if ((hitwalltop&&self.joystick.velocity.y<0)||(hitwallbottom&&self.joystick.velocity.y>0)) {
+            if ((hitwalltop&&velocityy<0)||(hitwallbottom&&velocityy>0)) {
                 ymovement = false
             }
             if (xmovement&&ymovement) {
-                self.character.position = CGPoint(x: self.character.position.x+(self.joystick.velocity.x), y: self.character.position.y+(self.joystick.velocity.y))
+                self.character.position = CGPoint(x: self.character.position.x+(velocityx), y: self.character.position.y+(velocityy))
                 
             } else if (xmovement) {
-                self.character.position = CGPoint(x: self.character.position.x+(self.joystick.velocity.x), y: self.character.position.y)
+                self.character.position = CGPoint(x: self.character.position.x+(velocityx), y: self.character.position.y)
             } else if (ymovement) {
-                self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(self.joystick.velocity.y))
+                self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(velocityy))
             } else {
                 self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
                 character.isInfected=true
