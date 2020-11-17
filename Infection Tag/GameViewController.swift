@@ -29,7 +29,8 @@ class GameViewController: UIViewController {
         ZwalkSprites.append(SKTexture(imageNamed: "Zwalk6"))
         ZwalkSprites.append(SKTexture(imageNamed: "Zwalk7"))
         ZwalkSprites.append(SKTexture(imageNamed: "Zwalk8"))
-        let scene = GameScene(size: view.frame.size)
+        let scene = MainMenu(fileNamed: "MainMenu")
+        scene.scaleMode = .aspectfill
         let skView = view as! SKView
         skView.presentScene(scene)
     }
