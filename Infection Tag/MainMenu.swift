@@ -1,8 +1,8 @@
-
-  MainMenu.swift
-  Infection Tag
-
-  Created by 64013840 on 11/9/20.
+//
+//  MainMenu.swift
+//  Infection Tag
+//
+//  Created by 64013840 on 11/9/20.
 
 
 import SpriteKit
@@ -13,15 +13,17 @@ class MainMenu: SKScene {
 var buttonPlay: MSButtonNode!
 
     override func didMove(to view: SKView) {
-        buttonPlay.selectedHandler = self.loadGame()
-        buttonPlay = self.childNode(withName: "buttonPlay") as! MSButtonNode
+        buttonPlay.selectedHandler = {
+            self.loadGame()
+        }
+        buttonPlay = (self.childNode(withName: "buttonPlay") as! MSButtonNode)
         
 
     }
     
     func loadGame() {
         /* 1) Grab reference to our SpriteKit view */
-        guard let skView = self.view as SKView! else {
+        guard let skView = self.view as SKView? else {
             print("Could not get Skview")
             return
         }
