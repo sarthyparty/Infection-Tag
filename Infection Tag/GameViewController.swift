@@ -8,8 +8,8 @@
 import UIKit
 import SpriteKit
 import GameplayKit
-import Amplify
-import AmplifyPlugins
+//import Amplify
+//import AmplifyPlugins
 
 class GameViewController: UIViewController {
     override func viewDidLoad() {

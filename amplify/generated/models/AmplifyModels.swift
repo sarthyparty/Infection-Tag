@@ -1,5 +1,5 @@
 // swiftlint:disable all
-import Amplify
+//import Amplify
 import Foundation
 
 // Contains the set of classes that conforms to the `Model` protocol. 

@@ -10,11 +10,11 @@ let screenHeight = screenSize.height
 
 import SpriteKit
 import GameplayKit
-import Amplify
-import AmplifyPlugins
+//import Amplify
+//import AmplifyPlugins
 
 var myID = ""
-var playInDB: PlayerPos? = nil
+//var playInDB: PlayerPos? = nil
 
 struct PhysicsCategory {
   static let none      : UInt32 = 0

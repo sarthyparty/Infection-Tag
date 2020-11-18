@@ -6,8 +6,8 @@
 //
 
 import UIKit
-import Amplify
-import AmplifyPlugins
+//import Amplify
+//import AmplifyPlugins
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
