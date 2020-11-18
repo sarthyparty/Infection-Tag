@@ -44,6 +44,8 @@ class GameScene: SKScene {
     var arrayWall:[Wall] = [Wall]()
     var actionButton : UIButton=UIButton(type: UIButton.ButtonType.custom)
     var speedScale=CGFloat(1)
+    var counter=0
+    var startCounter=false
     //    var otherCharacters :[Character] = [Character]()
 //    var subscriptionUpdate: GraphQLSubscriptionOperation<PlayerPos>?
 //    var subscriptionCreate: GraphQLSubscriptionOperation<PlayerPos>?
@@ -106,6 +108,9 @@ class GameScene: SKScene {
 //    }
     @objc func dash() {
         speedScale=CGFloat(3)
+        startCounter=true
+//        actionButton.isEnabled=false
+        actionButton.removeFromSuperview()
     }
     
     override func didMove(to view: SKView) {
@@ -122,6 +127,7 @@ class GameScene: SKScene {
         actionButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 100, height: 100))
         actionButton.setImage(UIImage(named: "test_joystick"), for: UIButton.State.normal)
         actionButton.setImage(UIImage(named: "play button (3)"), for: UIButton.State.highlighted)
+        actionButton.setImage(UIImage(named: "walk1"), for: UIButton.State.disabled)
         actionButton.addTarget(self, action: #selector(self.dash), for: UIControl.Event.allTouchEvents)
         back.size = CGSize(width:map.size.width*scaleMap+screenWidth,height:map.size.height*scaleMap+screenHeight)
         map.size = CGSize(width:map.size.width*scaleMap, height:map.size.height*scaleMap)
@@ -136,7 +142,6 @@ class GameScene: SKScene {
         for w in arrayWall{
             self.addChild(w)
         }
-        self.view?.addSubview(actionButton)
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
         
@@ -281,6 +286,7 @@ class GameScene: SKScene {
         if(boundaryx==false){
         if (self.character.position.x + (velocityx)<character.size.width/2){
             self.character.position.x=character.size.width/2
+            self.view?.addSubview(actionButton)
             boundaryx=true
         } else if (self.character.position.x + (velocityx)>map.size.width-character.size.width/2){
             self.character.position.x=map.size.width-character.size.width/2
@@ -336,7 +342,10 @@ class GameScene: SKScene {
                 self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(velocityy))
             } else {
                 self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
-                character.isInfected=true
+                if(character.isInfected==false){
+                    character.isInfected=true
+                    self.view?.addSubview(actionButton)
+                }
             }
         }
         camera?.position = character.position
@@ -370,10 +379,15 @@ class GameScene: SKScene {
         
         boundaryx = false
         boundaryy = false
-        if(hitcornerbl){
-            character.size=(CGSize(width: 100, height: 100))
+        if(startCounter==true){
+            counter+=1
+            if(counter==15){
+                speedScale=CGFloat(1)
+                counter=0
+                startCounter=false
+//                self.view?.addSubview(actionButton)
+            }
         }
-
 //        playInDB?.x = Double(self.character.position.x)
 //        playInDB?.y = Double(self.character.position.y)
 //        if (playInDB != nil&&self.ymovement==false&&self.xmovement==false) {
