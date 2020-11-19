@@ -12,9 +12,9 @@ import GameKit
 //import Amplify
 //import AmplifyPlugins
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController/*, GKGameCenterControllerDelegate*/ {
     override func viewDidLoad() {
-        authenticateUser()
+//        authenticateUser()
         walkSprites.append(SKTexture(imageNamed: "walk1"))
         walkSprites.append(SKTexture(imageNamed: "walk2"))
         walkSprites.append(SKTexture(imageNamed: "walk3"))
@@ -36,16 +36,32 @@ class GameViewController: UIViewController {
         let skView = view as! SKView
         skView.presentScene(scene)
     }
-    
-    func authenticateUser() {
-      let player = GKLocalPlayer.local
-      player.authenticateHandler = { vc, error in
-        guard error == nil else {
-          print(error?.localizedDescription ?? "")
-          return
-        }
-        self.present(vc!, animated: true, completion: nil)
-      }
+//    func authenticateUser() {
+//      let player = GKLocalPlayer.local
+//      player.authenticateHandler = { vc, error in
+//        guard error == nil else {
+//          print(error?.localizedDescription ?? "")
+//          return
+//        }
+//        self.present(vc!, animated: true, completion: nil)
+//      }
+//    }
+//    @IBAction func leaderboard(_ sender: Any) {
+//      let vc = GKGameCenterViewController()
+//      vc.gameCenterDelegate = self
+//      vc.viewState = .leaderboards
+//      vc.leaderboardIdentifier = "leaderboardID"
+//      present(vc, animated: true, completion: nil)
+//    }
+//    @IBAction func achievements(_ sender: Any) {
+//      let vc = GKGameCenterViewController()
+//      vc.gameCenterDelegate = self
+//      vc.viewState = .achievements
+//      present(vc, animated: true, completion: nil)
+//    }
+//    }
+//    extension GameViewController{
+//    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+//      gameCenterViewController.dismiss(animated: true, completion: nil)
+//    }
     }
-    
-}
