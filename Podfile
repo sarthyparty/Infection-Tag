@@ -5,6 +5,9 @@ target 'Infection Tag' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
+  pod 'Amplify'
+  pod 'AmplifyPlugins/AWSAPIPlugin'
+  pod 'AmplifyPlugins/AWSCognitoAuthPlugin'
   target 'Infection TagTests' do
     inherit! :search_paths
     # Pods for testing

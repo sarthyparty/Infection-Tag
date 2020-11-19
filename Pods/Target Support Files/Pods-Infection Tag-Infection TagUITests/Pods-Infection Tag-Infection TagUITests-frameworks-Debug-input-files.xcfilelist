@@ -1,6 +1,4 @@
 ${PODS_ROOT}/Target Support Files/Pods-Infection Tag-Infection TagUITests/Pods-Infection Tag-Infection TagUITests-frameworks.sh
-${BUILT_PRODUCTS_DIR}/1PasswordExtension/OnePasswordExtension.framework
-${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework
 ${BUILT_PRODUCTS_DIR}/AWSAuthCore/AWSAuthCore.framework
 ${BUILT_PRODUCTS_DIR}/AWSCognitoIdentityProvider/AWSCognitoIdentityProvider.framework
 ${BUILT_PRODUCTS_DIR}/AWSCognitoIdentityProviderASF/AWSCognitoIdentityProviderASF.framework
@@ -10,7 +8,5 @@ ${BUILT_PRODUCTS_DIR}/AWSPluginsCore/AWSPluginsCore.framework
 ${BUILT_PRODUCTS_DIR}/Amplify/Amplify.framework
 ${BUILT_PRODUCTS_DIR}/AmplifyPlugins/AmplifyPlugins.framework
 ${BUILT_PRODUCTS_DIR}/AppSyncRealTimeClient/AppSyncRealTimeClient.framework
-${BUILT_PRODUCTS_DIR}/Particle-SDK/Particle_SDK.framework
-${BUILT_PRODUCTS_DIR}/ParticleSetup/ParticleSetup.framework
 ${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework
 ${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework
