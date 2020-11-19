@@ -29,6 +29,7 @@ class GameScene: SKScene {
     var cam = SKCameraNode()
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
+    var testInfected = Character(isInfected: true, ID: "Player")
     var scaleChar=CGFloat(0.3)
     var ind=0
     var boundaryx=false
@@ -45,6 +46,8 @@ class GameScene: SKScene {
     var actionButton : UIButton=UIButton(type: UIButton.ButtonType.custom)
     var speedScale=CGFloat(1)
     var counter=0
+    var timerActionButton=0
+    var startTimer=false
     var startCounter=false
     //    var otherCharacters :[Character] = [Character]()
 //    var subscriptionUpdate: GraphQLSubscriptionOperation<PlayerPos>?
@@ -76,9 +79,6 @@ class GameScene: SKScene {
 //                print("Subscription has been closed successfully")
 //            case .failure(let apiError):
 //                print("Subscription has terminated with \(apiError)")
-//            }
-//        }
-//
 //        subscriptionUpdate = Amplify.API.subscribe(request: .subscription(of: PlayerPos.self, type: .onUpdate), valueListener: { (subscriptionEvent) in
 //            switch subscriptionEvent {
 //            case .connection(let subscriptionConnectionState):
@@ -109,7 +109,7 @@ class GameScene: SKScene {
     @objc func dash() {
         speedScale=CGFloat(3)
         startCounter=true
-//        actionButton.isEnabled=false
+        startTimer=true
         actionButton.removeFromSuperview()
     }
     
@@ -121,9 +121,13 @@ class GameScene: SKScene {
         back.anchorPoint=CGPoint(x:0,y:0)
         back.position=CGPoint(x:-screenWidth/2,y:-screenHeight/2)
         joystick.position = CGPoint(x: screenWidth/6, y: screenHeight/6)
-        character.position = CGPoint(x: screenWidth/2, y: screenHeight/2)
+        character.position = CGPoint(x: 500, y: 300)
         character.size = CGSize(width:180*scaleChar, height:180*scaleChar)
+        testInfected.position=CGPoint(x: 300, y: 500)
+        testInfected.size = CGSize(width:180*scaleChar, height:180*scaleChar)
         character.isInfected=false
+        testInfected.isInfected=true
+        testInfected.texture = ZwalkSprites[2]
         actionButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 100, height: 100))
         actionButton.setImage(UIImage(named: "test_joystick"), for: UIButton.State.normal)
         actionButton.setImage(UIImage(named: "play button (3)"), for: UIButton.State.highlighted)
@@ -139,6 +143,7 @@ class GameScene: SKScene {
         self.addChild(map)
         self.addChild(joystick)
         self.addChild(character)
+        self.addChild(testInfected)
         for w in arrayWall{
             self.addChild(w)
         }
@@ -171,6 +176,11 @@ class GameScene: SKScene {
             w.physicsBody?.contactTestBitMask = PhysicsCategory.character // 4
             w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         }
+        testInfected.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: character.position) // 1
+        testInfected.physicsBody?.isDynamic = true // 2
+        testInfected.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
+        testInfected.physicsBody?.contactTestBitMask = PhysicsCategory.character// 4
+        testInfected.physicsBody?.collisionBitMask = PhysicsCategory.none
         
 //        Amplify.API.query(request: .list(PlayerPos.self)) { event in
 //            switch event {
@@ -222,7 +232,15 @@ class GameScene: SKScene {
         
         
     }
-    
+    func characterHitCharacter(character1: Character, character2:Character){
+        if((character1.isInfected)&&(!character2.isInfected)){
+            character2.isInfected=true
+            self.view?.addSubview(actionButton)
+        } else if((character2.isInfected)&&(!character1.isInfected)){
+            character1.isInfected=true
+            self.view?.addSubview(actionButton)
+        }
+    }
     func characterHitWall(wall: Wall, character: SKSpriteNode) {
         if (self.character.position.y+27<=wall.position.y-wall.size.height/2+15){
             hitwallbottom=true
@@ -286,7 +304,6 @@ class GameScene: SKScene {
         if(boundaryx==false){
         if (self.character.position.x + (velocityx)<character.size.width/2){
             self.character.position.x=character.size.width/2
-            self.view?.addSubview(actionButton)
             boundaryx=true
         } else if (self.character.position.x + (velocityx)>map.size.width-character.size.width/2){
             self.character.position.x=map.size.width-character.size.width/2
@@ -342,10 +359,6 @@ class GameScene: SKScene {
                 self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(velocityy))
             } else {
                 self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
-                if(character.isInfected==false){
-                    character.isInfected=true
-                    self.view?.addSubview(actionButton)
-                }
             }
         }
         camera?.position = character.position
@@ -385,7 +398,15 @@ class GameScene: SKScene {
                 speedScale=CGFloat(1)
                 counter=0
                 startCounter=false
-//                self.view?.addSubview(actionButton)
+            }
+        }
+        if(startTimer==true){
+            timerActionButton+=1
+            if(timerActionButton==165){
+                speedScale=CGFloat(1)
+                timerActionButton=0
+                startTimer=false
+                self.view?.addSubview(actionButton)
             }
         }
 //        playInDB?.x = Double(self.character.position.x)
@@ -468,6 +489,12 @@ extension GameScene: SKPhysicsContactDelegate {
       }
      
       // 2
+        if((firstBody.categoryBitMask==secondBody.categoryBitMask)&&(firstBody.categoryBitMask==PhysicsCategory.character)){
+            if let character1 = firstBody.node as? Character,
+              let character2 = secondBody.node as? Character {
+                characterHitCharacter(character1: character1, character2: character2)
+            }
+        }
       if ((firstBody.categoryBitMask & PhysicsCategory.character != 0) &&
           (secondBody.categoryBitMask & PhysicsCategory.wall != 0)) {
         if let character = firstBody.node as? SKSpriteNode,
