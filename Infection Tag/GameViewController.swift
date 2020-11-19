@@ -8,11 +8,13 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import GameKit
 //import Amplify
 //import AmplifyPlugins
 
 class GameViewController: UIViewController {
     override func viewDidLoad() {
+        authenticateUser()
         walkSprites.append(SKTexture(imageNamed: "walk1"))
         walkSprites.append(SKTexture(imageNamed: "walk2"))
         walkSprites.append(SKTexture(imageNamed: "walk3"))
@@ -33,6 +35,17 @@ class GameViewController: UIViewController {
 //        scene.scaleMode = .aspectfill
         let skView = view as! SKView
         skView.presentScene(scene)
+    }
+    
+    func authenticateUser() {
+      let player = GKLocalPlayer.local
+      player.authenticateHandler = { vc, error in
+        guard error == nil else {
+          print(error?.localizedDescription ?? "")
+          return
+        }
+        self.present(vc!, animated: true, completion: nil)
+      }
     }
     
 }
