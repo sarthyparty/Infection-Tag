@@ -39,8 +39,8 @@ var buttonPlay: MSButtonNode!
             return
         }
         
-        skView.showsPhysics = true
-        skView.showsDrawCount = true
+//        skView.showsPhysics = true
+//        skView.showsDrawCount = true
 
         /* 4) Start game scene */
         skView.presentScene(scene)
