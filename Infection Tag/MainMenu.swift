@@ -12,11 +12,16 @@ class MainMenu: SKScene {
 
 var buttonPlay: MSButtonNode!
 
+    private var gameCenterHelper: GameCenterHelper!
+
     override func didMove(to view: SKView) {
         buttonPlay = (self.childNode(withName: "buttonPlay") as! MSButtonNode)
         buttonPlay.selectedHandler = {
             self.loadGame()
         }
+        gameCenterHelper = GameCenterHelper()
+//        gameCenterHelper.delegate = self
+        gameCenterHelper.authenticatePlayer()
         
 
     }
@@ -41,4 +46,5 @@ var buttonPlay: MSButtonNode!
         skView.presentScene(scene)
     }
 }
+
 
