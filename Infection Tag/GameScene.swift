@@ -43,7 +43,7 @@ class GameScene: SKScene {
     var ymovement = true
     var testWall:Wall?
     var arrayWall:[Wall] = [Wall]()
-    var actionButton : UIButton=UIButton(type: UIButton.ButtonType.custom)
+    var dashButton : UIButton=UIButton(type: UIButton.ButtonType.custom)
     var speedScale=CGFloat(1)
     var counter=0
     var timerActionButton=0
@@ -110,7 +110,7 @@ class GameScene: SKScene {
         speedScale=CGFloat(3)
         startCounter=true
         startTimer=true
-        actionButton.removeFromSuperview()
+        dashButton.removeFromSuperview()
     }
     
     override func didMove(to view: SKView) {
@@ -128,11 +128,9 @@ class GameScene: SKScene {
         character.isInfected=false
         testInfected.isInfected=true
         testInfected.texture = ZwalkSprites[2]
-        actionButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 100, height: 100))
-        actionButton.setImage(UIImage(named: "test_joystick"), for: UIButton.State.normal)
-        actionButton.setImage(UIImage(named: "play button (3)"), for: UIButton.State.highlighted)
-        actionButton.setImage(UIImage(named: "walk1"), for: UIButton.State.disabled)
-        actionButton.addTarget(self, action: #selector(self.dash), for: UIControl.Event.allTouchEvents)
+        dashButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 100, height: 100))
+        dashButton.setImage(UIImage(named: "dash"), for: UIButton.State.normal)
+        dashButton.addTarget(self, action: #selector(self.dash), for: UIControl.Event.allTouchEvents)
         back.size = CGSize(width:map.size.width*scaleMap+screenWidth,height:map.size.height*scaleMap+screenHeight)
         map.size = CGSize(width:map.size.width*scaleMap, height:map.size.height*scaleMap)
         joystick.alpha = 0.5
@@ -235,10 +233,10 @@ class GameScene: SKScene {
     func characterHitCharacter(character1: Character, character2:Character){
         if((character1.isInfected)&&(!character2.isInfected)){
             character2.isInfected=true
-            self.view?.addSubview(actionButton)
+            self.view?.addSubview(dashButton)
         } else if((character2.isInfected)&&(!character1.isInfected)){
             character1.isInfected=true
-            self.view?.addSubview(actionButton)
+            self.view?.addSubview(dashButton)
         }
     }
     func characterHitWall(wall: Wall, character: SKSpriteNode) {
@@ -406,7 +404,7 @@ class GameScene: SKScene {
                 speedScale=CGFloat(1)
                 timerActionButton=0
                 startTimer=false
-                self.view?.addSubview(actionButton)
+                self.view?.addSubview(dashButton)
             }
         }
 //        playInDB?.x = Double(self.character.position.x)
