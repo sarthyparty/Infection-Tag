@@ -13,7 +13,18 @@ import GameKit
 //import AmplifyPlugins
 
 class GameViewController: UIViewController/*, GKGameCenterControllerDelegate*/ {
+    
+    var match: GKMatch?
+    
+    private var gameModel: GameModel! {
+            didSet {
+                updateUI()
+            }
+    }
+
     override func viewDidLoad() {
+        match?.delegate = self
+        gameModel = GameModel()
         walkSprites.append(SKTexture(imageNamed: "walk1"))
         walkSprites.append(SKTexture(imageNamed: "walk2"))
         walkSprites.append(SKTexture(imageNamed: "walk3"))
@@ -36,5 +47,16 @@ class GameViewController: UIViewController/*, GKGameCenterControllerDelegate*/ {
         skView.presentScene(scene)
     }
     
+    func updateUI() {
+        
+    }
+    
 
+}
+
+extension GameViewController: GKMatchDelegate {
+    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
+        guard let model = GameModel.decode(data: data) else { return }
+        gameModel = model
+    }
 }

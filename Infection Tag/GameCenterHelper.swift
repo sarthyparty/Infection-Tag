@@ -19,7 +19,7 @@ final class GameCenterHelper: NSObject, GKLocalPlayerListener {
     weak var delegate: GameCenterHelperDelegate?
     
     private let minPlayers: Int = 2
-    private let maxPlayers: Int = 3
+    private let maxPlayers: Int = 10
     private let inviteMessage = "Write your default invite message!"
     
     private var currentVC: GKMatchmakerViewController?
