@@ -33,6 +33,9 @@ var buttonPlay: MSButtonNode!
             print("Could not make GameScene, check the name is spelled correctly")
             return
         }
+        
+        skView.showsPhysics = true
+        skView.showsDrawCount = true
 
         /* 4) Start game scene */
         skView.presentScene(scene)

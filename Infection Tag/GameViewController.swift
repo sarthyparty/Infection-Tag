@@ -15,6 +15,8 @@ import GameKit
 class GameViewController: UIViewController/*, GKGameCenterControllerDelegate*/ {
     
     var match: GKMatch?
+    private var gameCenterHelper: GameCenterHelper!
+
     
     private var gameModel: GameModel! {
             didSet {
