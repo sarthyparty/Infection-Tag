@@ -13,32 +13,18 @@ import GameKit
 //import AmplifyPlugins
 
 class GameViewController: UIViewController/*, GKGameCenterControllerDelegate*/ {
+    
+    var match: GKMatch?
+    
+    private var gameModel: GameModel! {
+            didSet {
+                updateUI()
+            }
+    }
+
     override func viewDidLoad() {
-        GKLocalPlayer.local.authenticateHandler = { viewController, error in
-            if viewController != nil {
-                // Present the view controller so the player can sign in
-                return
-            }
-            if error != nil {
-                // Player could not be authenticated
-                // Disable Game Center in the game
-                return
-            }
-            
-            // Player was successfully authenticated
-            // Check if there are any player restrictions before starting the game
-                    
-            if GKLocalPlayer.local.isUnderage {
-                // Hide explicit game content
-            }
-
-            if GKLocalPlayer.local.isMultiplayerGamingRestricted {
-                // Disable multiplayer game features
-            }
-
-            
-            // Perform any other configurations as needed (for example, access point)
-        }
+        match?.delegate = self
+        gameModel = GameModel()
         walkSprites.append(SKTexture(imageNamed: "walk1"))
         walkSprites.append(SKTexture(imageNamed: "walk2"))
         walkSprites.append(SKTexture(imageNamed: "walk3"))
@@ -60,5 +46,17 @@ class GameViewController: UIViewController/*, GKGameCenterControllerDelegate*/ {
         let skView = view as! SKView
         skView.presentScene(scene)
     }
-
+    
+    func updateUI() {
+        
     }
+    
+
+}
+
+extension GameViewController: GKMatchDelegate {
+    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
+        guard let model = GameModel.decode(data: data) else { return }
+        gameModel = model
+    }
+}
