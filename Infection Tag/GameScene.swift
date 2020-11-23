@@ -29,6 +29,7 @@ class GameScene: SKScene {
     var cam = SKCameraNode()
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
+    var dimDash=SKSpriteNode(imageNamed:"dash")
     var testInfected = Character(isInfected: true, ID: "Player")
     var scaleChar=CGFloat(0.3)
     var ind=0
@@ -111,11 +112,13 @@ class GameScene: SKScene {
         startCounter=true
         startTimer=true
         dashButton.removeFromSuperview()
+        dimDash.isHidden=false
     }
     
     override func didMove(to view: SKView) {
         let scaleMap=CGFloat(10*scaleChar)
         super.didMove(to: view)
+        dimDash.alpha=0.4
         map.anchorPoint=CGPoint(x:0,y:0)
         map.position=CGPoint(x:0,y:0)
         back.anchorPoint=CGPoint(x:0,y:0)
@@ -128,6 +131,9 @@ class GameScene: SKScene {
         character.isInfected=false
         testInfected.isInfected=true
         testInfected.texture = ZwalkSprites[2]
+        dimDash.size=CGSize(width: 100, height: 100)
+        dimDash.position=CGPoint(x:5*screenWidth/6, y: screenHeight/6)
+        dimDash.isHidden=true
         dashButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 100, height: 100))
         dashButton.setImage(UIImage(named: "dash"), for: UIButton.State.normal)
         dashButton.addTarget(self, action: #selector(self.dash), for: UIControl.Event.allTouchEvents)
@@ -147,7 +153,7 @@ class GameScene: SKScene {
         }
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
-        
+        self.addChild(dimDash)
     }
     override func sceneDidLoad() {
         joystick.handleImage = UIImage(named: "shadedDark01.png")
@@ -234,9 +240,11 @@ class GameScene: SKScene {
         if((character1.isInfected)&&(!character2.isInfected)){
             character2.isInfected=true
             self.view?.addSubview(dashButton)
+            speedScale=CGFloat(0.9)
         } else if((character2.isInfected)&&(!character1.isInfected)){
             character1.isInfected=true
             self.view?.addSubview(dashButton)
+            speedScale=CGFloat(0.9)
         }
     }
     func characterHitWall(wall: Wall, character: SKSpriteNode) {
@@ -361,6 +369,8 @@ class GameScene: SKScene {
         }
         camera?.position = character.position
         joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
+        dimDash.position=CGPoint(x:camera!.position.x+(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
+
         if(character.isInfected){
             if(joystick.velocity == CGPoint(x: 0,y: 0)){
                 ind=8
@@ -393,17 +403,18 @@ class GameScene: SKScene {
         if(startCounter==true){
             counter+=1
             if(counter==15){
-                speedScale=CGFloat(1)
+                speedScale=CGFloat(0.9)
                 counter=0
                 startCounter=false
             }
         }
         if(startTimer==true){
             timerActionButton+=1
-            if(timerActionButton==165){
-                speedScale=CGFloat(1)
+            if(timerActionButton==660){
+//                speedScale=CGFloat(1)
                 timerActionButton=0
                 startTimer=false
+                dimDash.isHidden=true
                 self.view?.addSubview(dashButton)
             }
         }
