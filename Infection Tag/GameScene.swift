@@ -477,7 +477,7 @@ class GameScene: SKScene {
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:0.96*288), Position: CGPoint(x:9.08*288,y:h-3.24*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:2.44*288, height:0.13*288), Position: CGPoint(x:4.2*288,y:h-3.24*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.55*288, height:0.13*288), Position: CGPoint(x:7.55*288,y:h-3.24*288)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:4*288, height:0.13*288), Position: CGPoint(x:1.9*288,y:h-4.55*288)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:4.13*288, height:0.13*288), Position: CGPoint(x:1.9*288,y:h-4.55*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.97*288, height:0.13*288), Position: CGPoint(x:6.74*288,y:h-4.55*288)))
 
     }
