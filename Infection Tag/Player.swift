@@ -18,3 +18,23 @@ enum PlayerType: String, Codable, CaseIterable {
     case one
     case two
 }
+
+extension PlayerType {
+    func enemyInfected() -> Bool {
+        switch self {
+        case .one:
+            return false
+        case .two:
+            return true
+        }
+    }
+    
+    func selfInfected() -> Bool {
+        switch self {
+        case .one:
+            return false
+        case .two:
+            return true
+        }
+    }
+}
