@@ -12,9 +12,11 @@ import GameKit
 //import Amplify
 //import AmplifyPlugins
 
-class GameViewController: UIViewController/*, GKGameCenterControllerDelegate*/ {
+class GameViewController: UIViewController {
     
     var match: GKMatch?
+    
+    private var gameCenterHelper: GameCenterHelper!
     
     private var gameModel: GameModel! {
             didSet {
@@ -23,26 +25,10 @@ class GameViewController: UIViewController/*, GKGameCenterControllerDelegate*/ {
     }
 
     override func viewDidLoad() {
-        match?.delegate = self
         gameModel = GameModel()
-        walkSprites.append(SKTexture(imageNamed: "walk1"))
-        walkSprites.append(SKTexture(imageNamed: "walk2"))
-        walkSprites.append(SKTexture(imageNamed: "walk3"))
-        walkSprites.append(SKTexture(imageNamed: "walk4"))
-        walkSprites.append(SKTexture(imageNamed: "walk5"))
-        walkSprites.append(SKTexture(imageNamed: "walk6"))
-        walkSprites.append(SKTexture(imageNamed: "walk7"))
-        walkSprites.append(SKTexture(imageNamed: "walk8"))
-        ZwalkSprites.append(SKTexture(imageNamed: "Zwalk1"))
-        ZwalkSprites.append(SKTexture(imageNamed: "Zwalk2"))
-        ZwalkSprites.append(SKTexture(imageNamed: "Zwalk3"))
-        ZwalkSprites.append(SKTexture(imageNamed: "Zwalk4"))
-        ZwalkSprites.append(SKTexture(imageNamed: "Zwalk5"))
-        ZwalkSprites.append(SKTexture(imageNamed: "Zwalk6"))
-        ZwalkSprites.append(SKTexture(imageNamed: "Zwalk7"))
-        ZwalkSprites.append(SKTexture(imageNamed: "Zwalk8"))
-        let scene = MainMenu(fileNamed: "MainMenu")
-//        scene.scaleMode = .aspectfill
+        match?.delegate = self
+        
+        let scene = GameScene()
         let skView = view as! SKView
         skView.presentScene(scene)
     }
@@ -60,3 +46,4 @@ extension GameViewController: GKMatchDelegate {
         gameModel = model
     }
 }
+
