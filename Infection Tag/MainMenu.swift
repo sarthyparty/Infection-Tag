@@ -37,7 +37,7 @@ class MainMenu: SKScene {
         }
 
         /* 2) Load Game scene */
-        let scene = GameScene()
+        let scene = GameScene(fileNamed: "GameScene")
 
         skView.showsPhysics = true
         skView.showsDrawCount = true
