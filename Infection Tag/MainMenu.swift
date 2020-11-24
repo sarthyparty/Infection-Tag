@@ -10,7 +10,7 @@ import SpriteKit
 class MainMenu: SKScene {
 
 
-var buttonPlay: MSButtonNode!
+    var buttonPlay: MSButtonNode!
 
     override func didMove(to view: SKView) {
         buttonPlay = (self.childNode(withName: "buttonPlay") as! MSButtonNode)
