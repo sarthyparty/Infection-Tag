@@ -16,6 +16,8 @@ class GameViewController: UIViewController {
     
     var match: GKMatch?
     
+    var scene=MainMenu(fileNamed: "GameScene")
+    
     private var gameCenterHelper: GameCenterHelper!
     
     private var gameModel: GameModel! {
@@ -25,12 +27,11 @@ class GameViewController: UIViewController {
     }
 
     override func viewDidLoad() {
-        gameModel = GameModel()
-        match?.delegate = self
         
-        let scene = GameScene()
+        
+        let theScene = scene
         let skView = view as! SKView
-        skView.presentScene(scene)
+        skView.presentScene(theScene)
     }
     
     func updateUI() {
@@ -40,10 +41,23 @@ class GameViewController: UIViewController {
 
 }
 
-extension GameViewController: GKMatchDelegate {
-    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-        guard let model = GameModel.decode(data: data) else { return }
-        gameModel = model
+extension GameViewController: GameCenterHelperDelegate {
+    func didChangeAuthStatus(isAuthenticated: Bool) {
+        scene!.enableButton()
+    }
+    
+    func presentGameCenterAuth(viewController: UIViewController?) {
+        guard let vc = viewController else {return}
+        self.present(vc, animated: true)
+    }
+    
+    func presentMatchmaking(viewController: UIViewController?) {
+        guard let vc = viewController else {return}
+        self.present(vc, animated: true)
+    }
+    
+    func presentGame(match: GKMatch) {
+        performSegue(withIdentifier: "showGame", sender: match)
     }
 }
 
