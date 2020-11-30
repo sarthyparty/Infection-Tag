@@ -46,7 +46,7 @@ class GameViewController: UIViewController {
 extension GameViewController: GameCenterHelperDelegate {
     func didChangeAuthStatus(isAuthenticated: Bool) {
         if (isAuthenticated) {
-            scene.enableButton(GCH: self.gameCenterHelper)
+            scene!.enableButton(GCH: self.gameCenterHelper)
         }
     }
     
