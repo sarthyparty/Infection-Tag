@@ -66,6 +66,8 @@ extension GameViewController: GameCenterHelperDelegate {
             return
         }
         let scene = GameScene()
+        
+        scene.initialize(Match: match)
 
         skView.showsPhysics = true
         skView.showsDrawCount = true

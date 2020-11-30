@@ -10,11 +10,9 @@ let screenHeight = screenSize.height
 
 import SpriteKit
 import GameplayKit
-//import Amplify
-//import AmplifyPlugins
+import GameKit
 
 var myID = ""
-//var playInDB: PlayerPos? = nil
 
 struct PhysicsCategory {
   static let none      : UInt32 = 0
@@ -31,6 +29,7 @@ class GameScene: SKScene {
     var back=SKSpriteNode(imageNamed: "black")
     var dimDash=SKSpriteNode(imageNamed:"dash")
     var testInfected = Character(isInfected: true, ID: "Player")
+    var otherCharacters: [Character] = [Character]()
     var scaleChar=CGFloat(0.3)
     var ind=0
     var boundaryx=false
@@ -50,69 +49,26 @@ class GameScene: SKScene {
     var timerActionButton=0
     var startTimer=false
     var startCounter=false
-    //    var otherCharacters :[Character] = [Character]()
-//    var subscriptionUpdate: GraphQLSubscriptionOperation<PlayerPos>?
-//    var subscriptionCreate: GraphQLSubscriptionOperation<PlayerPos>?
-    
-    
-//    func createSubscriptions() {
-//        subscriptionCreate = Amplify.API.subscribe(request: .subscription(of: PlayerPos.self, type: .onCreate), valueListener: { (subscriptionEvent) in
-//            switch subscriptionEvent {
-//            case .connection(let subscriptionConnectionState):
-//                print("Subscription connect state is \(subscriptionConnectionState)")
-//            case .data(let result):
-//                switch result {
-//                case .success(let createdPlayer):
-//                    print("Successfully got todo from subscription: \(createdPlayer.id)")
-//                    if createdPlayer.id != myID {
-//                        let char = Character(isInfected: false, ID: createdPlayer.id)
-//                        char.size = CGSize(width:180*self.scaleChar, height:180*self.scaleChar)
-//                        self.otherCharacters.append(char)
-//                        self.addChild(char)
-//                    }
-//                case .failure(let error):
-//                    print("Got failed result with \(error.errorDescription)")
-//                }
-//            }
-//        }) { result in
-//            switch result {
-//            case .success:
-//                print("Subscription has been closed successfully")
-//            case .failure(let apiError):
-//                print("Subscription has terminated with \(apiError)")
-//        subscriptionUpdate = Amplify.API.subscribe(request: .subscription(of: PlayerPos.self, type: .onUpdate), valueListener: { (subscriptionEvent) in
-//            switch subscriptionEvent {
-//            case .connection(let subscriptionConnectionState):
-//                print("Subscription connect state is \(subscriptionConnectionState)")
-//            case .data(let result):
-//                switch result {
-//                case .success(let updatedPlayer):
-//                    for char in self.otherCharacters {
-//                        if updatedPlayer.id == char.id {
-//                            char.position.x = CGFloat(updatedPlayer.x)
-//                            char.position.y = CGFloat(updatedPlayer.y)
-//                            break
-//                        }
-//                    }
-//                case .failure(let error):
-//                    print("Got failed result with \(error.errorDescription)")
-//                }
-//            }
-//        }) { result in
-//            switch result {
-//            case .success:
-//                print("Subscription has been closed successfully")
-//            case .failure(let apiError):
-//                print("Subscription has terminated with \(apiError)")
-//            }
-//        }
-//    }
+    var match: GKMatch?
+    private var gameModel: GameModel! {
+        didSet {
+            updateUI()
+        }
+    }
     @objc func dash() {
         speedScale=CGFloat(3)
         startCounter=true
         startTimer=true
         dashButton.removeFromSuperview()
         dimDash.isHidden=false
+    }
+    
+    func updateUI() {
+        
+    }
+    
+    func initialize(Match: GKMatch) {
+        self.match = Match
     }
     
     override func didMove(to view: SKView) {
@@ -532,6 +488,13 @@ extension GameScene: SKPhysicsContactDelegate {
             characterLeftWall(wall: wall as! Wall, character: character)
         }
       }
+    }
+}
+
+extension GameScene: GKMatchDelegate {
+    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
+        guard let model = GameModel.decode(data: data) else { return }
+        gameModel = model
     }
 }
 
