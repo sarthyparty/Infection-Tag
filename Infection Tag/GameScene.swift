@@ -71,6 +71,9 @@ class GameScene: SKScene {
     
     func initialize(Match: GKMatch) {
         self.match = Match
+        self.gameModel = GameModel()
+        self.match?.delegate = self
+        savePlayers()
     }
     
     private func savePlayers() {
@@ -128,9 +131,6 @@ class GameScene: SKScene {
         self.addChild(otherCharacter)
     }
     override func sceneDidLoad() {
-        self.gameModel = GameModel()
-        self.match?.delegate = self
-        savePlayers()
         joystick.handleImage = UIImage(named: "shadedDark01.png")
         joystick.baseImage = UIImage(named: "shadedDark07.png")
         joystick.alpha = 0.5
