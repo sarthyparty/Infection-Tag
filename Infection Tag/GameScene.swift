@@ -64,8 +64,8 @@ class GameScene: SKScene {
     }
     
     func updateUI() {
-        otherCharacter.position.x = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].xPos)
-        otherCharacter.position.y = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].yPos)
+        otherCharacter.position.x = CGFloat(gameModel.players[0].xPos)
+        otherCharacter.position.y = CGFloat(gameModel.players[0].yPos)
     }
     
     
