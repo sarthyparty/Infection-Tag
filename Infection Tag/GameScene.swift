@@ -69,6 +69,9 @@ class GameScene: SKScene {
         }
         otherCharacter.position.x = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].xPos)
         otherCharacter.position.y = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].yPos)
+        otherCharacter.size = CGSize(width:180*scaleChar, height:180*scaleChar)
+        otherCharacter.zRotation = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].zRot)
+
     }
     
     
@@ -363,7 +366,7 @@ class GameScene: SKScene {
         let localPlayer = getLocalPlayerType()
         gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
         gameModel.players[localPlayer.playerIndex()].yPos = Float(self.character.position.y)
-        
+        gameModel.players[localPlayer.playerIndex()].zRot = Float(self.character.zRotation)
         sendData()
         
     }

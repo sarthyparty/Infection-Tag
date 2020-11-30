@@ -12,6 +12,7 @@ struct Player: Codable {
     var displayName: String
     var xPos: Float = 100
     var yPos: Float = 100
+    var zRot: Float = 0
     var isInfected: Bool = false
 }
 
