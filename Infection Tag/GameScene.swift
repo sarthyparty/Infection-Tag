@@ -71,7 +71,12 @@ class GameScene: SKScene {
         otherCharacter.position.y = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].yPos)
         otherCharacter.size = CGSize(width:180*scaleChar, height:180*scaleChar)
         otherCharacter.zRotation = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].zRot)
-
+        otherCharacter.isInfected = gameModel.players[getOtherPlayerType().playerIndex()].isInfected
+        if(otherCharacter.isInfected){
+            otherCharacter.texture=ZwalkSprites[(ind-(ind%4))/4]
+        } else {
+            otherCharacter.texture=walkSprites[(ind-(ind%4))/4]
+        }
     }
     
     
@@ -329,17 +334,17 @@ class GameScene: SKScene {
                 character.zRotation=joystick.angular
             }
         }else{
-        if(joystick.velocity == CGPoint(x: 0,y: 0)){
-            ind=8
-            character.texture = walkSprites[(ind-(ind%4))/4]
-        } else {
-            if ind>31{
-                ind=0
+            if(joystick.velocity == CGPoint(x: 0,y: 0)){
+                ind=8
+                character.texture = walkSprites[(ind-(ind%4))/4]
+            } else {
+                if ind>31{
+                    ind=0
+                }
+                character.texture = walkSprites[(ind-(ind%4))/4]
+                ind+=1
+                character.zRotation=joystick.angular
             }
-            character.texture = walkSprites[(ind-(ind%4))/4]
-            ind+=1
-            character.zRotation=joystick.angular
-        }
         }
         
         
@@ -367,6 +372,8 @@ class GameScene: SKScene {
         gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
         gameModel.players[localPlayer.playerIndex()].yPos = Float(self.character.position.y)
         gameModel.players[localPlayer.playerIndex()].zRot = Float(self.character.zRotation)
+        gameModel.players[localPlayer.playerIndex()].isInfected = self.character.isInfected
+        gameModel.players[localPlayer.playerIndex()].textureIndex = Float(ind)
         sendData()
         
     }
