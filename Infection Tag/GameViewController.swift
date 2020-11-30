@@ -16,7 +16,7 @@ class GameViewController: UIViewController {
     
     var match: GKMatch?
     
-    var scene=MainMenu()
+    var scene=MainMenu(fileNamed: "MainMenu")
     
     private var gameCenterHelper: GameCenterHelper!
     
