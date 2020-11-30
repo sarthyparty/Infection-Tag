@@ -46,7 +46,7 @@ class GameViewController: UIViewController {
 extension GameViewController: GameCenterHelperDelegate {
     func didChangeAuthStatus(isAuthenticated: Bool) {
         if (isAuthenticated) {
-            scene.enableButton()
+            scene.enableButton(GCH: self.gameCenterHelper)
         }
     }
     
@@ -61,7 +61,18 @@ extension GameViewController: GameCenterHelperDelegate {
     }
     
     func presentGame(match: GKMatch) {
-        performSegue(withIdentifier: "showGame", sender: match)
+        guard let skView = self.view as! SKView? else {
+            print("Could not get Skview")
+            return
+        }
+        let scene = GameScene()
+
+        skView.showsPhysics = true
+        skView.showsDrawCount = true
+
+        /* 4) Start game scene */
+        skView.presentScene(scene)
+        
     }
 }
 
