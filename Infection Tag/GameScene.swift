@@ -29,7 +29,7 @@ class GameScene: SKScene {
     var back=SKSpriteNode(imageNamed: "black")
     var dimDash=SKSpriteNode(imageNamed:"dash")
     var testInfected = Character(isInfected: true, ID: "Player")
-    var otherCharacters: [Character] = [Character]()
+    var otherCharacter: Character = Character(isInfected: false, ID: "HELLO")
     var scaleChar=CGFloat(0.3)
     var ind=0
     var boundaryx=false
@@ -64,11 +64,26 @@ class GameScene: SKScene {
     }
     
     func updateUI() {
-        
+        otherCharacter.position.x = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].xPos)
+        otherCharacter.position.y = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].yPos)
     }
+    
     
     func initialize(Match: GKMatch) {
         self.match = Match
+    }
+    
+    private func savePlayers() {
+        guard let player2Name = match?.players.first?.displayName else { return }
+        let player1 = Player(displayName: GKLocalPlayer.local.displayName)
+        let player2 = Player(displayName: player2Name)
+            
+        gameModel.players = [player1, player2]
+            
+        gameModel.players.sort { (player1, player2) -> Bool in
+            player1.displayName < player2.displayName
+        }
+        sendData()
     }
     
     override func didMove(to view: SKView) {
@@ -110,8 +125,12 @@ class GameScene: SKScene {
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
         self.addChild(dimDash)
+        self.addChild(otherCharacter)
     }
     override func sceneDidLoad() {
+        self.gameModel = GameModel()
+        self.match?.delegate = self
+        savePlayers()
         joystick.handleImage = UIImage(named: "shadedDark01.png")
         joystick.baseImage = UIImage(named: "shadedDark07.png")
         joystick.alpha = 0.5
@@ -142,55 +161,19 @@ class GameScene: SKScene {
         testInfected.physicsBody?.contactTestBitMask = PhysicsCategory.character// 4
         testInfected.physicsBody?.collisionBitMask = PhysicsCategory.none
         
-//        Amplify.API.query(request: .list(PlayerPos.self)) { event in
-//            switch event {
-//            case .success(let result):
-//                switch result {
-//                case .success(let players):
-//                    print("Successfully retrieved list of players: \(players.count)")
-//                    for player in players {
-//                        if player.id == myID {
-//                            continue
-//                        }
-//                        let char = Character(isInfected: false, ID: player.id)
-//                        char.size = CGSize(width:180*self.scaleChar, height:180*self.scaleChar)
-//                        self.otherCharacters.append(char)
-//                        self.addChild(char)
-//                    }
-//
-//                case .failure(let error):
-//                    print("Got failed result with \(error.errorDescription)")
-//                }
-//            case .failure(let error):
-//                print("Got failed event with error \(error)")
-//            }
-//        }
-
-//        let player = PlayerPos(x: 400, y: 400, frameNum: 3)
-//        Amplify.API.mutate(request: .create(player)) { event in
-//            switch event {
-//            case .success(let result):
-//                switch result {
-//                case .success(let player):
-//                    print("Successfully created player: \(player.id)")
-//                    myID = player.id
-//                    playInDB = player
-//                case .failure(let error):
-//                    print("Got failed result with \(error.errorDescription)")
-//                }
-//            case .failure(let error):
-//                print("Got failed event with error \(error)")
-//            }
-//        }
-//
-//
-//        createSubscriptions()
-
         
         
         
-        
-        
+    }
+    func sendData() {
+            guard let match = match else { return }
+            
+            do {
+                guard let data = gameModel.encode() else { return }
+                try match.sendData(toAllPlayers: data, with: .reliable)
+            } catch {
+                print("Send data failed")
+            }
     }
     func characterHitCharacter(character1: Character, character2:Character){
         if((character1.isInfected)&&(!character2.isInfected)){
@@ -374,26 +357,27 @@ class GameScene: SKScene {
                 self.view?.addSubview(dashButton)
             }
         }
-//        playInDB?.x = Double(self.character.position.x)
-//        playInDB?.y = Double(self.character.position.y)
-//        if (playInDB != nil&&self.ymovement==false&&self.xmovement==false) {
-//            Amplify.API.mutate(request: .update(playInDB!)) { event in
-//                switch event {
-//                case .success(let result):
-//                    switch result {
-//                    case .success(let player):
-//                        myID = player.id
-//                    case .failure(let error):
-//                        print("Got failed result with \(error.errorDescription)")
-//                    }
-//                case .failure(let error):
-//                    print("Got failed event with error \(error)")
-//                }
-//            }
-//        }
+        let localPlayer = getLocalPlayerType()
+        gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
+        gameModel.players[localPlayer.playerIndex()].yPos = Float(self.character.position.y)
         
+        sendData()
         
-        
+    }
+    
+    func getLocalPlayerType() -> PlayerType {
+            if gameModel.players.first?.displayName == GKLocalPlayer.local.displayName {
+                return .one
+            } else {
+                return .two
+            }
+    }
+    func getOtherPlayerType() -> PlayerType {
+            if gameModel.players.first?.displayName == GKLocalPlayer.local.displayName {
+                return .two
+            } else {
+                return .one
+            }
     }
     
     func makeWalls(){
