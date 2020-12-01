@@ -50,11 +50,7 @@ class GameScene: SKScene {
     var startTimer=false
     var startCounter=false
     var match: GKMatch?
-    private var gameModel: GameModel! {
-        didSet {
-            updateUI()
-        }
-    }
+    private var gameModel: GameModel!
     @objc func dash() {
         speedScale=CGFloat(3)
         startCounter=true
@@ -375,6 +371,7 @@ class GameScene: SKScene {
         gameModel.players[localPlayer.playerIndex()].isInfected = self.character.isInfected
         gameModel.players[localPlayer.playerIndex()].textureIndex = Float(ind)
         sendData()
+        updateUI()
         
     }
     
