@@ -19,12 +19,6 @@ class GameViewController: UIViewController {
     var scene=MainMenu(fileNamed: "MainMenu")
     
     private var gameCenterHelper: GameCenterHelper!
-    
-    private var gameModel: GameModel! {
-            didSet {
-                updateUI()
-            }
-    }
 
     override func viewDidLoad() {
         
@@ -34,10 +28,6 @@ class GameViewController: UIViewController {
         let theScene = scene
         let skView = view as! SKView
         skView.presentScene(theScene)
-    }
-    
-    func updateUI() {
-        
     }
     
 
