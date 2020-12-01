@@ -13,6 +13,8 @@ import GameplayKit
 import GameKit
 
 var myID = ""
+var local_data = Data(capacity: 8)
+
 
 struct PhysicsCategory {
   static let none      : UInt32 = 0
@@ -22,6 +24,7 @@ struct PhysicsCategory {
 }
 
 class GameScene: SKScene {
+    var isServer = false
     var joystick = TLAnalogJoystick(withDiameter: 100)
     var character = Character(isInfected: false, ID: "Player")
     var cam = SKCameraNode()
@@ -82,6 +85,20 @@ class GameScene: SKScene {
         self.gameModel = GameModel()
         self.match?.delegate = self
         savePlayers()
+        if getLocalPlayerType().playerIndex() == 0 {
+            self.match?.chooseBestHostingPlayer(completionHandler: makeServer)
+        }
+    }
+    
+    func makeServer(player: GKPlayer?) -> Void {
+        var l_player = [GKPlayer]()
+        l_player.append(player!)
+        do {
+            try self.match?.send(local_data, to: l_player, dataMode: GKMatch.SendDataMode.reliable)
+
+        } catch is Error {
+            print("this game is messed up")
+        }
     }
     
     private func savePlayers() {
@@ -487,6 +504,14 @@ extension GameScene: SKPhysicsContactDelegate {
 
 extension GameScene: GKMatchDelegate {
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
+        if data == local_data {
+            isServer = true
+            otherCharacter.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: character.position) // 1
+            otherCharacter.physicsBody?.isDynamic = true // 2
+            otherCharacter.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
+            otherCharacter.physicsBody?.contactTestBitMask = PhysicsCategory.character // 4
+            otherCharacter.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
+        }
         guard let model = GameModel.decode(data: data) else { return }
         gameModel = model
     }
