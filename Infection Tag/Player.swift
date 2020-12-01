@@ -15,7 +15,7 @@ struct Player: Codable {
     var yPos: Float = 100
     var zRot: Float = 0
     var isInfected: Bool = false
-    var textureIndex: Float = 8
+    var textureIndex: Int = 8
 }
 
 enum PlayerType: String, Codable, CaseIterable {

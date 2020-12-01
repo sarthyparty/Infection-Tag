@@ -68,10 +68,11 @@ class GameScene: SKScene {
         otherCharacter.size = CGSize(width:180*scaleChar, height:180*scaleChar)
         otherCharacter.zRotation = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].zRot)
         otherCharacter.isInfected = gameModel.players[getOtherPlayerType().playerIndex()].isInfected
+        let newInd=(gameModel.players[getOtherPlayerType().playerIndex()].textureIndex-(gameModel.players[getOtherPlayerType().playerIndex()].textureIndex%4))/4
         if(otherCharacter.isInfected){
-            otherCharacter.texture=ZwalkSprites[(ind-(ind%4))/4]
+            otherCharacter.texture=ZwalkSprites[newInd]
         } else {
-            otherCharacter.texture=walkSprites[(ind-(ind%4))/4]
+            otherCharacter.texture=walkSprites[newInd]
         }
     }
     
@@ -369,10 +370,9 @@ class GameScene: SKScene {
         gameModel.players[localPlayer.playerIndex()].yPos = Float(self.character.position.y)
         gameModel.players[localPlayer.playerIndex()].zRot = Float(self.character.zRotation)
         gameModel.players[localPlayer.playerIndex()].isInfected = self.character.isInfected
-        gameModel.players[localPlayer.playerIndex()].textureIndex = Float(ind)
+        gameModel.players[localPlayer.playerIndex()].textureIndex = ind
         sendData()
         updateUI()
-        
     }
     
     func getLocalPlayerType() -> PlayerType {
