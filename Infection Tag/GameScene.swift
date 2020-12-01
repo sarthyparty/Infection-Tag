@@ -370,6 +370,7 @@ class GameScene: SKScene {
         gameModel.players[localPlayer.playerIndex()].zRot = Float(self.character.zRotation)
         gameModel.players[localPlayer.playerIndex()].isInfected = self.character.isInfected
         gameModel.players[localPlayer.playerIndex()].textureIndex = Float(ind)
+        sendData()
         updateUI()
         
     }
