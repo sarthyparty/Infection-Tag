@@ -163,11 +163,11 @@ class GameScene: SKScene {
             w.physicsBody?.contactTestBitMask = PhysicsCategory.character // 4
             w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         }
-        testInfected.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: character.position) // 1
-        testInfected.physicsBody?.isDynamic = true // 2
-        testInfected.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
-        testInfected.physicsBody?.contactTestBitMask = PhysicsCategory.character// 4
-        testInfected.physicsBody?.collisionBitMask = PhysicsCategory.none
+        otherCharacter.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: character.position) // 1
+        otherCharacter.physicsBody?.isDynamic = true // 2
+        otherCharacter.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
+        otherCharacter.physicsBody?.contactTestBitMask = PhysicsCategory.character// 4
+        otherCharacter.physicsBody?.collisionBitMask = PhysicsCategory.none
         
         
         
