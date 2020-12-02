@@ -223,7 +223,7 @@ class GameScene: SKScene {
             speedScale=CGFloat(0.9)
         }
     }
-    func characterHitWall(wall: Wall, character: SKSpriteNode) {
+    func characterHitWall(wall: Wall, character: Character) {
         if (self.character.position.y+27<=wall.position.y-wall.size.height/2+15){
             hitwallbottom=true
             wall.side = "bottom"
@@ -467,13 +467,20 @@ extension GameScene: SKPhysicsContactDelegate {
                 characterHitCharacter(character1: character1, character2: character2)
             }
         }
-      if ((firstBody.categoryBitMask & PhysicsCategory.character != 0) &&
-          (secondBody.categoryBitMask & PhysicsCategory.wall != 0)) {
+      if ((firstBody.categoryBitMask == PhysicsCategory.character) &&
+          (secondBody.categoryBitMask == PhysicsCategory.wall)) {
         if let character = firstBody.node as? SKSpriteNode,
           let wall = secondBody.node as? SKSpriteNode {
-            characterHitWall(wall: wall as! Wall, character: character)
+            characterHitWall(wall: wall as! Wall, character: character as! Character)
         }
       }
+        if ((firstBody.categoryBitMask == PhysicsCategory.wall) &&
+            (secondBody.categoryBitMask == PhysicsCategory.character)) {
+          if let wall = firstBody.node as? SKSpriteNode,
+            let character = secondBody.node as? SKSpriteNode {
+              characterHitWall(wall: wall as! Wall, character: character as! Character)
+          }
+        }
     }
     func didEnd(_ contact: SKPhysicsContact) {
       // 1
