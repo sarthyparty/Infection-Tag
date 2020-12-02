@@ -113,7 +113,7 @@ class GameScene: SKScene {
             players.append(Player(displayName: player.displayName))
             if (player.displayName == GKLocalPlayer.local.displayName) {
                 self.character.index = count
-                count+=1
+//                count+=1
                 continue
             }
             otherCharacters.append(Character(isInfected: false, ind: count))
