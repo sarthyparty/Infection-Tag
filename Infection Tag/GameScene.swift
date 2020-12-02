@@ -115,6 +115,7 @@ class GameScene: SKScene {
                 continue
             }
             otherCharacters.append(Character(isInfected: false, ind: count))
+            self.addChild(otherCharacters[count])
             count+=1
         }
         
