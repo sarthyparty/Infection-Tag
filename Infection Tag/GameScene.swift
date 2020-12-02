@@ -162,9 +162,9 @@ class GameScene: SKScene {
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
         self.addChild(dimDash)
-        for oChar in otherCharacters{
-            self.addChild(oChar)
-        }
+//        for oChar in otherCharacters{
+            self.addChild(otherCharacters[0])
+//        }
     }
     override func sceneDidLoad() {
         joystick.handleImage = UIImage(named: "shadedDark01.png")
