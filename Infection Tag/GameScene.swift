@@ -109,6 +109,7 @@ class GameScene: SKScene {
         var players = [Player]()
         var count = 0
         for player in match!.players {
+            print("so the problem isnt here...")
             players.append(Player(displayName: player.displayName))
             if (player.displayName == GKLocalPlayer.local.displayName) {
                 self.character.index = count
