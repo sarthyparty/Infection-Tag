@@ -54,6 +54,7 @@ class GameScene: SKScene {
     var startTimer=false
     var startCounter=false
     var match: GKMatch?
+    var oChar: Character
     private var gameModel: GameModel!
     @objc func dash() {
         speedScale=CGFloat(3)
@@ -115,7 +116,6 @@ class GameScene: SKScene {
                 continue
             }
             otherCharacters.append(Character(isInfected: false, ind: count))
-            self.addChild(otherCharacters[count])
             count+=1
         }
         
@@ -162,6 +162,9 @@ class GameScene: SKScene {
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
         self.addChild(dimDash)
+        for oChar in otherCharacters{
+            self.addChild(oChar)
+        }
     }
     override func sceneDidLoad() {
         joystick.handleImage = UIImage(named: "shadedDark01.png")
