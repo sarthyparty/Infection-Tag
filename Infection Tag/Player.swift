@@ -18,19 +18,3 @@ struct Player: Codable {
     var textureIndex: Int = 8
 }
 
-enum PlayerType: String, Codable, CaseIterable {
-    case one
-    case two
-}
-
-extension PlayerType {
-    func playerIndex() -> Int {
-        switch self {
-        case .one:
-            return 1
-        case .two:
-            return 0
-        }
-        
-    }
-}

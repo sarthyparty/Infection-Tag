@@ -13,9 +13,9 @@ var ZwalkSprites :[SKTexture] = [SKTexture]()
 
 class Character: SKSpriteNode {
     
-    var id: String
+    var index: Int
     var isInfected: Bool
-    init(isInfected: Bool, ID: String) {
+    init(isInfected: Bool, ind: Int) {
         walkSprites.append(SKTexture(imageNamed: "walk1"))
         walkSprites.append(SKTexture(imageNamed: "walk2"))
         walkSprites.append(SKTexture(imageNamed: "walk3"))
@@ -32,7 +32,7 @@ class Character: SKSpriteNode {
         ZwalkSprites.append(SKTexture(imageNamed: "Zwalk6"))
         ZwalkSprites.append(SKTexture(imageNamed: "Zwalk7"))
         ZwalkSprites.append(SKTexture(imageNamed: "Zwalk8"))
-        self.id = ID
+        self.index = ind
         // Make a texture from an image, a color, and size
         let texture = walkSprites[2]
 
