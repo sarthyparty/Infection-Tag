@@ -54,7 +54,7 @@ class GameScene: SKScene {
     var startTimer=false
     var startCounter=false
     var match: GKMatch?
-    var oChar: Character
+    var oChar: Character?
     private var gameModel: GameModel!
     @objc func dash() {
         speedScale=CGFloat(3)
