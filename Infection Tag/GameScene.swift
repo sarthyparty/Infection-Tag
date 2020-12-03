@@ -88,6 +88,11 @@ class GameScene: SKScene {
         self.match = Match
         self.gameModel = GameModel()
         self.match?.delegate = self
+        var count = 0
+        for player in match!.players{
+            otherCharacters.append(Character(isInfected: false, ind: count))
+            count+=1
+        }
         savePlayers()
 //        if getLocalPlayerType().playerIndex() == 0 {
 //            self.match?.chooseBestHostingPlayer(completionHandler: makeServer)
@@ -113,10 +118,10 @@ class GameScene: SKScene {
             players.append(Player(displayName: player.displayName))
             if (player.displayName == GKLocalPlayer.local.displayName) {
                 self.character.index = count
-//                count+=1
+                count+=1
                 continue
             }
-            otherCharacters.append(Character(isInfected: false, ind: count))
+//            otherCharacters.append(Character(isInfected: false, ind: count))
             count+=1
         }
         
