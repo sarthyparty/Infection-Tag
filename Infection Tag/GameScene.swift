@@ -517,7 +517,7 @@ extension GameScene: SKPhysicsContactDelegate {
 
 extension GameScene: GKMatchDelegate {
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-        otherCharacters[0].physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: character.position) // 1
+        otherCharacters[0].physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: otherCharacters[0].position) // 1
         otherCharacters[0].physicsBody?.isDynamic = true // 2
         otherCharacters[0].physicsBody?.categoryBitMask = PhysicsCategory.character // 3
         otherCharacters[0].physicsBody?.contactTestBitMask = PhysicsCategory.character// 4
