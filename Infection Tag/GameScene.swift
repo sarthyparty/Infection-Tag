@@ -68,17 +68,17 @@ class GameScene: SKScene {
         if gameModel.players.count != match?.players.count {
             savePlayers()
         }
-        for otherCharacter in otherCharacters {
-            otherCharacter.position.x = CGFloat(gameModel.players[otherCharacter.index].xPos)
-            otherCharacter.position.y = CGFloat(gameModel.players[otherCharacter.index].yPos)
-            otherCharacter.size = CGSize(width:180*scaleChar, height:180*scaleChar)
-            otherCharacter.zRotation = CGFloat(gameModel.players[otherCharacter.index].zRot)
-            otherCharacter.isInfected = gameModel.players[otherCharacter.index].isInfected
-            let newInd=(gameModel.players[otherCharacter.index].textureIndex-(gameModel.players[otherCharacter.index].textureIndex%4))/4
-            if(otherCharacter.isInfected){
-                otherCharacter.texture=ZwalkSprites[newInd]
+        for i in 0...otherCharacters.count-1{
+            otherCharacters[i].position.x = CGFloat(gameModel.players[otherCharacters[i].index].xPos)
+            otherCharacters[i].position.y = CGFloat(gameModel.players[otherCharacters[i].index].yPos)
+            otherCharacters[i].size = CGSize(width:180*scaleChar, height:180*scaleChar)
+            otherCharacters[i].zRotation = CGFloat(gameModel.players[otherCharacters[i].index].zRot)
+            otherCharacters[i].isInfected = gameModel.players[otherCharacters[i].index].isInfected
+            let newInd=(gameModel.players[otherCharacters[i].index].textureIndex-(gameModel.players[otherCharacters[i].index].textureIndex%4))/4
+            if(otherCharacters[i].isInfected){
+                otherCharacters[i].texture=ZwalkSprites[newInd]
             } else {
-                otherCharacter.texture=walkSprites[newInd]
+                otherCharacters[i].texture=walkSprites[newInd]
             }
         }
     }
