@@ -85,9 +85,9 @@ class GameScene: SKScene {
         self.gameModel = GameModel()
         self.match?.delegate = self
         savePlayers()
-        if getLocalPlayerType().playerIndex() == 0 {
-            self.match?.chooseBestHostingPlayer(completionHandler: makeServer)
-        }
+//        if getLocalPlayerType().playerIndex() == 0 {
+//            self.match?.chooseBestHostingPlayer(completionHandler: makeServer)
+//        }
     }
     
     func makeServer(player: GKPlayer?) -> Void {
@@ -102,14 +102,16 @@ class GameScene: SKScene {
     }
     
     private func savePlayers() {
-        guard let player2Name = match?.players.first?.displayName else { return }
-        let player1 = Player(displayName: GKLocalPlayer.local.displayName)
-        let player2 = Player(displayName: player2Name)
-            
-        gameModel.players = [player1, player2]
-            
-        gameModel.players.sort { (player1, player2) -> Bool in
-            player1.displayName < player2.displayName
+        if self.match?.players.count == 2 {
+            guard let player2Name = match?.players.first?.displayName else { return }
+            let player1 = Player(displayName: GKLocalPlayer.local.displayName)
+            let player2 = Player(displayName: player2Name)
+                
+            gameModel.players = [player1, player2]
+                
+            gameModel.players.sort { (player1, player2) -> Bool in
+                player1.displayName < player2.displayName
+            }
         }
         sendData()
     }
