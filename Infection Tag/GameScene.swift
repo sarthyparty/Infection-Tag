@@ -102,6 +102,7 @@ class GameScene: SKScene {
     }
     
     private func savePlayers() {
+        if self.match?.expectedPlayerCount == 2 {
             guard let player2Name = match?.players.first?.displayName else { return }
             let player1 = Player(displayName: GKLocalPlayer.local.displayName)
             let player2 = Player(displayName: player2Name)
@@ -110,8 +111,9 @@ class GameScene: SKScene {
                 
             gameModel.players.sort { (player1, player2) -> Bool in
                 player1.displayName < player2.displayName
+            }
+            sendData()
         }
-        sendData()
     }
     
     override func didMove(to view: SKView) {
