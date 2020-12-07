@@ -9,23 +9,24 @@ import SpriteKit
 
 class Zombie: Character {
     
-    scene: GameSceneSolo
+//    var sceneSolo: GameSceneSolo
     
-    init(gameScene: GameSceneSolo){
+    init(){
         super.init(isInfected: true)
-        self.scene = gameScene
     }
     
-    func getRandomPosition() -> CGPoint{
-        var xPos:Float
-        var yPos:Float
-        var isNotIntersecting = true
-        repeat{
-            xPos=Float.random(0..<screenWidth)
-            yPos=Float.random(0..<screenHeight)
-            for (wall in self.scene.arrayWall)
-        }while(isNotIntersecting)
-    }
+//    func getRandomPosition() -> CGPoint{
+//        var xPos:Float
+//        var yPos:Float
+//        var isNotIntersecting = true
+//        repeat{
+//            xPos=Float(screenWidth)*Float.random(in: 0..<1)
+//            yPos=Float(screenHeight)*Float.random(in: 0..<1)
+//            for wall in self.sceneSolo.arrayWall{
+//                if self.sceneSolo.testInfected.physicsBody.int
+//            }
+//        }while(isNotIntersecting)
+//    }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

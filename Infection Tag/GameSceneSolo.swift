@@ -19,19 +19,20 @@ import GameKit
 struct PhysicsCategory {
   static let none      : UInt32 = 0
   static let all       : UInt32 = UInt32.max
-  static let character   : UInt32 = 0b1       // 1
+  static let character   : UInt32 = 0b1// 1
   static let wall: UInt32 = 0b10      // 2
+    static let zombie: UInt32 = 0b11
 }
 
 class GameSceneSolo: SKScene {
     var isServer = false
     var joystick = TLAnalogJoystick(withDiameter: 100)
-    var character = Character(isInfected: false, ID: "Player")
+    var character = Character(isInfected: false)
     var cam = SKCameraNode()
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
     var dimDash=SKSpriteNode(imageNamed:"dash")
-    var testInfected = Character(isInfected: true, ID: "Player")
+    var testInfected = Zombie()
 //    var otherCharacter: Character = Character(isInfected: false, ID: "HELLO")
     var scaleChar=CGFloat(0.3)
     var ind=0
@@ -128,7 +129,7 @@ class GameSceneSolo: SKScene {
         joystick.position = CGPoint(x: screenWidth/6, y: screenHeight/6)
         character.position = CGPoint(x: 500, y: 300)
         character.size = CGSize(width:180*scaleChar, height:180*scaleChar)
-        testInfected.position=CGPoint(x: 300, y: 500)
+        testInfected.position=getRandomPosition()
         testInfected.size = CGSize(width:180*scaleChar, height:180*scaleChar)
         character.isInfected=false
         testInfected.isInfected=true
@@ -188,15 +189,32 @@ class GameSceneSolo: SKScene {
 //        otherCharacter.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
 //        otherCharacter.physicsBody?.contactTestBitMask = PhysicsCategory.character// 4
 //        otherCharacter.physicsBody?.collisionBitMask = PhysicsCategory.none
-        testInfected.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: character.position) // 1
+        testInfected.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: testInfected.position) // 1
         testInfected.physicsBody?.isDynamic = true // 2
-        testInfected.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
+        testInfected.physicsBody?.categoryBitMask = PhysicsCategory.zombie // 3
         testInfected.physicsBody?.contactTestBitMask = PhysicsCategory.character// 4
         testInfected.physicsBody?.collisionBitMask = PhysicsCategory.none
         
         
         
         
+    }
+    
+    func getRandomPosition() -> CGPoint{
+        var xPos:CGFloat
+        var yPos:CGFloat
+        var isIntersecting=false
+        repeat{
+            isIntersecting=false
+            xPos=screenWidth*CGFloat(Float.random(in: 0..<1))
+            yPos=screenHeight*CGFloat(Float.random(in: 0..<1))
+            for wall in arrayWall{
+                if wall.intersects(testInfected){
+                    isIntersecting=true
+                }
+            }
+        }while(isIntersecting)
+        return CGPoint(x: xPos, y: yPos)
     }
 //    func sendData() {
 //            guard let match = match else { return }
