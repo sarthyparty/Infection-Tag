@@ -12,8 +12,8 @@ import SpriteKit
 import GameplayKit
 import GameKit
 
-var myID = ""
-var local_data = Data(capacity: 8)
+//var myID = ""
+//var local_data = Data(capacity: 8)
 
 
 struct PhysicsCategory {
@@ -23,7 +23,7 @@ struct PhysicsCategory {
   static let wall: UInt32 = 0b10      // 2
 }
 
-class GameScene: SKScene {
+class GameSceneSolo: SKScene {
     var isServer = false
     var joystick = TLAnalogJoystick(withDiameter: 100)
     var character = Character(isInfected: false, ID: "Player")
@@ -32,7 +32,7 @@ class GameScene: SKScene {
     var back=SKSpriteNode(imageNamed: "black")
     var dimDash=SKSpriteNode(imageNamed:"dash")
     var testInfected = Character(isInfected: true, ID: "Player")
-    var otherCharacter: Character = Character(isInfected: false, ID: "HELLO")
+//    var otherCharacter: Character = Character(isInfected: false, ID: "HELLO")
     var scaleChar=CGFloat(0.3)
     var ind=0
     var boundaryx=false
@@ -52,8 +52,9 @@ class GameScene: SKScene {
     var timerActionButton=0
     var startTimer=false
     var startCounter=false
-    var match: GKMatch?
-    private var gameModel: GameModel!
+//    var match: GKMatch?
+//    private var gameModel: GameModel!
+    
     @objc func dash() {
         speedScale=CGFloat(3)
         startCounter=true
@@ -62,59 +63,59 @@ class GameScene: SKScene {
         dimDash.isHidden=false
     }
     
-    func updateUI() {
-        if gameModel.players.count != 2 {
-            savePlayers()
-        }
-        otherCharacter.position.x = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].xPos)
-        otherCharacter.position.y = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].yPos)
-        otherCharacter.size = CGSize(width:180*scaleChar, height:180*scaleChar)
-        otherCharacter.zRotation = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].zRot)
-        otherCharacter.isInfected = gameModel.players[getOtherPlayerType().playerIndex()].isInfected
-        let newInd=(gameModel.players[getOtherPlayerType().playerIndex()].textureIndex-(gameModel.players[getOtherPlayerType().playerIndex()].textureIndex%4))/4
-        if(otherCharacter.isInfected){
-            otherCharacter.texture=ZwalkSprites[newInd]
-        } else {
-            otherCharacter.texture=walkSprites[newInd]
-        }
-    }
+//    func updateUI() {
+//        if gameModel.players.count != 2 {
+//            savePlayers()
+//        }
+//        otherCharacter.position.x = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].xPos)
+//        otherCharacter.position.y = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].yPos)
+//        otherCharacter.size = CGSize(width:180*scaleChar, height:180*scaleChar)
+//        otherCharacter.zRotation = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].zRot)
+//        otherCharacter.isInfected = gameModel.players[getOtherPlayerType().playerIndex()].isInfected
+//        let newInd=(gameModel.players[getOtherPlayerType().playerIndex()].textureIndex-(gameModel.players[getOtherPlayerType().playerIndex()].textureIndex%4))/4
+//        if(otherCharacter.isInfected){
+//            otherCharacter.texture=ZwalkSprites[newInd]
+//        } else {
+//            otherCharacter.texture=walkSprites[newInd]
+//        }
+//    }
     
     
-    func initialize(Match: GKMatch) {
-        self.match = Match
-        self.gameModel = GameModel()
-        self.match?.delegate = self
-        savePlayers()
+//    func initialize(Match: GKMatch) {
+//        self.match = Match
+//        self.gameModel = GameModel()
+//        self.match?.delegate = self
+//        savePlayers()
 //        if getLocalPlayerType().playerIndex() == 0 {
 //            self.match?.chooseBestHostingPlayer(completionHandler: makeServer)
 //        }
-    }
+//    }
     
-    func makeServer(player: GKPlayer?) -> Void {
-        var l_player = [GKPlayer]()
-        l_player.append(player!)
-        do {
-            try self.match?.send(local_data, to: l_player, dataMode: GKMatch.SendDataMode.reliable)
-
-        } catch is Error {
-            print("this game is messed up")
-        }
-    }
+//    func makeServer(player: GKPlayer?) -> Void {
+//        var l_player = [GKPlayer]()
+//        l_player.append(player!)
+//        do {
+//            try self.match?.send(local_data, to: l_player, dataMode: GKMatch.SendDataMode.reliable)
+//
+//        } catch is Error {
+//            print("this game is messed up")
+//        }
+//    }
     
-    private func savePlayers() {
-        if self.match?.expectedPlayerCount == 2 {
-            guard let player2Name = match?.players.first?.displayName else { return }
-            let player1 = Player(displayName: GKLocalPlayer.local.displayName)
-            let player2 = Player(displayName: player2Name)
-                
-            gameModel.players = [player1, player2]
-                
-            gameModel.players.sort { (player1, player2) -> Bool in
-                player1.displayName < player2.displayName
-            }
-            sendData()
-        }
-    }
+//    private func savePlayers() {
+//        if self.match?.expectedPlayerCount == 2 {
+//            guard let player2Name = match?.players.first?.displayName else { return }
+//            let player1 = Player(displayName: GKLocalPlayer.local.displayName)
+//            let player2 = Player(displayName: player2Name)
+//
+//            gameModel.players = [player1, player2]
+//
+//            gameModel.players.sort { (player1, player2) -> Bool in
+//                player1.displayName < player2.displayName
+//            }
+//            sendData()
+//        }
+//    }
     
     override func didMove(to view: SKView) {
         let scaleMap=CGFloat(10*scaleChar)
@@ -155,7 +156,7 @@ class GameScene: SKScene {
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
         self.addChild(dimDash)
-        self.addChild(otherCharacter)
+//        self.addChild(otherCharacter)
     }
     override func sceneDidLoad() {
         joystick.handleImage = UIImage(named: "shadedDark01.png")
@@ -197,16 +198,16 @@ class GameScene: SKScene {
         
         
     }
-    func sendData() {
-            guard let match = match else { return }
-            
-            do {
-                guard let data = gameModel.encode() else { return }
-                try match.sendData(toAllPlayers: data, with: .reliable)
-            } catch {
-                print("Send data failed")
-            }
-    }
+//    func sendData() {
+//            guard let match = match else { return }
+//
+//            do {
+//                guard let data = gameModel.encode() else { return }
+//                try match.sendData(toAllPlayers: data, with: .reliable)
+//            } catch {
+//                print("Send data failed")
+//            }
+//    }
     func characterHitCharacter(character1: Character, character2:Character){
         if((character1.isInfected)&&(!character2.isInfected)){
             character2.isInfected=true
@@ -389,30 +390,30 @@ class GameScene: SKScene {
                 self.view?.addSubview(dashButton)
             }
         }
-        let localPlayer = getLocalPlayerType()
-        gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
-        gameModel.players[localPlayer.playerIndex()].yPos = Float(self.character.position.y)
-        gameModel.players[localPlayer.playerIndex()].zRot = Float(self.character.zRotation)
-        gameModel.players[localPlayer.playerIndex()].isInfected = self.character.isInfected
-        gameModel.players[localPlayer.playerIndex()].textureIndex = ind
-        sendData()
-        updateUI()
+//        let localPlayer = getLocalPlayerType()
+//        gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
+//        gameModel.players[localPlayer.playerIndex()].yPos = Float(self.character.position.y)
+//        gameModel.players[localPlayer.playerIndex()].zRot = Float(self.character.zRotation)
+//        gameModel.players[localPlayer.playerIndex()].isInfected = self.character.isInfected
+//        gameModel.players[localPlayer.playerIndex()].textureIndex = ind
+//        sendData()
+//        updateUI()
     }
     
-    func getLocalPlayerType() -> PlayerType {
-            if gameModel.players.first?.displayName == GKLocalPlayer.local.displayName {
-                return .one
-            } else {
-                return .two
-            }
-    }
-    func getOtherPlayerType() -> PlayerType {
-            if gameModel.players.first?.displayName == GKLocalPlayer.local.displayName {
-                return .two
-            } else {
-                return .one
-            }
-    }
+//    func getLocalPlayerType() -> PlayerType {
+//            if gameModel.players.first?.displayName == GKLocalPlayer.local.displayName {
+//                return .one
+//            } else {
+//                return .two
+//            }
+//    }
+//    func getOtherPlayerType() -> PlayerType {
+//            if gameModel.players.first?.displayName == GKLocalPlayer.local.displayName {
+//                return .two
+//            } else {
+//                return .one
+//            }
+//    }
     
     func makeWalls(){
         let imgName="clearPNG"
@@ -457,7 +458,7 @@ class GameScene: SKScene {
     }
     
 }
-extension GameScene: SKPhysicsContactDelegate {
+extension GameSceneSolo: SKPhysicsContactDelegate {
     
     func didBegin(_ contact: SKPhysicsContact) {
       // 1
@@ -516,19 +517,19 @@ extension GameScene: SKPhysicsContactDelegate {
     }
 }
 
-extension GameScene: GKMatchDelegate {
-    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-        if data == local_data {
-            isServer = true
-            otherCharacter.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: character.position) // 1
-            otherCharacter.physicsBody?.isDynamic = true // 2
-            otherCharacter.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
-            otherCharacter.physicsBody?.contactTestBitMask = PhysicsCategory.character // 4
-            otherCharacter.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
-        }
-        guard let model = GameModel.decode(data: data) else { return }
-        gameModel = model
-    }
-}
+//extension GameScene: GKMatchDelegate {
+//    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
+//        if data == local_data {
+//            isServer = true
+//            otherCharacter.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: character.position) // 1
+//            otherCharacter.physicsBody?.isDynamic = true // 2
+//            otherCharacter.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
+//            otherCharacter.physicsBody?.contactTestBitMask = PhysicsCategory.character // 4
+//            otherCharacter.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
+//        }
+//        guard let model = GameModel.decode(data: data) else { return }
+//        gameModel = model
+//    }
+//}
 
 

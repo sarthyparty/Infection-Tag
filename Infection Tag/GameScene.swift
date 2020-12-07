@@ -4,9 +4,9 @@
 //
 //  Created by 64000774 on 10/14/20.
 //
-let screenSize = UIScreen.main.bounds
-let screenWidth = screenSize.width
-let screenHeight = screenSize.height
+//let screenSize = UIScreen.main.bounds
+//let screenWidth = screenSize.width
+//let screenHeight = screenSize.height
 
 import SpriteKit
 import GameplayKit
@@ -16,12 +16,12 @@ var myID = ""
 var local_data = Data(capacity: 8)
 
 
-struct PhysicsCategory {
-  static let none      : UInt32 = 0
-  static let all       : UInt32 = UInt32.max
-  static let character   : UInt32 = 0b1       // 1
-  static let wall: UInt32 = 0b10      // 2
-}
+//struct PhysicsCategory {
+//  static let none      : UInt32 = 0
+//  static let all       : UInt32 = UInt32.max
+//  static let character   : UInt32 = 0b1       // 1
+//  static let wall: UInt32 = 0b10      // 2
+//}
 
 class GameScene: SKScene {
     var isServer = false
