@@ -26,13 +26,13 @@ var local_data = Data(capacity: 8)
 class GameScene: SKScene {
     var isServer = false
     var joystick = TLAnalogJoystick(withDiameter: 100)
-    var character = Character(isInfected: false, ID: "Player")
+    var character = Character(isInfected: false)
     var cam = SKCameraNode()
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
     var dimDash=SKSpriteNode(imageNamed:"dash")
-    var testInfected = Character(isInfected: true, ID: "Player")
-    var otherCharacter: Character = Character(isInfected: false, ID: "HELLO")
+    var testInfected = Character(isInfected: true)
+    var otherCharacter: Character = Character(isInfected: false)
     var scaleChar=CGFloat(0.3)
     var ind=0
     var boundaryx=false

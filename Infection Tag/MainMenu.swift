@@ -18,7 +18,7 @@ class MainMenu: SKScene {
         buttonPlay.selectedHandler = {
             self.loadGame()
         }
-        buttonPlaySolo = (self.childNode(withName: "buttonPlay") as! MSButtonNode)
+        buttonPlaySolo = (self.childNode(withName: "buttonPlaySolo") as! MSButtonNode)
         buttonPlaySolo.selectedHandler = {
             self.loadGameSolo()
         }
@@ -32,7 +32,7 @@ class MainMenu: SKScene {
             print("Could not get Skview")
             return
         }
-        let scene = GameSceneSolo(fileNamed: "GameScene")
+        let scene = GameSceneSolo(fileNamed: "GameSceneSolo")
 
         skView.showsPhysics = true
         skView.showsDrawCount = true
