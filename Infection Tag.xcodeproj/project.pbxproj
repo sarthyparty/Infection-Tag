@@ -12,6 +12,7 @@
 		8121C19A2559A67900EE1F06 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8121C1992559A67900EE1F06 /* MainMenu.swift */; };
 		819423AD25642C5B0031A940 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 819423AC25642C5B0031A940 /* MainMenu.sks */; };
 		819423B225642E730031A940 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819423B125642E730031A940 /* MSButtonNode.swift */; };
+		9D892764257E853F009B9007 /* GameSceneSolo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D892763257E853F009B9007 /* GameSceneSolo.swift */; };
 		9DCB7582255DAC4E0006FE96 /* Pods_Infection_Tag.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFBA5CFCA8CCC685B16B6947 /* Pods_Infection_Tag.framework */; };
 		D39D02D22540827D00BDAC1E /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39D02D12540827D00BDAC1E /* Character.swift */; };
 		D39D02D725471C9700BDAC1E /* wall.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39D02D625471C9700BDAC1E /* wall.swift */; };
@@ -56,6 +57,7 @@
 		819423AC25642C5B0031A940 /* MainMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenu.sks; sourceTree = "<group>"; };
 		819423B125642E730031A940 /* MSButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSButtonNode.swift; sourceTree = "<group>"; };
 		8576CADE4D763903F976DE1C /* Pods_Infection_Tag_Infection_TagUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Infection_Tag_Infection_TagUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D892763257E853F009B9007 /* GameSceneSolo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneSolo.swift; sourceTree = "<group>"; };
 		CC2B8DEC88FAC14F23FC9E7C /* Pods-Infection Tag-Infection TagUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Infection Tag-Infection TagUITests.debug.xcconfig"; path = "Target Support Files/Pods-Infection Tag-Infection TagUITests/Pods-Infection Tag-Infection TagUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		D1168C85DE6F504476301690 /* Pods-Infection Tag.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Infection Tag.debug.xcconfig"; path = "Target Support Files/Pods-Infection Tag/Pods-Infection Tag.debug.xcconfig"; sourceTree = "<group>"; };
 		D39D02D12540827D00BDAC1E /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				D34D07F7253DE53B00482274 /* Scenes */,
 				D3CF0C80253753FF00394F79 /* TFAnalogJoystick.swift */,
 				D3CF0C522537500F00394F79 /* GameScene.swift */,
+				9D892763257E853F009B9007 /* GameSceneSolo.swift */,
 				D39D02D12540827D00BDAC1E /* Character.swift */,
 				D39D02D625471C9700BDAC1E /* wall.swift */,
 				D3CF0C562537500F00394F79 /* Main.storyboard */,
@@ -429,6 +432,7 @@
 				D39D02D725471C9700BDAC1E /* wall.swift in Sources */,
 				D3CF0C552537500F00394F79 /* GameViewController.swift in Sources */,
 				D3CF0C4D2537500F00394F79 /* AppDelegate.swift in Sources */,
+				9D892764257E853F009B9007 /* GameSceneSolo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
