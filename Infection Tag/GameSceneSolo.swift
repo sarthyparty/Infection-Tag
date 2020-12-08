@@ -214,7 +214,9 @@ class GameSceneSolo: SKScene {
             xPos=screenWidth*CGFloat(Float.random(in: 0..<1))
             yPos=screenHeight*CGFloat(Float.random(in: 0..<1))
             for wall in arrayWall{
-                if wall.intersects(testInfecteds.last!){
+                let z=Zombie(char: character, pos: CGPoint(x: xPos, y: yPos))
+                z.size=CGSize(width:180*scaleChar, height:180*scaleChar)
+                if wall.intersects(z){
                     isIntersecting=true
                 }
             }
@@ -414,9 +416,10 @@ class GameSceneSolo: SKScene {
             }
         }
         if(zombieSpawnTimer%20==0){
-            testInfecteds.append(Zombie())
+            let pos=getRandomPosition()
+            testInfecteds.append(Zombie(char: character, pos: pos))
             testInfecteds.last?.size = CGSize(width:180*scaleChar, height:180*scaleChar)
-            testInfecteds.last?.position=getRandomPosition()
+//            testInfecteds.last?.position=getRandomPosition()
             testInfecteds.last?.isInfected=true
             testInfecteds.last?.texture = ZwalkSprites[2]
             self.addChild(testInfecteds.last!)
