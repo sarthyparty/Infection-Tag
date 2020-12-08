@@ -10,9 +10,21 @@ import SpriteKit
 class Zombie: Character {
     
 //    var sceneSolo: GameSceneSolo
+    var angle: CGFloat
+    var character: Character
     
-    init(){
+    init(char: Character, pos: CGPoint){
+        self.character = char
+        self.angle = -atan2((char.position.x - pos.x), (char.position.y - pos.y))
         super.init(isInfected: true)
+        self.position = pos
+        self.zRotation = angle
+        
+        
+    }
+    
+    func move() {
+//        let  = -atan2((char.position.x - pos.x), (char.position.y - pos.y))
     }
     
 //    func getRandomPosition() -> CGPoint{
