@@ -415,11 +415,10 @@ class GameSceneSolo: SKScene {
                 self.view?.addSubview(dashButton)
             }
         }
-        if(zombieSpawnTimer%160==0){
+        if(zombieSpawnTimer%180==0){
             let pos=getRandomPosition()
             testInfecteds.append(Zombie(char: character, pos: pos))
             testInfecteds.last?.size = CGSize(width:180*scaleChar, height:180*scaleChar)
-//            testInfecteds.last?.position=getRandomPosition()
             testInfecteds.last?.isInfected=true
             testInfecteds.last?.texture = ZwalkSprites[2]
             self.addChild(testInfecteds.last!)
