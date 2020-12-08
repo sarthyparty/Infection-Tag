@@ -32,7 +32,7 @@ class GameSceneSolo: SKScene {
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
     var dimDash=SKSpriteNode(imageNamed:"dash")
-    var testInfected = Zombie()
+    var testInfecteds:[Zombie] = [Zombie]()
 //    var otherCharacter: Character = Character(isInfected: false, ID: "HELLO")
     var scaleChar=CGFloat(0.3)
     var ind=0
@@ -53,6 +53,7 @@ class GameSceneSolo: SKScene {
     var timerActionButton=0
     var startTimer=false
     var startCounter=false
+    var zombieSpawnTimer=0
 //    var match: GKMatch?
 //    private var gameModel: GameModel!
     
@@ -122,6 +123,7 @@ class GameSceneSolo: SKScene {
         let scaleMap=CGFloat(10*scaleChar)
         super.didMove(to: view)
         dimDash.alpha=0.4
+//        testInfecteds.append(Zombie())
         map.anchorPoint=CGPoint(x:0,y:0)
         map.position=CGPoint(x:0,y:0)
         back.anchorPoint=CGPoint(x:0,y:0)
@@ -129,11 +131,11 @@ class GameSceneSolo: SKScene {
         joystick.position = CGPoint(x: screenWidth/6, y: screenHeight/6)
         character.position = CGPoint(x: 500, y: 300)
         character.size = CGSize(width:180*scaleChar, height:180*scaleChar)
-        testInfected.position=getRandomPosition()
-        testInfected.size = CGSize(width:180*scaleChar, height:180*scaleChar)
+//        testInfecteds[0].position=getRandomPosition()
+//        testInfecteds[0].size = CGSize(width:180*scaleChar, height:180*scaleChar)
+//        testInfecteds[0].isInfected=true
+//        testInfecteds[0].texture = ZwalkSprites[2]
         character.isInfected=false
-        testInfected.isInfected=true
-        testInfected.texture = ZwalkSprites[2]
         dimDash.size=CGSize(width: 100, height: 100)
         dimDash.position=CGPoint(x:5*screenWidth/6, y: screenHeight/6)
         dimDash.isHidden=true
@@ -150,7 +152,9 @@ class GameSceneSolo: SKScene {
         self.addChild(map)
         self.addChild(joystick)
         self.addChild(character)
-        self.addChild(testInfected)
+//        for z in testInfecteds{
+//            self.addChild(z)
+//        }
         for w in arrayWall{
             self.addChild(w)
         }
@@ -189,11 +193,12 @@ class GameSceneSolo: SKScene {
 //        otherCharacter.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
 //        otherCharacter.physicsBody?.contactTestBitMask = PhysicsCategory.character// 4
 //        otherCharacter.physicsBody?.collisionBitMask = PhysicsCategory.none
-        testInfected.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: testInfected.position) // 1
-        testInfected.physicsBody?.isDynamic = true // 2
-        testInfected.physicsBody?.categoryBitMask = PhysicsCategory.zombie // 3
-        testInfected.physicsBody?.contactTestBitMask = PhysicsCategory.character// 4
-        testInfected.physicsBody?.collisionBitMask = PhysicsCategory.none
+        
+//        testInfecteds[0].physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: testInfecteds[0].position) // 1
+//        testInfecteds[0].physicsBody?.isDynamic = true // 2
+//        testInfecteds[0].physicsBody?.categoryBitMask = PhysicsCategory.zombie // 3
+//        testInfecteds[0].physicsBody?.contactTestBitMask = PhysicsCategory.character// 4
+//        testInfecteds[0].physicsBody?.collisionBitMask = PhysicsCategory.none
         
         
         
@@ -209,7 +214,7 @@ class GameSceneSolo: SKScene {
             xPos=screenWidth*CGFloat(Float.random(in: 0..<1))
             yPos=screenHeight*CGFloat(Float.random(in: 0..<1))
             for wall in arrayWall{
-                if wall.intersects(testInfected){
+                if wall.intersects(testInfecteds.last!){
                     isIntersecting=true
                 }
             }
@@ -408,6 +413,20 @@ class GameSceneSolo: SKScene {
                 self.view?.addSubview(dashButton)
             }
         }
+        if(zombieSpawnTimer%20==0){
+            testInfecteds.append(Zombie())
+            testInfecteds.last?.size = CGSize(width:180*scaleChar, height:180*scaleChar)
+            testInfecteds.last?.position=getRandomPosition()
+            testInfecteds.last?.isInfected=true
+            testInfecteds.last?.texture = ZwalkSprites[2]
+            self.addChild(testInfecteds.last!)
+//            testInfecteds.last?.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: testInfecteds.last!.position) // 1
+//            testInfecteds.last?.physicsBody?.isDynamic = true // 2
+//            testInfecteds.last?.physicsBody?.categoryBitMask = PhysicsCategory.zombie // 3
+//            testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character// 4
+//            testInfecteds.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
+        }
+        zombieSpawnTimer+=1
 //        let localPlayer = getLocalPlayerType()
 //        gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
 //        gameModel.players[localPlayer.playerIndex()].yPos = Float(self.character.position.y)
@@ -525,13 +544,20 @@ extension GameSceneSolo: SKPhysicsContactDelegate {
       }
      
       // 2
-      if ((firstBody.categoryBitMask & PhysicsCategory.character != 0) &&
-          (secondBody.categoryBitMask & PhysicsCategory.wall != 0)) {
-        if let character = firstBody.node as? SKSpriteNode,
-          let wall = secondBody.node as? SKSpriteNode {
-            characterLeftWall(wall: wall as! Wall, character: character)
+        if ((firstBody.categoryBitMask == PhysicsCategory.character) &&
+            (secondBody.categoryBitMask == PhysicsCategory.wall)) {
+          if let character = firstBody.node as? SKSpriteNode,
+            let wall = secondBody.node as? SKSpriteNode {
+              characterLeftWall(wall: wall as! Wall, character: character as! Character)
+          }
         }
-      }
+          if ((firstBody.categoryBitMask == PhysicsCategory.wall) &&
+              (secondBody.categoryBitMask == PhysicsCategory.character)) {
+            if let wall = firstBody.node as? SKSpriteNode,
+              let character = secondBody.node as? SKSpriteNode {
+                characterLeftWall(wall: wall as! Wall, character: character as! Character)
+            }
+          }
     }
 }
 
