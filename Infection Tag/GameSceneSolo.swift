@@ -430,6 +430,9 @@ class GameSceneSolo: SKScene {
             testInfecteds.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
         }
         zombieSpawnTimer+=1
+        for z in testInfecteds{
+            z.move()
+        }
 //        let localPlayer = getLocalPlayerType()
 //        gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
 //        gameModel.players[localPlayer.playerIndex()].yPos = Float(self.character.position.y)
