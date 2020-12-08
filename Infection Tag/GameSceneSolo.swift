@@ -211,8 +211,8 @@ class GameSceneSolo: SKScene {
         var isIntersecting=false
         repeat{
             isIntersecting=false
-            xPos=screenWidth*CGFloat(Float.random(in: 0..<1))
-            yPos=screenHeight*CGFloat(Float.random(in: 0..<1))
+            xPos=map.size.width*CGFloat(Float.random(in: 0..<1))
+            yPos=map.size.height*CGFloat(Float.random(in: 0..<1))
             for wall in arrayWall{
                 let z=Zombie(char: character, pos: CGPoint(x: xPos, y: yPos))
                 z.size=CGSize(width:180*scaleChar, height:180*scaleChar)
@@ -521,13 +521,13 @@ extension GameSceneSolo: SKPhysicsContactDelegate {
                 characterHitCharacter(character1: character1, character2: character2)
             }
         }
-      if ((firstBody.categoryBitMask == PhysicsCategory.character) &&
-          (secondBody.categoryBitMask == PhysicsCategory.wall)) {
-        if let character = firstBody.node as? SKSpriteNode,
-          let wall = secondBody.node as? SKSpriteNode {
-            characterHitWall(wall: wall as! Wall, character: character as! Character)
+        if ((firstBody.categoryBitMask == PhysicsCategory.character) &&
+                (secondBody.categoryBitMask == PhysicsCategory.wall)) {
+            if let character = firstBody.node as? SKSpriteNode,
+           let wall = secondBody.node as? SKSpriteNode {
+                characterHitWall(wall: wall as! Wall, character: character as! Character)
+            }
         }
-      }
         if ((firstBody.categoryBitMask == PhysicsCategory.wall) &&
             (secondBody.categoryBitMask == PhysicsCategory.character)) {
           if let wall = firstBody.node as? SKSpriteNode,
@@ -535,6 +535,21 @@ extension GameSceneSolo: SKPhysicsContactDelegate {
               characterHitWall(wall: wall as! Wall, character: character as! Character)
           }
         }
+        if ((firstBody.categoryBitMask == PhysicsCategory.character) &&
+                (secondBody.categoryBitMask == PhysicsCategory.zombie)) {
+            let scene=MainMenu(fileNamed: "MainMenu")
+            let theScene = scene
+            let skView = view!
+            skView.presentScene(theScene)
+        }
+        if ((firstBody.categoryBitMask == PhysicsCategory.zombie) &&
+            (secondBody.categoryBitMask == PhysicsCategory.character)) {
+            let scene=MainMenu(fileNamed: "MainMenu")
+            let theScene = scene
+            let skView = view!
+            skView.presentScene(theScene)
+        }
+        
     }
     func didEnd(_ contact: SKPhysicsContact) {
       // 1
