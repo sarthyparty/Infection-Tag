@@ -214,7 +214,9 @@ class GameSceneSolo: SKScene {
             xPos=screenWidth*CGFloat(Float.random(in: 0..<1))
             yPos=screenHeight*CGFloat(Float.random(in: 0..<1))
             for wall in arrayWall{
-                if wall.intersects(testInfecteds.last!){
+                let z=Zombie(char: character, pos: CGPoint(x: xPos, y: yPos))
+                z.size=CGSize(width:180*scaleChar, height:180*scaleChar)
+                if wall.intersects(z){
                     isIntersecting=true
                 }
             }
@@ -413,18 +415,19 @@ class GameSceneSolo: SKScene {
                 self.view?.addSubview(dashButton)
             }
         }
-        if(zombieSpawnTimer%20==0){
-            testInfecteds.append(Zombie())
+        if(zombieSpawnTimer%160==0){
+            let pos=getRandomPosition()
+            testInfecteds.append(Zombie(char: character, pos: pos))
             testInfecteds.last?.size = CGSize(width:180*scaleChar, height:180*scaleChar)
-            testInfecteds.last?.position=getRandomPosition()
+//            testInfecteds.last?.position=getRandomPosition()
             testInfecteds.last?.isInfected=true
             testInfecteds.last?.texture = ZwalkSprites[2]
             self.addChild(testInfecteds.last!)
-//            testInfecteds.last?.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: testInfecteds.last!.position) // 1
-//            testInfecteds.last?.physicsBody?.isDynamic = true // 2
-//            testInfecteds.last?.physicsBody?.categoryBitMask = PhysicsCategory.zombie // 3
-//            testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character// 4
-//            testInfecteds.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
+            testInfecteds.last?.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2/*, center: testInfecteds.last!.position*/) // 1
+            testInfecteds.last?.physicsBody?.isDynamic = true // 2
+            testInfecteds.last?.physicsBody?.categoryBitMask = PhysicsCategory.zombie // 3
+            testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character// 4
+            testInfecteds.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
         }
         zombieSpawnTimer+=1
 //        let localPlayer = getLocalPlayerType()
