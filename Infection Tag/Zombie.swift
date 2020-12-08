@@ -12,23 +12,29 @@ class Zombie: Character {
 //    var sceneSolo: GameSceneSolo
     var angle: CGFloat
     var character: Character
+    var ind: Int
     
     init(char: Character, pos: CGPoint){
         self.character = char
         self.angle = -atan2((char.position.x - pos.x), (char.position.y - pos.y))
+        self.ind = 0
         super.init(isInfected: true)
         self.position = pos
         self.zRotation = angle
-        
         
     }
     
     func move() {
         let perfectAng = -atan2((self.character.position.x - self.position.x), (self.character.position.y - self.position.y))
-        self.zRotation = (perfectAng)/* - self.angle)/10 + self.angle*/
-        self.position.x = self.position.x + (4 * cos(zRotation+CGFloat(Float.pi/4)))
-        self.position.y = self.position.y + (4 * sin(zRotation+CGFloat(Float.pi/4)))
+        self.zRotation = (perfectAng - self.angle)/10 + self.angle
+        self.position.x = self.position.x + (4 * cos(zRotation+CGFloat(Float.pi/2)))
+        self.position.y = self.position.y + (4 * sin(zRotation+CGFloat(Float.pi/2)))
         self.angle = self.zRotation
+        if ind>31{
+            ind=0
+        }
+        self.texture=ZwalkSprites[(ind-(ind%4))/4]
+        ind+=1
     }
     
 //    func getRandomPosition() -> CGPoint{
