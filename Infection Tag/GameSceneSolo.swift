@@ -22,7 +22,7 @@ import GameKit
 struct PhysicsCategory {
   static let none      : UInt32 = 0
   static let all       : UInt32 = UInt32.max
-  static let character   : UInt32 = 0b1// 1
+  static let character1   : UInt32 = 0b1// 1
   static let wall: UInt32 = 0b10      // 2
     static let zombie: UInt32 = 0b11
 }
@@ -32,7 +32,7 @@ class GameSceneSolo: SKScene {
     let heightScale=screenHeight/originalHeight
     var isServer = false
     var joystick = TLAnalogJoystick(withDiameter: 100)
-    var character = Character(isInfected: false)
+    var char = Character(isInfected: false)
     var cam = SKCameraNode()
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
@@ -135,8 +135,7 @@ class GameSceneSolo: SKScene {
         back.anchorPoint=CGPoint(x:0,y:0)
         back.position=CGPoint(x:-screenWidth/2,y:-screenHeight/2)
         joystick.position = CGPoint(x: screenWidth/6, y: screenHeight/6)
-        character.position = CGPoint(x: 500*scale, y: 300*scale)
-        character.size = CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
+        
 //        testInfecteds[0].position=getRandomPosition()
 //        testInfecteds[0].size = CGSize(width:180*scaleChar, height:180*scaleChar)
 //        testInfecteds[0].isInfected=true
@@ -157,7 +156,9 @@ class GameSceneSolo: SKScene {
                 //        joystick.name = "joystick"
         self.addChild(map)
         self.addChild(joystick)
-        self.addChild(character)
+        self.addChild(char)
+        char.position = CGPoint(x: 500, y: 300)
+        char.size = CGSize(width:180*scaleChar, height:180*scaleChar)
         self.view?.addSubview(dashButton)
 //        for z in testInfecteds{
 //            self.addChild(z)
@@ -186,14 +187,14 @@ class GameSceneSolo: SKScene {
         self.addChild(borderindicator)
         character.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2*scale, center: character.position) // 1
         character.physicsBody?.isDynamic = true // 2
-        character.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
+        character.physicsBody?.categoryBitMask = PhysicsCategory.character1 // 3
         character.physicsBody?.contactTestBitMask = PhysicsCategory.wall // 4
         character.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         for w in arrayWall{
             w.physicsBody = SKPhysicsBody(rectangleOf:w.size) // 1
             w.physicsBody?.isDynamic = true // 2
             w.physicsBody?.categoryBitMask =  PhysicsCategory.wall// 3
-            w.physicsBody?.contactTestBitMask = PhysicsCategory.character // 4
+            w.physicsBody?.contactTestBitMask = PhysicsCategory.character1 // 4
             w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         }
 //        otherCharacter.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: character.position) // 1
@@ -433,7 +434,7 @@ class GameSceneSolo: SKScene {
             testInfecteds.last?.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2*scale/*, center: testInfecteds.last!.position*/) // 1
             testInfecteds.last?.physicsBody?.isDynamic = true // 2
             testInfecteds.last?.physicsBody?.categoryBitMask = PhysicsCategory.zombie // 3
-            testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character// 4
+            testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1// 4
             testInfecteds.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
         }
         zombieSpawnTimer+=1
@@ -523,13 +524,13 @@ extension GameSceneSolo: SKPhysicsContactDelegate {
       }
      
       // 2
-        if((firstBody.categoryBitMask==secondBody.categoryBitMask)&&(firstBody.categoryBitMask==PhysicsCategory.character)){
+        if((firstBody.categoryBitMask==secondBody.categoryBitMask)&&(firstBody.categoryBitMask==PhysicsCategory.character1)){
             if let character1 = firstBody.node as? Character,
               let character2 = secondBody.node as? Character {
                 characterHitCharacter(character1: character1, character2: character2)
             }
         }
-        if ((firstBody.categoryBitMask == PhysicsCategory.character) &&
+        if ((firstBody.categoryBitMask == PhysicsCategory.character1) &&
                 (secondBody.categoryBitMask == PhysicsCategory.wall)) {
             if let character = firstBody.node as? SKSpriteNode,
            let wall = secondBody.node as? SKSpriteNode {
@@ -537,13 +538,13 @@ extension GameSceneSolo: SKPhysicsContactDelegate {
             }
         }
         if ((firstBody.categoryBitMask == PhysicsCategory.wall) &&
-            (secondBody.categoryBitMask == PhysicsCategory.character)) {
+            (secondBody.categoryBitMask == PhysicsCategory.character1)) {
           if let wall = firstBody.node as? SKSpriteNode,
             let character = secondBody.node as? SKSpriteNode {
               characterHitWall(wall: wall as! Wall, character: character as! Character)
           }
         }
-        if ((firstBody.categoryBitMask == PhysicsCategory.character) &&
+        if ((firstBody.categoryBitMask == PhysicsCategory.character1) &&
                 (secondBody.categoryBitMask == PhysicsCategory.zombie)) {
             let scene=MainMenu(fileNamed: "MainMenu")
             let theScene = scene
@@ -551,7 +552,7 @@ extension GameSceneSolo: SKPhysicsContactDelegate {
             skView.presentScene(theScene)
         }
         if ((firstBody.categoryBitMask == PhysicsCategory.zombie) &&
-            (secondBody.categoryBitMask == PhysicsCategory.character)) {
+            (secondBody.categoryBitMask == PhysicsCategory.character1)) {
             let scene=MainMenu(fileNamed: "MainMenu")
             let theScene = scene
             let skView = view!
@@ -572,7 +573,7 @@ extension GameSceneSolo: SKPhysicsContactDelegate {
       }
      
       // 2
-        if ((firstBody.categoryBitMask == PhysicsCategory.character) &&
+        if ((firstBody.categoryBitMask == PhysicsCategory.character1) &&
             (secondBody.categoryBitMask == PhysicsCategory.wall)) {
           if let character = firstBody.node as? SKSpriteNode,
             let wall = secondBody.node as? SKSpriteNode {
@@ -580,7 +581,7 @@ extension GameSceneSolo: SKPhysicsContactDelegate {
           }
         }
           if ((firstBody.categoryBitMask == PhysicsCategory.wall) &&
-              (secondBody.categoryBitMask == PhysicsCategory.character)) {
+              (secondBody.categoryBitMask == PhysicsCategory.character1)) {
             if let wall = firstBody.node as? SKSpriteNode,
               let character = secondBody.node as? SKSpriteNode {
                 characterLeftWall(wall: wall as! Wall, character: character as! Character)
