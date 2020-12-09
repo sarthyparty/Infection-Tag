@@ -25,15 +25,10 @@ class Zombie: Character {
     }
     
     func move() {
-        var perfectAng = -atan2((self.character.position.x - self.position.x), (self.character.position.y - self.position.y))
-        if sin(perfectAng + CGFloat(Float.pi/2)) >= CGFloat(0){
-            if self.character.position.y < self.position.y {
-                perfectAng+=CGFloat(Float.pi)
-            }
-        }
-        self.zRotation = (perfectAng - self.angle)/50 + self.angle
-        self.position.x = self.position.x + (4 * cos(self.angle+CGFloat(Float.pi/2)))
-        self.position.y = self.position.y + (4 * sin(self.angle+CGFloat(Float.pi/2)))
+        let perfectAng = -atan2((self.character.position.x - self.position.x), (self.character.position.y - self.position.y))
+        self.zRotation = perfectAng
+        self.position.x = self.position.x + (3 * cos(self.angle+CGFloat(Float.pi/2)))
+        self.position.y = self.position.y + (3 * sin(self.angle+CGFloat(Float.pi/2)))
         self.angle = self.zRotation
         if ind>31{
             ind=0
