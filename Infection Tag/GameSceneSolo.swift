@@ -121,6 +121,7 @@ class GameSceneSolo: SKScene {
     
     override func didMove(to view: SKView) {
         let scaleMap=CGFloat(10*scaleChar)
+        super.scaleMode = .aspectFit
         super.didMove(to: view)
         dimDash.alpha=0.4
 //        testInfecteds.append(Zombie())
