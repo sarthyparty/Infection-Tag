@@ -22,9 +22,9 @@ class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         
-        gameCenterHelper = GameCenterHelper()
-        gameCenterHelper.delegate = self
-        gameCenterHelper.authenticatePlayer()
+//        gameCenterHelper = GameCenterHelper()
+//        gameCenterHelper.delegate = self
+//       gameCenterHelper.authenticatePlayer()
         let theScene = scene
         let skView = view as! SKView
         skView.presentScene(theScene)
@@ -61,6 +61,7 @@ extension GameViewController: GameCenterHelperDelegate {
 
         skView.showsPhysics = true
         skView.showsDrawCount = true
+        skView.showsFPS=true
 
         /* 4) Start game scene */
         skView.presentScene(scene)
