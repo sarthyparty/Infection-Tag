@@ -19,6 +19,7 @@ class MainMenu: SKScene {
 //            self.loadGame()
 //        }
         buttonPlaySolo = (self.childNode(withName: "buttonPlaySolo") as! MSButtonNode)
+        buttonPlaySolo.position=CGPoint(x: screenWidth/2, y: screenHeight/2)
         buttonPlaySolo.selectedHandler = {
             self.loadGameSolo()
         }
