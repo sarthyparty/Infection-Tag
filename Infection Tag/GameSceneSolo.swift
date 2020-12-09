@@ -7,6 +7,8 @@
 let screenSize = UIScreen.main.bounds
 let screenWidth = screenSize.width
 let screenHeight = screenSize.height
+let originalWidth = CGFloat(1024)
+let originalHeight = CGFloat(766)
 
 import SpriteKit
 import GameplayKit
@@ -25,6 +27,8 @@ struct PhysicsCategory {
 }
 
 class GameSceneSolo: SKScene {
+    let widthScale=screenWidth/originalWidth
+    let heightScale=screenHeight/originalHeight
     var isServer = false
     var joystick = TLAnalogJoystick(withDiameter: 100)
     var character = Character(isInfected: false)
@@ -120,7 +124,8 @@ class GameSceneSolo: SKScene {
 //    }
     
     override func didMove(to view: SKView) {
-        let scaleMap=CGFloat(10*scaleChar)
+        let scale=CGFloat.minimum(widthScale, heightScale)
+        let scaleMap=CGFloat(10*scaleChar*scale)
         super.didMove(to: view)
         dimDash.alpha=0.4
 //        testInfecteds.append(Zombie())
@@ -129,8 +134,8 @@ class GameSceneSolo: SKScene {
         back.anchorPoint=CGPoint(x:0,y:0)
         back.position=CGPoint(x:-screenWidth/2,y:-screenHeight/2)
         joystick.position = CGPoint(x: screenWidth/6, y: screenHeight/6)
-        character.position = CGPoint(x: 500, y: 300)
-        character.size = CGSize(width:180*scaleChar, height:180*scaleChar)
+        character.position = CGPoint(x: 500*scale, y: 300*scale)
+        character.size = CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
 //        testInfecteds[0].position=getRandomPosition()
 //        testInfecteds[0].size = CGSize(width:180*scaleChar, height:180*scaleChar)
 //        testInfecteds[0].isInfected=true
@@ -162,7 +167,7 @@ class GameSceneSolo: SKScene {
         physicsWorld.contactDelegate = self
         self.addChild(dimDash)
 //        self.addChild(otherCharacter)
-        super.scaleMode = .aspectFit
+//        super.scaleMode = .aspectFit 
     }
     override func sceneDidLoad() {
         joystick.handleImage = UIImage(named: "shadedDark01.png")
