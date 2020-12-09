@@ -26,9 +26,9 @@ class Zombie: Character {
     
     func move() {
         var perfectAng = -atan2((self.character.position.x - self.position.x), (self.character.position.y - self.position.y))
-        if perfectAng == 0 {
+        if sin(perfectAng + CGFloat(Float.pi/2)) >= 0{
             if self.character.position.y < self.position.y {
-                perfectAng = 180
+                perfectAng+=CGFloat(Float.pi)
             }
         }
         self.zRotation = (perfectAng - self.angle)/50 + self.angle
