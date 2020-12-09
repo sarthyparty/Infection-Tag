@@ -32,7 +32,7 @@ class GameSceneSolo: SKScene {
     let heightScale=screenHeight/originalHeight
     var isServer = false
     var joystick = TLAnalogJoystick(withDiameter: 100)
-    var char = Character(isInfected: false)
+    var character = Character(isInfected: false)
     var cam = SKCameraNode()
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
@@ -156,9 +156,9 @@ class GameSceneSolo: SKScene {
                 //        joystick.name = "joystick"
         self.addChild(map)
         self.addChild(joystick)
-        self.addChild(char)
-        char.position = CGPoint(x: 500, y: 300)
-        char.size = CGSize(width:180*scaleChar, height:180*scaleChar)
+        self.addChild(character)
+        character.position = CGPoint(x: 500, y: 300)
+        character.size = CGSize(width:180*scaleChar, height:180*scaleChar)
         self.view?.addSubview(dashButton)
 //        for z in testInfecteds{
 //            self.addChild(z)
