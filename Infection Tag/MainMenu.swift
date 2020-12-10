@@ -20,16 +20,16 @@ class MainMenu: SKScene {
 //        buttonPlay.selectedHandler = {
 //            self.loadGame()
 //        }
-        background = (self.childNode(withName: "SKSpriteNode") as! SKSpriteNode)
-        background.anchorPoint=CGPoint(x: 0.5, y: 0.5)
-        background.size = CGSize(width: screenWidth, height: screenHeight)
+
         buttonPlaySolo = (self.childNode(withName: "buttonPlaySolo") as! MSButtonNode)
         buttonPlaySolo.position=CGPoint(x: screenWidth/2, y: screenHeight/2)
         buttonPlaySolo.selectedHandler = {
             self.loadGameSolo()
         }
-        nameDisplay = (self.childNode(withName: "name")!)
+        nameDisplay = (self.childNode(withName: "name") as! SKSpriteNode)
         nameDisplay.position=CGPoint(x: screenWidth/2, y: 2*screenHeight/3)
+        nameDisplay.yScale=scale*2
+        nameDisplay.xScale=scale*2
         //        buttonPlay.removeFromParent()
 
 

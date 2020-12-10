@@ -141,7 +141,7 @@ class GameSceneSolo: SKScene {
         dimDash.size=CGSize(width: 150*scale, height: 150*scale)
         dimDash.position=CGPoint(x:5*screenWidth/6, y: screenHeight/6)
 //        dimDash.isHidden=true
-        dashButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 150*scale, height: 150*scale))
+        dashButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 150, height: 150))
         dashButton.setImage(UIImage(named: "dash"), for: UIButton.State.normal)
         dashButton.addTarget(self, action: #selector(self.dash), for: UIControl.Event.allTouchEvents)
         back.size = CGSize(width:map.size.width*scaleMap+screenWidth,height:map.size.height*scaleMap+screenHeight)
