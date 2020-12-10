@@ -29,7 +29,7 @@ struct PhysicsCategory {
 
 class GameSceneSolo: SKScene {
     var isServer = false
-    var joystick = TLAnalogJoystick(withDiameter: 100*scale)
+    var joystick = TLAnalogJoystick(withDiameter: 150*scale)
     var character = Character(isInfected: false)
     var cam = SKCameraNode()
     var map=SKSpriteNode(imageNamed: "mapFINAL")
