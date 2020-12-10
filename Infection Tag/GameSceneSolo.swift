@@ -138,10 +138,10 @@ class GameSceneSolo: SKScene {
 //        testInfecteds[0].isInfected=true
 //        testInfecteds[0].texture = ZwalkSprites[2]
 //        character.isInfected=false
-        dimDash.size=CGSize(width: 100, height: 100)
+        dimDash.size=CGSize(width: 150*scale, height: 150*scale)
         dimDash.position=CGPoint(x:5*screenWidth/6, y: screenHeight/6)
 //        dimDash.isHidden=true
-        dashButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 100, height: 100))
+        dashButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 150*scale, height: 150*scale))
         dashButton.setImage(UIImage(named: "dash"), for: UIButton.State.normal)
         dashButton.addTarget(self, action: #selector(self.dash), for: UIControl.Event.allTouchEvents)
         back.size = CGSize(width:map.size.width*scaleMap+screenWidth,height:map.size.height*scaleMap+screenHeight)

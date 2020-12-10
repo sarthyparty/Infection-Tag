@@ -12,6 +12,7 @@ class MainMenu: SKScene {
     var gch: GameCenterHelper!
     var buttonPlay: MSButtonNode!
     var buttonPlaySolo: MSButtonNode!
+    var nameDisplay: SKNode!
     var background: SKSpriteNode!
 
     override func didMove(to view: SKView) {
@@ -20,14 +21,16 @@ class MainMenu: SKScene {
 //            self.loadGame()
 //        }
         background = (self.childNode(withName: "SKSpriteNode") as! SKSpriteNode)
+        background.anchorPoint=CGPoint(x: 0.5, y: 0.5)
         background.size = CGSize(width: screenWidth, height: screenHeight)
         buttonPlaySolo = (self.childNode(withName: "buttonPlaySolo") as! MSButtonNode)
         buttonPlaySolo.position=CGPoint(x: screenWidth/2, y: screenHeight/2)
         buttonPlaySolo.selectedHandler = {
             self.loadGameSolo()
         }
-        background = (self.childNode(withName: "SKSpriteNode") as! SKSpriteNode)
-//        buttonPlay.removeFromParent()
+        nameDisplay = (self.childNode(withName: "name")!)
+        nameDisplay.position=CGPoint(x: screenWidth/2, y: 2*screenHeight/3)
+        //        buttonPlay.removeFromParent()
 
 
     }
