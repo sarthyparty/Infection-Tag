@@ -27,7 +27,7 @@ class MainMenu: SKScene {
             self.loadGameSolo()
         }
         nameDisplay = (self.childNode(withName: "name") as! SKSpriteNode)
-        nameDisplay.position=CGPoint(x: screenWidth/2, y: 2*screenHeight/3)
+        nameDisplay.position=CGPoint(x: screenWidth/2, y: 3*screenHeight/4)
         nameDisplay.yScale=scale*2
         nameDisplay.xScale=scale*2
         //        buttonPlay.removeFromParent()
