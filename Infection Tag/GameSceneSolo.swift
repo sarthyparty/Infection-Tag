@@ -29,7 +29,7 @@ struct PhysicsCategory {
 
 class GameSceneSolo: SKScene {
     var isServer = false
-    var joystick = TLAnalogJoystick(withDiameter: 100)
+    var joystick = TLAnalogJoystick(withDiameter: 100*scale)
     var character = Character(isInfected: false)
     var cam = SKCameraNode()
     var map=SKSpriteNode(imageNamed: "mapFINAL")
@@ -254,19 +254,19 @@ class GameSceneSolo: SKScene {
         }
     }
     func characterHitWall(wall: Wall, character: Character) {
-        if (self.character.position.y+27<=wall.position.y-wall.size.height/2+15){
+        if (self.character.position.y+27*scale<=wall.position.y-wall.size.height/2+15*scale){
             hitwallbottom=true
             wall.side = "bottom"
         }else
-        if (self.character.position.x+27<=wall.position.x-wall.size.width/2+15){
+        if (self.character.position.x+27*scale<=wall.position.x-wall.size.width/2+15*scale){
             hitwallleft=true
             wall.side = "left"
         }else
-        if (self.character.position.x-27>=wall.position.x+wall.size.width/2-15){
+        if (self.character.position.x-27*scale>=wall.position.x+wall.size.width/2-15*scale){
             hitwallright=true
             wall.side = "right"
         }else
-        if (self.character.position.y-27>=wall.position.y+wall.size.height/2-15){
+        if (self.character.position.y-27*scale>=wall.position.y+wall.size.height/2-15*scale){
             hitwalltop=true
             wall.side = "top"
         }
