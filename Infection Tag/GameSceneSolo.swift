@@ -9,7 +9,7 @@ let screenWidth = screenSize.width
 let screenHeight = screenSize.height
 let originalWidth = CGFloat(1024)
 let originalHeight = CGFloat(766)
-var scale:CGFloat = 0
+var scale = CGFloat.minimum(screenWidth/originalWidth, screenHeight/originalHeight)
 
 import SpriteKit
 import GameplayKit
@@ -28,11 +28,9 @@ struct PhysicsCategory {
 }
 
 class GameSceneSolo: SKScene {
-    let widthScale=screenWidth/originalWidth
-    let heightScale=screenHeight/originalHeight
     var isServer = false
     var joystick = TLAnalogJoystick(withDiameter: 100)
-    var chara = Character(isInfected: false)
+    var character = Character(isInfected: false)
     var cam = SKCameraNode()
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
@@ -125,7 +123,6 @@ class GameSceneSolo: SKScene {
 //    }
     
     override func didMove(to view: SKView) {
-        scale=CGFloat.minimum(widthScale, heightScale)
         let scaleMap=CGFloat(10*scaleChar*scale)
         super.didMove(to: view)
         dimDash.alpha=0.4
@@ -156,9 +153,9 @@ class GameSceneSolo: SKScene {
                 //        joystick.name = "joystick"
         self.addChild(map)
         self.addChild(joystick)
-//        self.addChild(chara)
-        chara.position = CGPoint(x: 500, y: 300)
-        chara.size = CGSize(width:180*scaleChar, height:180*scaleChar)
+        self.addChild(character)
+        character.position = CGPoint(x: 500*scale, y: 300*scale)
+        character.size = CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
         self.view?.addSubview(dashButton)
 //        for z in testInfecteds{
 //            self.addChild(z)
@@ -194,11 +191,11 @@ class GameSceneSolo: SKScene {
             w.physicsBody?.contactTestBitMask = PhysicsCategory.character1 // 4
             w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         }
-//        chara.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2*scale, center: chara.position) // 1
-//        chara.physicsBody?.isDynamic = true // 2
-//        chara.physicsBody?.categoryBitMask = PhysicsCategory.character1 // 3
-//        chara.physicsBody?.contactTestBitMask = PhysicsCategory.wall // 4
-//        chara.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
+        character.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2*scale, center: character.position) // 1
+        character.physicsBody?.isDynamic = true // 2
+        character.physicsBody?.categoryBitMask = PhysicsCategory.character1 // 3
+        character.physicsBody?.contactTestBitMask = PhysicsCategory.wall // 4
+        character.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
        
 //        otherCharacter.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: character.position) // 1
 //        otherCharacter.physicsBody?.isDynamic = true // 2
@@ -226,7 +223,7 @@ class GameSceneSolo: SKScene {
             xPos=map.size.width*CGFloat(Float.random(in: 0..<1))
             yPos=map.size.height*CGFloat(Float.random(in: 0..<1))
             for wall in arrayWall{
-                let z=Zombie(char: chara, pos: CGPoint(x: xPos, y: yPos))
+                let z=Zombie(char: character, pos: CGPoint(x: xPos, y: yPos))
                 z.size=CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
                 if wall.intersects(z){
                     isIntersecting=true
@@ -257,19 +254,19 @@ class GameSceneSolo: SKScene {
         }
     }
     func characterHitWall(wall: Wall, character: Character) {
-        if (self.chara.position.y+27<=wall.position.y-wall.size.height/2+15){
+        if (self.character.position.y+27<=wall.position.y-wall.size.height/2+15){
             hitwallbottom=true
             wall.side = "bottom"
         }else
-        if (self.chara.position.x+27<=wall.position.x-wall.size.width/2+15){
+        if (self.character.position.x+27<=wall.position.x-wall.size.width/2+15){
             hitwallleft=true
             wall.side = "left"
         }else
-        if (self.chara.position.x-27>=wall.position.x+wall.size.width/2-15){
+        if (self.character.position.x-27>=wall.position.x+wall.size.width/2-15){
             hitwallright=true
             wall.side = "right"
         }else
-        if (self.chara.position.y-27>=wall.position.y+wall.size.height/2-15){
+        if (self.character.position.y-27>=wall.position.y+wall.size.height/2-15){
             hitwalltop=true
             wall.side = "top"
         }
@@ -317,22 +314,22 @@ class GameSceneSolo: SKScene {
         let velocityx=self.joystick.velocity.x*speedScale
         let velocityy=self.joystick.velocity.y*speedScale
         if(boundaryx==false){
-        if (self.chara.position.x + (velocityx)<chara.size.width/2){
-            self.chara.position.x=chara.size.width/2
+        if (self.character.position.x + (velocityx)<character.size.width/2){
+            self.character.position.x=character.size.width/2
             boundaryx=true
-        } else if (self.chara.position.x + (velocityx)>map.size.width-chara.size.width/2){
-            self.chara.position.x=map.size.width-chara.size.width/2
+        } else if (self.character.position.x + (velocityx)>map.size.width-character.size.width/2){
+            self.character.position.x=map.size.width-character.size.width/2
             boundaryx=true
         } else {
             boundaryx=false
         }
         }
         if(boundaryy==false){
-        if (self.chara.position.y + (velocityy)<chara.size.height/2){
-            self.chara.position.y=chara.size.height/2
+        if (self.character.position.y + (velocityy)<character.size.height/2){
+            self.character.position.y=character.size.height/2
             boundaryy=true
-        } else if (self.chara.position.y + (velocityy)>map.size.height-chara.size.height/2){
-            self.chara.position.y=map.size.height-chara.size.height/2
+        } else if (self.character.position.y + (velocityy)>map.size.height-character.size.height/2){
+            self.character.position.y=map.size.height-character.size.height/2
             boundaryy=true
         } else {
             boundaryy=false
@@ -340,20 +337,20 @@ class GameSceneSolo: SKScene {
         }
         if(boundaryx||boundaryy){
             if (boundaryx&&boundaryy){
-                self.chara.position = CGPoint(x: self.chara.position.x, y: self.chara.position.y)
+                self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
             }
             else if boundaryx{
                 if ((hitwalltop&&velocityy<0)||(hitwallbottom&&velocityy>0)) {
-                    self.chara.position = CGPoint(x: self.chara.position.x, y: self.chara.position.y)
+                    self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
                 } else {
-                    self.chara.position = CGPoint(x: self.chara.position.x, y: self.chara.position.y+(velocityy))
+                    self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(velocityy))
                 }
             }
             else if boundaryy{
                 if ((hitwallright&&velocityx<0)||(hitwallleft&&velocityx>0)) {
-                    self.chara.position = CGPoint(x: self.chara.position.x, y: self.chara.position.y)
+                    self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
                 } else {
-                    self.chara.position = CGPoint(x: self.chara.position.x+(velocityx), y: self.chara.position.y)
+                    self.character.position = CGPoint(x: self.character.position.x+(velocityx), y: self.character.position.y)
                 }
             }
         } else {
@@ -366,43 +363,43 @@ class GameSceneSolo: SKScene {
                 ymovement = false
             }
             if (xmovement&&ymovement) {
-                self.chara.position = CGPoint(x: self.chara.position.x+(velocityx), y: self.chara.position.y+(velocityy))
+                self.character.position = CGPoint(x: self.character.position.x+(velocityx), y: self.character.position.y+(velocityy))
                 
             } else if (xmovement) {
-                self.chara.position = CGPoint(x: self.chara.position.x+(velocityx), y: self.chara.position.y)
+                self.character.position = CGPoint(x: self.character.position.x+(velocityx), y: self.character.position.y)
             } else if (ymovement) {
-                self.chara.position = CGPoint(x: self.chara.position.x, y: self.chara.position.y+(velocityy))
+                self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y+(velocityy))
             } else {
-                self.chara.position = CGPoint(x: self.chara.position.x, y: self.chara.position.y)
+                self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
             }
         }
-        camera?.position = chara.position
+        camera?.position = character.position
         joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
         dimDash.position=CGPoint(x:camera!.position.x+(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
 
-        if(chara.isInfected){
+        if(character.isInfected){
             if(joystick.velocity == CGPoint(x: 0,y: 0)){
                 ind=8
-                chara.texture = ZwalkSprites[(ind-(ind%4))/4]
+                character.texture = ZwalkSprites[(ind-(ind%4))/4]
             } else {
                 if ind>31{
                     ind=0
                 }
-                chara.texture = ZwalkSprites[(ind-(ind%4))/4]
+                character.texture = ZwalkSprites[(ind-(ind%4))/4]
                 ind+=1
-                chara.zRotation=joystick.angular
+                character.zRotation=joystick.angular
             }
         }else{
             if(joystick.velocity == CGPoint(x: 0,y: 0)){
                 ind=8
-                chara.texture = walkSprites[(ind-(ind%4))/4]
+                character.texture = walkSprites[(ind-(ind%4))/4]
             } else {
                 if ind>31{
                     ind=0
                 }
-                chara.texture = walkSprites[(ind-(ind%4))/4]
+                character.texture = walkSprites[(ind-(ind%4))/4]
                 ind+=1
-                chara.zRotation=joystick.angular
+                character.zRotation=joystick.angular
             }
         }
         
@@ -429,7 +426,7 @@ class GameSceneSolo: SKScene {
         }
         if(zombieSpawnTimer%180==0){
             let pos=getRandomPosition()
-            testInfecteds.append(Zombie(char: chara, pos: pos))
+            testInfecteds.append(Zombie(char: character, pos: pos))
             testInfecteds.last?.size = CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
             testInfecteds.last?.isInfected=true
             testInfecteds.last?.texture = ZwalkSprites[2]
@@ -471,7 +468,7 @@ class GameSceneSolo: SKScene {
     
     func makeWalls(){
         let imgName="clearPNG"
-        let h=map.size.height*3*scale
+        let h=map.size.height*3
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:1.44*288*scale), Position: CGPoint(x:1.26*288*scale,y:(h-0.47*288)*scale)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.83*288*scale, height:0.13*288*scale), Position: CGPoint(x:0.43*288*scale,y:(h-1.28*288)*scale)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:1.44*288*scale), Position: CGPoint(x:1.9*288*scale,y:(h-0*288)*scale)))
