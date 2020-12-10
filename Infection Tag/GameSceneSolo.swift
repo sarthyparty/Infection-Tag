@@ -126,6 +126,7 @@ class GameSceneSolo: SKScene {
         let scaleMap=CGFloat(10*scaleChar*scale)
         super.didMove(to: view)
         dimDash.alpha=0.4
+        dashButton.alpha=0.7
 //        testInfecteds.append(Zombie())
         map.anchorPoint=CGPoint(x:0,y:0)
         map.position=CGPoint(x:0,y:0)
@@ -138,10 +139,10 @@ class GameSceneSolo: SKScene {
 //        testInfecteds[0].isInfected=true
 //        testInfecteds[0].texture = ZwalkSprites[2]
 //        character.isInfected=false
-        dimDash.size=CGSize(width: 150*scale, height: 150*scale)
+        dimDash.size=CGSize(width: 100, height: 100)
         dimDash.position=CGPoint(x:5*screenWidth/6, y: screenHeight/6)
 //        dimDash.isHidden=true
-        dashButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 150, height: 150))
+        dashButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 100, height: 100))
         dashButton.setImage(UIImage(named: "dash"), for: UIButton.State.normal)
         dashButton.addTarget(self, action: #selector(self.dash), for: UIControl.Event.allTouchEvents)
         back.size = CGSize(width:map.size.width*scaleMap+screenWidth,height:map.size.height*scaleMap+screenHeight)
@@ -242,6 +243,7 @@ class GameSceneSolo: SKScene {
 //                print("Send data failed")
 //            }
 //    }
+
     func characterHitCharacter(character1: Character, character2:Character){
         if((character1.isInfected)&&(!character2.isInfected)){
             character2.isInfected=true
