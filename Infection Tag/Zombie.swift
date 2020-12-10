@@ -13,11 +13,13 @@ class Zombie: Character {
     var angle: CGFloat
     var character: Character
     var ind: Int
+    var speedZ: CGFloat
     
     init(char: Character, pos: CGPoint){
         self.character = char
         self.angle = -atan2((char.position.x - pos.x), (char.position.y - pos.y))
         self.ind = 0
+        self.speedZ = CGFloat(3)
         super.init(isInfected: true)
         self.position = pos
         self.zRotation = angle
@@ -31,9 +33,9 @@ class Zombie: Character {
                 perfectAng = 180
             }
         }
-        self.zRotation = (perfectAng - self.angle)/50 + self.angle
-        self.position.x = self.position.x + (4 * cos(self.angle+CGFloat(Float.pi/2)))
-        self.position.y = self.position.y + (4 * sin(self.angle+CGFloat(Float.pi/2)))
+        self.zRotation = (perfectAng)/* - self.angle)/50 + self.angle*/
+        self.position.x = self.position.x + (speedZ * cos(self.angle+CGFloat(Float.pi/2)))
+        self.position.y = self.position.y + (speedZ * sin(self.angle+CGFloat(Float.pi/2)))
         self.angle = self.zRotation
         if ind>31{
             ind=0

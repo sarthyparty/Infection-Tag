@@ -311,8 +311,8 @@ class GameSceneSolo: SKScene {
       }
     
     override func update(_ currentTime: TimeInterval) {
-        let velocityx=self.joystick.velocity.x*speedScale
-        let velocityy=self.joystick.velocity.y*speedScale
+        let velocityx=self.joystick.velocity.x*speedScale*scale
+        let velocityy=self.joystick.velocity.y*speedScale*scale
         if(boundaryx==false){
         if (self.character.position.x + (velocityx)<character.size.width/2){
             self.character.position.x=character.size.width/2
@@ -436,6 +436,7 @@ class GameSceneSolo: SKScene {
             testInfecteds.last?.physicsBody?.categoryBitMask = PhysicsCategory.zombie // 3
             testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1// 4
             testInfecteds.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
+            testInfecteds.last?.speedZ=testInfecteds.last!.speedZ*scale
         }
         zombieSpawnTimer+=1
         for z in testInfecteds{
@@ -548,6 +549,8 @@ extension GameSceneSolo: SKPhysicsContactDelegate {
             let scene=MainMenu(fileNamed: "MainMenu")
             let theScene = scene
             let skView = view!
+            dashButton.removeFromSuperview()
+            dimDash.isHidden=true
             skView.presentScene(theScene)
         }
         if ((firstBody.categoryBitMask == PhysicsCategory.zombie) &&
@@ -555,6 +558,8 @@ extension GameSceneSolo: SKPhysicsContactDelegate {
             let scene=MainMenu(fileNamed: "MainMenu")
             let theScene = scene
             let skView = view!
+            dashButton.removeFromSuperview()
+            dimDash.isHidden=true
             skView.presentScene(theScene)
         }
         
