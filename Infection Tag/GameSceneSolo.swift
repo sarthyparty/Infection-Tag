@@ -320,7 +320,7 @@ class GameSceneSolo: SKScene {
             zombie1.size.height = 1.1*(zombie1.size.height)
             zombie1.size.width = 1.1*(zombie1.size.width)
             zombie2.removeFromParent()
-//            testInfecteds.remove(at: zombie2.ind)
+//            testInfecteds.remove(at: zombie2.ind-1)
             zombie1.physicsBody = SKPhysicsBody(circleOfRadius: zombie1.size.height/2/*, center: testInfecteds.last!.position*/) // 1
 //            for i in zombie1.ind...(testInfecteds.endIndex-1){
 //                testInfecteds[i].ind-=1
@@ -330,7 +330,7 @@ class GameSceneSolo: SKScene {
             zombie2.size.height = 1.1*(zombie1.size.height)
             zombie2.size.width = 1.1*(zombie1.size.width)
             zombie1.removeFromParent()
-//            testInfecteds.remove(at: zombie1.ind)
+//            testInfecteds.remove(at: zombie1.ind-1)
             zombie2.physicsBody = SKPhysicsBody(circleOfRadius: zombie1.size.height/2/*, center: testInfecteds.last!.position*/) // 1
 //            for i in zombie2.ind...(testInfecteds.endIndex-1){
 //                testInfecteds[i].ind-=1
@@ -480,14 +480,16 @@ class GameSceneSolo: SKScene {
             z.move()
         }
         for z in testInfecteds{
-            if z.intersects(character){
-                let scene=MainMenu(fileNamed: "MainMenu")
-                let theScene = scene
-                let skView = view!
-                dashButton.removeFromSuperview()
-                dimDash.isHidden=true
-                skView.presentScene(theScene)
-                print("hit")
+            if(z.parent != nil){
+                if z.intersects(character){
+                    let scene=MainMenu(fileNamed: "MainMenu")
+                    let theScene = scene
+                    let skView = view!
+                    dashButton.removeFromSuperview()
+                    dimDash.isHidden=true
+                    skView.presentScene(theScene)
+                    print("hit")
+                }
             }
         }
         for z in testInfecteds{
@@ -495,7 +497,6 @@ class GameSceneSolo: SKScene {
                 for z2 in testInfecteds{
                     if z2.physicsBody==z1{
                         zombieHiZombie(zombie1: z, zombie2: z2)
-                        
                     }
                 }
             }
