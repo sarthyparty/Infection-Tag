@@ -15,10 +15,10 @@ class Zombie: Character {
     var ind: Int
     var speedZ: CGFloat
     
-    init(char: Character, pos: CGPoint){
+    init(char: Character, pos: CGPoint, inde: Int){
         self.character = char
         self.angle = -atan2((char.position.x - pos.x), (char.position.y - pos.y))
-        self.ind = 0
+        self.ind = inde
         self.speedZ = CGFloat(3)
         super.init(isInfected: true)
         self.position = pos

@@ -54,9 +54,9 @@ class MainMenu: SKScene {
         }
         let scene = GameSceneSolo(fileNamed: "GameSceneSolo")
         scene?.scaleMode = .resizeFill
-//        skView.showsPhysics = true
-//        skView.showsDrawCount = true
-//        skView.showsFPS=true
+        skView.showsPhysics = true
+        skView.showsDrawCount = true
+        skView.showsFPS=true
 
         /* 4) Start game scene */
         skView.presentScene(scene)

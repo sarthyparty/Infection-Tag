@@ -28,6 +28,7 @@ struct PhysicsCategory {
 }
 
 class GameSceneSolo: SKScene {
+    var indexZ=0
     var isServer = false
     var joystick = TLAnalogJoystick(withDiameter: 150*scale)
     var character = Character(isInfected: false)
@@ -178,12 +179,12 @@ class GameSceneSolo: SKScene {
         camera?.addChild(joystick)
         
         //Creating rectangle level border
-        let rect = CGRect(origin: CGPoint(x: -2500, y: -2500), size: CGSize(width: 5000, height: 5000))
-        let borderindicator = SKShapeNode(rect: rect)
-        borderindicator.lineWidth = 50
-        borderindicator.alpha = 0.5
-        self.physicsBody = SKPhysicsBody(edgeLoopFrom: rect)
-        self.addChild(borderindicator)
+//        let rect = CGRect(origin: CGPoint(x: -2500, y: -2500), size: CGSize(width: 5000, height: 5000))
+//        let borderindicator = SKShapeNode(rect: rect)
+//        borderindicator.lineWidth = 50
+//        borderindicator.alpha = 0.5
+//        self.physicsBody = SKPhysicsBody(edgeLoopFrom: rect)
+//        self.addChild(borderindicator)
         makeWalls()
         for w in arrayWall{
             w.physicsBody = SKPhysicsBody(rectangleOf:w.size) // 1
@@ -196,7 +197,7 @@ class GameSceneSolo: SKScene {
         character.physicsBody?.isDynamic = true // 2
         character.physicsBody?.categoryBitMask = PhysicsCategory.character1 // 3
         character.physicsBody?.contactTestBitMask = PhysicsCategory.wall // 4
-        character.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
+//        character.physicsBody?.collisionBitMask = PhysicsCategory.wall | PhysicsCategory.zombie // 5
        
 //        otherCharacter.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: character.position) // 1
 //        otherCharacter.physicsBody?.isDynamic = true // 2
@@ -224,7 +225,7 @@ class GameSceneSolo: SKScene {
             xPos=map.size.width*CGFloat(Float.random(in: 0..<1))
             yPos=map.size.height*CGFloat(Float.random(in: 0..<1))
             for wall in arrayWall{
-                let z=Zombie(char: character, pos: CGPoint(x: xPos, y: yPos))
+                let z=Zombie(char: character, pos: CGPoint(x: xPos, y: yPos), inde: 0)
                 z.size=CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
                 if wall.intersects(z){
                     isIntersecting=true
@@ -314,19 +315,32 @@ class GameSceneSolo: SKScene {
     func zombieHiZombie (zombie1: Zombie, zombie2: Zombie) {
         let newX = (zombie1.position.x + zombie2.position.x)/2
         let newY = (zombie1.position.y + zombie2.position.y)/2
-        let newZombie = Zombie(char: self.character, pos: CGPoint(x: newX, y: newY))
-        newZombie.size.height = 0.75*(zombie1.size.height + zombie2.size.height)
-        newZombie.size.width = 0.75*(zombie1.size.width + zombie2.size.width)
-        testInfecteds.append(newZombie)
-        self.addChild(newZombie)
-        zombie1.removeFromParent()
-        zombie2.removeFromParent()
-        testInfecteds.last?.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2*scale/*, center: testInfecteds.last!.position*/) // 1
-        testInfecteds.last?.physicsBody?.isDynamic = true // 2
-        testInfecteds.last?.physicsBody?.categoryBitMask = PhysicsCategory.zombie // 3
-        testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1// 4
-        testInfecteds.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
-        testInfecteds.last?.speedZ=testInfecteds.last!.speedZ*scale
+        if(zombie1.ind<zombie2.ind){
+            zombie1.position = CGPoint(x: newX, y: newY)
+            zombie1.size.height = 1.1*(zombie1.size.height)
+            zombie1.size.width = 1.1*(zombie1.size.width)
+            zombie2.removeFromParent()
+//            testInfecteds.remove(at: zombie2.ind)
+            zombie1.physicsBody = SKPhysicsBody(circleOfRadius: zombie1.size.height/2/*, center: testInfecteds.last!.position*/) // 1
+//            for i in zombie1.ind...(testInfecteds.endIndex-1){
+//                testInfecteds[i].ind-=1
+//            }
+        }else{
+            zombie2.position = CGPoint(x: newX, y: newY)
+            zombie2.size.height = 1.1*(zombie1.size.height)
+            zombie2.size.width = 1.1*(zombie1.size.width)
+            zombie1.removeFromParent()
+//            testInfecteds.remove(at: zombie1.ind)
+            zombie2.physicsBody = SKPhysicsBody(circleOfRadius: zombie1.size.height/2/*, center: testInfecteds.last!.position*/) // 1
+//            for i in zombie2.ind...(testInfecteds.endIndex-1){
+//                testInfecteds[i].ind-=1
+//            }
+        }
+//        testInfecteds.last?.physicsBody?.isDynamic = true // 2
+//        testInfecteds.last?.physicsBody?.categoryBitMask = PhysicsCategory.zombie // 3
+//        testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1// 4
+//        testInfecteds.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
+//        testInfecteds.last?.speedZ=testInfecteds.last!.speedZ*scale
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -445,22 +459,48 @@ class GameSceneSolo: SKScene {
         }
         if(zombieSpawnTimer%180==0){
             let pos=getRandomPosition()
-            testInfecteds.append(Zombie(char: character, pos: pos))
+            testInfecteds.append(Zombie(char: character, pos: pos, inde: testInfecteds.endIndex))
             testInfecteds.last?.size = CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
             testInfecteds.last?.isInfected=true
             testInfecteds.last?.texture = ZwalkSprites[2]
             self.addChild(testInfecteds.last!)
-            testInfecteds.last?.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2*scale/*, center: testInfecteds.last!.position*/) // 1
-            testInfecteds.last?.physicsBody?.isDynamic = true // 2
+//            testInfecteds.last?.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2*scale/*, center: testInfecteds.last!.position*/) // 1
+            testInfecteds.last?.physicsBody?.isDynamic = false // 2
             testInfecteds.last?.physicsBody?.categoryBitMask = PhysicsCategory.zombie // 3
-            testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1// 4
+
+            testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.zombie// 4
             testInfecteds.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
             testInfecteds.last?.speedZ=testInfecteds.last!.speedZ*scale
+            testInfecteds.last?.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2*scale/*, center: testInfecteds.last!.position*/)
+            testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.zombie// 4
+//            indexZ+=1
         }
         zombieSpawnTimer+=1
         for z in testInfecteds{
             z.move()
         }
+        for z in testInfecteds{
+            if z.intersects(character){
+                let scene=MainMenu(fileNamed: "MainMenu")
+                let theScene = scene
+                let skView = view!
+                dashButton.removeFromSuperview()
+                dimDash.isHidden=true
+                skView.presentScene(theScene)
+                print("hit")
+            }
+        }
+        for z in testInfecteds{
+            for z1 in z.physicsBody!.allContactedBodies(){
+                for z2 in testInfecteds{
+                    if z2.physicsBody==z1{
+                        zombieHiZombie(zombie1: z, zombie2: z2)
+                        
+                    }
+                }
+            }
+        }
+        
 //        let localPlayer = getLocalPlayerType()
 //        gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
 //        gameModel.players[localPlayer.playerIndex()].yPos = Float(self.character.position.y)
