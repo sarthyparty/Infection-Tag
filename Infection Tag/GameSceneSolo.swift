@@ -315,7 +315,7 @@ class GameSceneSolo: SKScene {
     func zombieHiZombie (zombie1: Zombie, zombie2: Zombie) {
         let newX = (zombie1.position.x + zombie2.position.x)/2
         let newY = (zombie1.position.y + zombie2.position.y)/2
-        if(zombie1.ind<zombie2.ind){
+        if(zombie1.size.width>zombie2.size.width){
             zombie1.position = CGPoint(x: newX, y: newY)
             zombie1.size.height = 1.1*(zombie1.size.height)
             zombie1.size.width = 1.1*(zombie1.size.width)
