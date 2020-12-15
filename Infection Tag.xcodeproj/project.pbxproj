@@ -16,6 +16,7 @@
 		9D892764257E853F009B9007 /* GameSceneSolo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D892763257E853F009B9007 /* GameSceneSolo.swift */; };
 		9D892769257E8798009B9007 /* Zombie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D892768257E8798009B9007 /* Zombie.swift */; };
 		9DCB7582255DAC4E0006FE96 /* Pods_Infection_Tag.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFBA5CFCA8CCC685B16B6947 /* Pods_Infection_Tag.framework */; };
+		D377F8402589207E001F0A3F /* Gun.swift in Sources */ = {isa = PBXBuildFile; fileRef = D377F83F2589207E001F0A3F /* Gun.swift */; };
 		D39D02D22540827D00BDAC1E /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39D02D12540827D00BDAC1E /* Character.swift */; };
 		D39D02D725471C9700BDAC1E /* wall.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39D02D625471C9700BDAC1E /* wall.swift */; };
 		D3CF0C4D2537500F00394F79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CF0C4C2537500F00394F79 /* AppDelegate.swift */; };
@@ -64,6 +65,7 @@
 		9D892768257E8798009B9007 /* Zombie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zombie.swift; sourceTree = "<group>"; };
 		CC2B8DEC88FAC14F23FC9E7C /* Pods-Infection Tag-Infection TagUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Infection Tag-Infection TagUITests.debug.xcconfig"; path = "Target Support Files/Pods-Infection Tag-Infection TagUITests/Pods-Infection Tag-Infection TagUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		D1168C85DE6F504476301690 /* Pods-Infection Tag.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Infection Tag.debug.xcconfig"; path = "Target Support Files/Pods-Infection Tag/Pods-Infection Tag.debug.xcconfig"; sourceTree = "<group>"; };
+		D377F83F2589207E001F0A3F /* Gun.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gun.swift; sourceTree = "<group>"; };
 		D39D02D12540827D00BDAC1E /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		D39D02D625471C9700BDAC1E /* wall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wall.swift; sourceTree = "<group>"; };
 		D3CF0C492537500F00394F79 /* Infection Tag.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Infection Tag.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,6 +182,7 @@
 				9D892768257E8798009B9007 /* Zombie.swift */,
 				9D892763257E853F009B9007 /* GameSceneSolo.swift */,
 				D39D02D12540827D00BDAC1E /* Character.swift */,
+				D377F83F2589207E001F0A3F /* Gun.swift */,
 				D39D02D625471C9700BDAC1E /* wall.swift */,
 				D3CF0C562537500F00394F79 /* Main.storyboard */,
 				D3CF0C542537500F00394F79 /* GameViewController.swift */,
@@ -428,6 +431,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D377F8402589207E001F0A3F /* Gun.swift in Sources */,
 				9D892769257E8798009B9007 /* Zombie.swift in Sources */,
 				D3D60672256C16E7003E276A /* Player.swift in Sources */,
 				8121C19A2559A67900EE1F06 /* MainMenu.swift in Sources */,

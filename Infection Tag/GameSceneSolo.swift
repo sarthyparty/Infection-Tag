@@ -58,6 +58,7 @@ class GameSceneSolo: SKScene {
     var startTimer=false
     var startCounter=false
     var zombieSpawnTimer=0
+    var gun: Gun?
 //    var match: GKMatch?
 //    private var gameModel: GameModel!
     
@@ -156,6 +157,7 @@ class GameSceneSolo: SKScene {
         self.addChild(map)
         self.addChild(joystick)
         self.addChild(character)
+        self.addChild(self.gun)
         character.position = CGPoint(x: 500*scale, y: 300*scale)
         character.size = CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
         self.view?.addSubview(dashButton)
@@ -173,6 +175,7 @@ class GameSceneSolo: SKScene {
     }
     override func sceneDidLoad() {
 //        self.addChild(chara)
+        gun = Gun(char: self.character)
         joystick.handleImage = UIImage(named: "shadedDark01.png")
         joystick.baseImage = UIImage(named: "shadedDark07.png")
         joystick.alpha = 0.5
@@ -501,6 +504,7 @@ class GameSceneSolo: SKScene {
                 }
             }
         }
+        self.gun?.setPosition()
         
 //        let localPlayer = getLocalPlayerType()
 //        gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
