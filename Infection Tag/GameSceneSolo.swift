@@ -322,9 +322,10 @@ class GameSceneSolo: SKScene {
             zombie1.position = CGPoint(x: newX, y: newY)
             zombie1.size.height = 1.1*(zombie1.size.height)
             zombie1.size.width = 1.1*(zombie1.size.width)
+            zombie1.rad=zombie1.rad*1.1
             zombie2.removeFromParent()
 //            testInfecteds.remove(at: zombie2.ind-1)
-            zombie1.physicsBody = SKPhysicsBody(circleOfRadius: zombie1.size.height/2/*, center: testInfecteds.last!.position*/) // 1
+            zombie1.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(zombie1.rad)/*, center: testInfecteds.last!.position*/) // 1
 //            for i in zombie1.ind...(testInfecteds.endIndex-1){
 //                testInfecteds[i].ind-=1
 //            }
@@ -332,9 +333,10 @@ class GameSceneSolo: SKScene {
             zombie2.position = CGPoint(x: newX, y: newY)
             zombie2.size.height = 1.1*(zombie1.size.height)
             zombie2.size.width = 1.1*(zombie1.size.width)
+            zombie2.rad=zombie2.rad*1.1
             zombie1.removeFromParent()
 //            testInfecteds.remove(at: zombie1.ind-1)
-            zombie2.physicsBody = SKPhysicsBody(circleOfRadius: zombie1.size.height/2/*, center: testInfecteds.last!.position*/) // 1
+            zombie2.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(zombie2.rad)/*, center: testInfecteds.last!.position*/) // 1
 //            for i in zombie2.ind...(testInfecteds.endIndex-1){
 //                testInfecteds[i].ind-=1
 //            }
@@ -462,7 +464,7 @@ class GameSceneSolo: SKScene {
         }
         if(zombieSpawnTimer%180==0){
             let pos=getRandomPosition()
-            testInfecteds.append(Zombie(char: character, pos: pos, inde: testInfecteds.endIndex))
+            testInfecteds.append(Zombie(char: character, pos: pos, inde: testInfecteds.endIndex, radi: 180*scaleChar/2*scale))
             testInfecteds.last?.size = CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
             testInfecteds.last?.isInfected=true
             testInfecteds.last?.texture = ZwalkSprites[2]
@@ -474,7 +476,7 @@ class GameSceneSolo: SKScene {
             testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.zombie// 4
             testInfecteds.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
             testInfecteds.last?.speedZ=testInfecteds.last!.speedZ*scale
-            testInfecteds.last?.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2*scale/*, center: testInfecteds.last!.position*/)
+            testInfecteds.last?.physicsBody = SKPhysicsBody(circleOfRadius: testInfecteds.last?.rad/*, center: testInfecteds.last!.position*/)
             testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.zombie// 4
 //            indexZ+=1
         }
