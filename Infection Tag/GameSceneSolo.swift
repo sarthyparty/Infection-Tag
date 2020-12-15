@@ -157,7 +157,7 @@ class GameSceneSolo: SKScene {
         self.addChild(map)
         self.addChild(joystick)
         self.addChild(character)
-        self.addChild(self.gun)
+        self.addChild(self.gun!)
         character.position = CGPoint(x: 500*scale, y: 300*scale)
         character.size = CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
         self.view?.addSubview(dashButton)
@@ -228,7 +228,7 @@ class GameSceneSolo: SKScene {
             xPos=map.size.width*CGFloat(Float.random(in: 0..<1))
             yPos=map.size.height*CGFloat(Float.random(in: 0..<1))
             for wall in arrayWall{
-                let z=Zombie(char: character, pos: CGPoint(x: xPos, y: yPos), inde: 0)
+                let z=Zombie(char: character, pos: CGPoint(x: xPos, y: yPos), inde: 0, radi: Float(180*scaleChar/2*scale))
                 z.size=CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
                 if wall.intersects(z){
                     isIntersecting=true
@@ -464,7 +464,7 @@ class GameSceneSolo: SKScene {
         }
         if(zombieSpawnTimer%180==0){
             let pos=getRandomPosition()
-            testInfecteds.append(Zombie(char: character, pos: pos, inde: testInfecteds.endIndex, radi: 180*scaleChar/2*scale))
+            testInfecteds.append(Zombie(char: character, pos: pos, inde: testInfecteds.endIndex, radi: Float(180*scaleChar/2*scale)))
             testInfecteds.last?.size = CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
             testInfecteds.last?.isInfected=true
             testInfecteds.last?.texture = ZwalkSprites[2]
@@ -476,7 +476,7 @@ class GameSceneSolo: SKScene {
             testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.zombie// 4
             testInfecteds.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
             testInfecteds.last?.speedZ=testInfecteds.last!.speedZ*scale
-            testInfecteds.last?.physicsBody = SKPhysicsBody(circleOfRadius: testInfecteds.last?.rad/*, center: testInfecteds.last!.position*/)
+            testInfecteds.last?.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(testInfecteds.last!.rad)/*, center: testInfecteds.last!.position*/)
             testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.zombie// 4
 //            indexZ+=1
         }
