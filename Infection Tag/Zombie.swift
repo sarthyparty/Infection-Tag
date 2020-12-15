@@ -14,11 +14,13 @@ class Zombie: Character {
     var character: Character
     var ind: Int
     var speedZ: CGFloat
+    var rad: Float
     
-    init(char: Character, pos: CGPoint, inde: Int){
+    init(char: Character, pos: CGPoint, inde: Int, radi:Float){
         self.character = char
         self.angle = -atan2((char.position.x - pos.x), (char.position.y - pos.y))
         self.ind = inde
+        self.rad=radi
         self.speedZ = CGFloat(3)
         super.init(isInfected: true)
         self.position = pos
