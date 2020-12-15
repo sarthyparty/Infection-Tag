@@ -25,8 +25,8 @@ class Gun: SKSpriteNode {
     }
     
     func setPosition() {
-        let x =  CGFloat(10*cos(self.character.zRotation) + self.position.x)
-        let y =  CGFloat(10*sin(self.character.zRotation) + self.position.y)
+        let x =  CGFloat(10*cos(self.character.zRotation) + self.character.position.x)
+        let y =  CGFloat(10*sin(self.character.zRotation) + self.character.position.y)
         self.position = CGPoint(x:x, y:y)
     }
 
