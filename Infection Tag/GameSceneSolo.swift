@@ -58,7 +58,7 @@ class GameSceneSolo: SKScene {
     var startTimer=false
     var startCounter=false
     var zombieSpawnTimer=0
-    var gun: Gun?
+//    var gun: Gun?
 //    var match: GKMatch?
 //    private var gameModel: GameModel!
     
@@ -157,7 +157,7 @@ class GameSceneSolo: SKScene {
         self.addChild(map)
         self.addChild(joystick)
         self.addChild(character)
-        self.addChild(self.gun!)
+//        self.addChild(self.gun!)
         character.position = CGPoint(x: 500*scale, y: 300*scale)
         character.size = CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
         self.view?.addSubview(dashButton)
@@ -175,7 +175,7 @@ class GameSceneSolo: SKScene {
     }
     override func sceneDidLoad() {
 //        self.addChild(chara)
-        gun = Gun(char: self.character)
+//        gun = Gun(char: self.character)
         joystick.handleImage = UIImage(named: "shadedDark01.png")
         joystick.baseImage = UIImage(named: "shadedDark07.png")
         joystick.alpha = 0.5
@@ -320,9 +320,9 @@ class GameSceneSolo: SKScene {
         let newY = (zombie1.position.y + zombie2.position.y)/2
         if(zombie1.size.width>zombie2.size.width){
             zombie1.position = CGPoint(x: newX, y: newY)
-            zombie1.size.height = 1.1*(zombie1.size.height)
-            zombie1.size.width = 1.1*(zombie1.size.width)
-            zombie1.rad=zombie1.rad*1.1
+            zombie1.size.height = 1.2*(zombie1.size.height)
+            zombie1.size.width = 1.2*(zombie1.size.width)
+            zombie1.rad=zombie1.rad*1.2
             zombie2.removeFromParent()
 //            testInfecteds.remove(at: zombie2.ind-1)
             zombie1.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(zombie1.rad)/*, center: testInfecteds.last!.position*/) // 1
@@ -331,9 +331,9 @@ class GameSceneSolo: SKScene {
 //            }
         }else{
             zombie2.position = CGPoint(x: newX, y: newY)
-            zombie2.size.height = 1.1*(zombie1.size.height)
-            zombie2.size.width = 1.1*(zombie1.size.width)
-            zombie2.rad=zombie2.rad*1.1
+            zombie2.size.height = 1.2*(zombie1.size.height)
+            zombie2.size.width = 1.2*(zombie1.size.width)
+            zombie2.rad=zombie2.rad*1.2
             zombie1.removeFromParent()
 //            testInfecteds.remove(at: zombie1.ind-1)
             zombie2.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(zombie2.rad)/*, center: testInfecteds.last!.position*/) // 1
@@ -506,7 +506,7 @@ class GameSceneSolo: SKScene {
                 }
             }
         }
-        self.gun?.setPosition()
+//        self.gun?.setPosition()
         
 //        let localPlayer = getLocalPlayerType()
 //        gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
