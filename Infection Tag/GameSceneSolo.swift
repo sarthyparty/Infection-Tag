@@ -33,6 +33,8 @@ class GameSceneSolo: SKScene {
     var joystick = TLAnalogJoystick(withDiameter: 150*scale)
     var character = Character(isInfected: false)
     var cam = SKCameraNode()
+    var scoreLabel = SKLabelNode()
+    var score = 0
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
     var dimDash=SKSpriteNode(imageNamed:"dash")
@@ -135,6 +137,7 @@ class GameSceneSolo: SKScene {
         back.anchorPoint=CGPoint(x:0,y:0)
         back.position=CGPoint(x:-screenWidth/2,y:-screenHeight/2)
         joystick.position = CGPoint(x: screenWidth/6, y: screenHeight/6)
+        scoreLabel.position = CGPoint(x: screenWidth/6, y: screenHeight - screenHeight/6)
         
 //        testInfecteds[0].position=getRandomPosition()
 //        testInfecteds[0].size = CGSize(width:180*scaleChar, height:180*scaleChar)
@@ -157,6 +160,7 @@ class GameSceneSolo: SKScene {
         self.addChild(map)
         self.addChild(joystick)
         self.addChild(character)
+        self.addChild(self.scoreLabel)
 //        self.addChild(self.gun!)
         character.position = CGPoint(x: 500*scale, y: 300*scale)
         character.size = CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
@@ -176,6 +180,8 @@ class GameSceneSolo: SKScene {
     override func sceneDidLoad() {
 //        self.addChild(chara)
 //        gun = Gun(char: self.character)
+        scoreLabel.attributedText = NSAttributedString(string: "Score: " + String(score))
+        scoreLabel.color = SKColor(named: "orange")
         joystick.handleImage = UIImage(named: "shadedDark01.png")
         joystick.baseImage = UIImage(named: "shadedDark07.png")
         joystick.alpha = 0.5
@@ -506,6 +512,12 @@ class GameSceneSolo: SKScene {
                 }
             }
         }
+        self.score+=1
+        scoreLabel.attributedText = NSAttributedString(string: "Score: " + String(score))
+        camera?.position = character.position
+        scoreLabel.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y+(2*screenHeight)/6)
+        
+        
 //        self.gun?.setPosition()
         
 //        let localPlayer = getLocalPlayerType()
