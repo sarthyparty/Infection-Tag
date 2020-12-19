@@ -63,6 +63,7 @@ class GameSceneSolo: SKScene {
 //    var gun: Gun?
     var scoreText=NSMutableAttributedString(string:"Score: "+String(0))
     let attributes:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -2, .font: UIFont(name: "Futura", size: 30)!, .foregroundColor: UIColor.black]
+    var pauseButton=MSButtonNode(img:UIImage(systemName: "pause.fill")!, size: CGSize(width: 100, height: 100))
 //    var match: GKMatch?
 //    private var gameModel: GameModel!
     
@@ -129,6 +130,7 @@ class GameSceneSolo: SKScene {
 //    }
     
     override func didMove(to view: SKView) {
+//        pauseButton?.texture=SKTexture(imageNamed: "pause.fill")
         scoreText=NSMutableAttributedString(string: "Score: " + String(score))
         scoreText.addAttributes(attributes, range: NSMakeRange(0, scoreText.length))
         scoreLabel.attributedText = scoreText
@@ -158,9 +160,23 @@ class GameSceneSolo: SKScene {
         back.size = CGSize(width:map.size.width*scaleMap+screenWidth,height:map.size.height*scaleMap+screenHeight)
         map.size = CGSize(width:map.size.width*scaleMap, height:map.size.height*scaleMap)
         joystick.alpha = 0.5
+        pauseButton?.selectedHandler = {
+            if(self.isPaused==false){
+                self.dimDash.removeFromParent()
+                self.dashButton.removeFromSuperview()
+            } else {
+                self.addChild(self.dimDash)
+                self.view?.addSubview(self.dashButton)
+            }
+            self.isPaused.toggle()
+            self.joystick.disabled.toggle()
+            
+            
+        }
         self.camera = cam
         self.addChild(back)
         self.addChild(cam)
+        
                 //        joystick.name = "joystick"
         self.addChild(map)
         self.addChild(joystick)
@@ -179,6 +195,7 @@ class GameSceneSolo: SKScene {
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
         self.addChild(dimDash)
+        self.addChild(pauseButton!)
 //        self.addChild(otherCharacter)
 //        super.scaleMode = .aspectFit 
     }
@@ -206,7 +223,7 @@ class GameSceneSolo: SKScene {
             w.physicsBody?.contactTestBitMask = PhysicsCategory.character1 // 4
             w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         }
-        character.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2*scale, center: character.position) // 1
+        character.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "walk3"), alphaThreshold: 0.5, size: CGSize(width: character.size.width*scaleChar, height: character.size.height*scaleChar))// 1
         character.physicsBody?.isDynamic = true // 2
         character.physicsBody?.categoryBitMask = PhysicsCategory.character1 // 3
         character.physicsBody?.contactTestBitMask = PhysicsCategory.wall // 4
@@ -258,73 +275,73 @@ class GameSceneSolo: SKScene {
 //            }
 //    }
 
-    func characterHitCharacter(character1: Character, character2:Character){
-        if((character1.isInfected)&&(!character2.isInfected)){
-            character2.isInfected=true
-            self.view?.addSubview(dashButton)
-            speedScale=CGFloat(0.9)
-        } else if((character2.isInfected)&&(!character1.isInfected)){
-            character1.isInfected=true
-            self.view?.addSubview(dashButton)
-            speedScale=CGFloat(0.9)
-        }
-    }
-    func characterHitWall(wall: Wall, character: Character) {
-        if (self.character.position.y+27*scale<=wall.position.y-wall.size.height/2+15*scale){
-            hitwallbottom=true
-            wall.side = "bottom"
-        }else
-        if (self.character.position.x+27*scale<=wall.position.x-wall.size.width/2+15*scale){
-            hitwallleft=true
-            wall.side = "left"
-        }else
-        if (self.character.position.x-27*scale>=wall.position.x+wall.size.width/2-15*scale){
-            hitwallright=true
-            wall.side = "right"
-        }else
-        if (self.character.position.y-27*scale>=wall.position.y+wall.size.height/2-15*scale){
-            hitwalltop=true
-            wall.side = "top"
-        }
-    }
-    func characterLeftWall(wall: Wall, character: SKSpriteNode) {
-        if (wall.side == "bottom"){
-          hitwallbottom=false
-          wall.side = " "
-          for w in arrayWall{
-            if(w.side == "bottom"){
-              hitwallbottom=true
-            }
-          }
-        }else
-        if (wall.side == "left"){
-          hitwallleft=false
-          wall.side = " "
-          for w in arrayWall{
-            if(w.side == "left"){
-              hitwallleft=true
-            }
-          }
-        }else
-        if (wall.side == "right"){
-          hitwallright=false
-          wall.side = " "
-          for w in arrayWall{
-            if(w.side == "right"){
-              hitwallright=true
-            }
-          }
-        }else
-        if (wall.side == "top"){
-          hitwalltop=false
-          wall.side = " "
-          for w in arrayWall{
-            if(w.side == "top"){
-              hitwalltop=true
-            }
-          }
-        }
-      }
+//    func characterHitCharacter(character1: Character, character2:Character){
+//        if((character1.isInfected)&&(!character2.isInfected)){
+//            character2.isInfected=true
+//            self.view?.addSubview(dashButton)
+//            speedScale=CGFloat(0.9)
+//        } else if((character2.isInfected)&&(!character1.isInfected)){
+//            character1.isInfected=true
+//            self.view?.addSubview(dashButton)
+//            speedScale=CGFloat(0.9)
+//        }
+//    }
+//    func characterHitWall(wall: Wall, character: Character) {
+//        if (self.character.position.y+27*scale<=wall.position.y-wall.size.height/2+15*scale){
+//            hitwallbottom=true
+//            wall.side = "bottom"
+//        }else
+//        if (self.character.position.x+27*scale<=wall.position.x-wall.size.width/2+15*scale){
+//            hitwallleft=true
+//            wall.side = "left"
+//        }else
+//        if (self.character.position.x-27*scale>=wall.position.x+wall.size.width/2-15*scale){
+//            hitwallright=true
+//            wall.side = "right"
+//        }else
+//        if (self.character.position.y-27*scale>=wall.position.y+wall.size.height/2-15*scale){
+//            hitwalltop=true
+//            wall.side = "top"
+//        }
+//    }
+//    func characterLeftWall(wall: Wall, character: SKSpriteNode) {
+//        if (wall.side == "bottom"){
+//          hitwallbottom=false
+//          wall.side = " "
+//          for w in arrayWall{
+//            if(w.side == "bottom"){
+//              hitwallbottom=true
+//            }
+//          }
+//        }else
+//        if (wall.side == "left"){
+//          hitwallleft=false
+//          wall.side = " "
+//          for w in arrayWall{
+//            if(w.side == "left"){
+//              hitwallleft=true
+//            }
+//          }
+//        }else
+//        if (wall.side == "right"){
+//          hitwallright=false
+//          wall.side = " "
+//          for w in arrayWall{
+//            if(w.side == "right"){
+//              hitwallright=true
+//            }
+//          }
+//        }else
+//        if (wall.side == "top"){
+//          hitwalltop=false
+//          wall.side = " "
+//          for w in arrayWall{
+//            if(w.side == "top"){
+//              hitwalltop=true
+//            }
+//          }
+//        }
+//      }
     func zombieHiZombie (zombie1: Zombie, zombie2: Zombie) {
         let newX = (zombie1.position.x + zombie2.position.x)/2
         let newY = (zombie1.position.y + zombie2.position.y)/2
@@ -335,7 +352,8 @@ class GameSceneSolo: SKScene {
             zombie1.rad=zombie1.rad*1.2
             zombie2.removeFromParent()
 //            testInfecteds.remove(at: zombie2.ind-1)
-            zombie1.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(zombie1.rad)/*, center: testInfecteds.last!.position*/) // 1
+//            zombie1.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(zombie1.rad)/*, center: testInfecteds.last!.position*/)
+            zombie1.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "walk3"), alphaThreshold: 0.5, size: zombie1.size)// 1
 //            for i in zombie1.ind...(testInfecteds.endIndex-1){
 //                testInfecteds[i].ind-=1
 //            }
@@ -346,7 +364,8 @@ class GameSceneSolo: SKScene {
             zombie2.rad=zombie2.rad*1.2
             zombie1.removeFromParent()
 //            testInfecteds.remove(at: zombie1.ind-1)
-            zombie2.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(zombie2.rad)/*, center: testInfecteds.last!.position*/) // 1
+//            zombie2.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(zombie2.rad)/*, center: testInfecteds.last!.position*/) // 1
+            zombie2.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "walk3"), alphaThreshold: 0.5, size: zombie2.size)
 //            for i in zombie2.ind...(testInfecteds.endIndex-1){
 //                testInfecteds[i].ind-=1
 //            }
@@ -424,7 +443,7 @@ class GameSceneSolo: SKScene {
         camera?.position = character.position
         joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
         dimDash.position=CGPoint(x:camera!.position.x+(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
-
+        pauseButton?.position=CGPoint(x:camera!.position.x-(3*screenWidth)/7, y: camera!.position.y+(3*screenHeight)/7)
         if(character.isInfected){
             if(joystick.velocity == CGPoint(x: 0,y: 0)){
                 ind=8
@@ -486,7 +505,7 @@ class GameSceneSolo: SKScene {
             testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.zombie// 4
             testInfecteds.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
             testInfecteds.last?.speedZ=testInfecteds.last!.speedZ*scale
-            testInfecteds.last?.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(testInfecteds.last!.rad)/*, center: testInfecteds.last!.position*/)
+            testInfecteds.last?.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "walk3"), alphaThreshold: 0.5, size: testInfecteds.last!.size)
             testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.zombie// 4
 //            indexZ+=1
         }
@@ -609,26 +628,26 @@ extension GameSceneSolo: SKPhysicsContactDelegate {
       }
      
       // 2
-        if((firstBody.categoryBitMask==secondBody.categoryBitMask)&&(firstBody.categoryBitMask==PhysicsCategory.character1)){
-            if let character1 = firstBody.node as? Character,
-              let character2 = secondBody.node as? Character {
-                characterHitCharacter(character1: character1, character2: character2)
-            }
-        }
-        if ((firstBody.categoryBitMask == PhysicsCategory.character1) &&
-                (secondBody.categoryBitMask == PhysicsCategory.wall)) {
-            if let character = firstBody.node as? SKSpriteNode,
-           let wall = secondBody.node as? SKSpriteNode {
-                characterHitWall(wall: wall as! Wall, character: character as! Character)
-            }
-        }
-        if ((firstBody.categoryBitMask == PhysicsCategory.wall) &&
-            (secondBody.categoryBitMask == PhysicsCategory.character1)) {
-          if let wall = firstBody.node as? SKSpriteNode,
-            let character = secondBody.node as? SKSpriteNode {
-              characterHitWall(wall: wall as! Wall, character: character as! Character)
-          }
-        }
+//        if((firstBody.categoryBitMask==secondBody.categoryBitMask)&&(firstBody.categoryBitMask==PhysicsCategory.character1)){
+//            if let character1 = firstBody.node as? Character,
+//              let character2 = secondBody.node as? Character {
+//                characterHitCharacter(character1: character1, character2: character2)
+//            }
+//        }
+//        if ((firstBody.categoryBitMask == PhysicsCategory.character1) &&
+//                (secondBody.categoryBitMask == PhysicsCategory.wall)) {
+//            if let character = firstBody.node as? SKSpriteNode,
+//           let wall = secondBody.node as? SKSpriteNode {
+//                characterHitWall(wall: wall as! Wall, character: character as! Character)
+//            }
+//        }
+//        if ((firstBody.categoryBitMask == PhysicsCategory.wall) &&
+//            (secondBody.categoryBitMask == PhysicsCategory.character1)) {
+//          if let wall = firstBody.node as? SKSpriteNode,
+//            let character = secondBody.node as? SKSpriteNode {
+//              characterHitWall(wall: wall as! Wall, character: character as! Character)
+//          }
+//        }
         if ((firstBody.categoryBitMask == PhysicsCategory.character1) &&
                 (secondBody.categoryBitMask == PhysicsCategory.zombie)) {
             let scene=MainMenu(fileNamed: "MainMenu")
@@ -656,34 +675,34 @@ extension GameSceneSolo: SKPhysicsContactDelegate {
         }
         
     }
-    func didEnd(_ contact: SKPhysicsContact) {
-      // 1
-      var firstBody: SKPhysicsBody
-      var secondBody: SKPhysicsBody
-      if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
-        firstBody = contact.bodyA
-        secondBody = contact.bodyB
-      } else {
-        firstBody = contact.bodyB
-        secondBody = contact.bodyA
-      }
-     
-      // 2
-        if ((firstBody.categoryBitMask == PhysicsCategory.character1) &&
-            (secondBody.categoryBitMask == PhysicsCategory.wall)) {
-          if let character = firstBody.node as? SKSpriteNode,
-            let wall = secondBody.node as? SKSpriteNode {
-              characterLeftWall(wall: wall as! Wall, character: character as! Character)
-          }
-        }
-          if ((firstBody.categoryBitMask == PhysicsCategory.wall) &&
-              (secondBody.categoryBitMask == PhysicsCategory.character1)) {
-            if let wall = firstBody.node as? SKSpriteNode,
-              let character = secondBody.node as? SKSpriteNode {
-                characterLeftWall(wall: wall as! Wall, character: character as! Character)
-            }
-          }
-    }
+//    func didEnd(_ contact: SKPhysicsContact) {
+//      // 1
+//      var firstBody: SKPhysicsBody
+//      var secondBody: SKPhysicsBody
+//      if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+//        firstBody = contact.bodyA
+//        secondBody = contact.bodyB
+//      } else {
+//        firstBody = contact.bodyB
+//        secondBody = contact.bodyA
+//      }
+//
+//       2
+//        if ((firstBody.categoryBitMask == PhysicsCategory.character1) &&
+//            (secondBody.categoryBitMask == PhysicsCategory.wall)) {
+//          if let character = firstBody.node as? SKSpriteNode,
+//            let wall = secondBody.node as? SKSpriteNode {
+//              characterLeftWall(wall: wall as! Wall, character: character as! Character)
+//          }
+//        }
+//          if ((firstBody.categoryBitMask == PhysicsCategory.wall) &&
+//              (secondBody.categoryBitMask == PhysicsCategory.character1)) {
+//            if let wall = firstBody.node as? SKSpriteNode,
+//              let character = secondBody.node as? SKSpriteNode {
+//                characterLeftWall(wall: wall as! Wall, character: character as! Character)
+//            }
+//          }
+//    }
 }
 
 //extension GameScene: GKMatchDelegate {

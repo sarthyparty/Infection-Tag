@@ -46,7 +46,13 @@ class MSButtonNode: SKSpriteNode {
         
         /* Call parent initializer e.g. SKSpriteNode */
         super.init(coder: aDecoder)
+        /* Enable touch on button node */
+        self.isUserInteractionEnabled = true
+    }
+    required init?(img: UIImage, size: CGSize) {
         
+        /* Call parent initializer e.g. SKSpriteNode */
+        super.init(texture: SKTexture(image: img), color: UIColor.clear, size: size)
         /* Enable touch on button node */
         self.isUserInteractionEnabled = true
     }
