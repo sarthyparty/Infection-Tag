@@ -60,7 +60,7 @@ class GameSceneSolo: SKScene {
     var startTimer=false
     var startCounter=false
     var zombieSpawnTimer=0
-    var gun: Gun?
+//    var gun: Gun?
     var scoreText=NSMutableAttributedString(string:"Score: "+String(0))
     let attributes:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -2, .font: UIFont(name: "Futura", size: 30)!, .foregroundColor: UIColor.black]
 //    var match: GKMatch?
@@ -166,7 +166,7 @@ class GameSceneSolo: SKScene {
         self.addChild(joystick)
         self.addChild(character)
         self.addChild(self.scoreLabel)
-        self.addChild(self.gun!)
+//        self.addChild(self.gun!)
         character.position = CGPoint(x: 500*scale, y: 300*scale)
         character.size = CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
         self.view?.addSubview(dashButton)
@@ -183,7 +183,7 @@ class GameSceneSolo: SKScene {
 //        super.scaleMode = .aspectFit 
     }
     override func sceneDidLoad() {
-        gun = Gun(char: self.character)
+//        gun = Gun(char: self.character)
 //        scoreLabel.attributedText = NSAttributedString(string: "Score: " + String(score))
 //        scoreLabel.color = SKColor(named: "orange")
         joystick.handleImage = UIImage(named: "shadedDark01.png")
