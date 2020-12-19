@@ -61,6 +61,8 @@ class GameSceneSolo: SKScene {
     var startCounter=false
     var zombieSpawnTimer=0
     var gun: Gun?
+    var scoreText=NSMutableAttributedString(string:"Score: "+String(0))
+    let attributes:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -2, .font: UIFont(name: "Futura", size: 30)!, .foregroundColor: UIColor.black]
 //    var match: GKMatch?
 //    private var gameModel: GameModel!
     
@@ -127,6 +129,9 @@ class GameSceneSolo: SKScene {
 //    }
     
     override func didMove(to view: SKView) {
+        scoreText=NSMutableAttributedString(string: "Score: " + String(score))
+        scoreText.addAttributes(attributes, range: NSMakeRange(0, scoreText.length))
+        scoreLabel.attributedText = scoreText
         let scaleMap=CGFloat(10*scaleChar*scale)
         super.didMove(to: view)
         dimDash.alpha=0.4
@@ -179,8 +184,8 @@ class GameSceneSolo: SKScene {
     }
     override func sceneDidLoad() {
         gun = Gun(char: self.character)
-        scoreLabel.attributedText = NSAttributedString(string: "Score: " + String(score))
-        scoreLabel.color = SKColor(named: "orange")
+//        scoreLabel.attributedText = NSAttributedString(string: "Score: " + String(score))
+//        scoreLabel.color = SKColor(named: "orange")
         joystick.handleImage = UIImage(named: "shadedDark01.png")
         joystick.baseImage = UIImage(named: "shadedDark07.png")
         joystick.alpha = 0.5
@@ -512,12 +517,15 @@ class GameSceneSolo: SKScene {
             }
         }
         self.score+=1
-        scoreLabel.attributedText = NSAttributedString(string: "Score: " + String(score))
+        if (self.score%10==0){
+        scoreText=NSMutableAttributedString(string: "Score: " + String(score))
+        scoreText.addAttributes(attributes, range: NSMakeRange(0, scoreText.length))
+        scoreLabel.attributedText = scoreText
+        }
         camera?.position = character.position
-        scoreLabel.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y+(2*screenHeight)/6)
-        
-        
-        self.gun?.setPosition()
+        scoreLabel.position = CGPoint(x:camera!.position.x+(screenWidth)/3, y: camera!.position.y+(3*screenHeight)/7)
+       
+//        self.gun?.setPosition()
         
 //        let localPlayer = getLocalPlayerType()
 //        gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
