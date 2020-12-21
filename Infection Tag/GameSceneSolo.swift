@@ -30,10 +30,11 @@ struct PhysicsCategory {
 class GameSceneSolo: SKScene {
     var indexZ=0
     var isServer = false
-    var joystick = TLAnalogJoystick(withDiameter: 150*scale)
+    var joystick = TLAnalogJoystick(withDiameter: 200*scale)
     var character = Character(isInfected: false)
     var cam = SKCameraNode()
     var scoreLabel = SKLabelNode()
+    var pauseLabel = SKLabelNode()
     var score = 0
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
@@ -62,8 +63,10 @@ class GameSceneSolo: SKScene {
     var zombieSpawnTimer=0
 //    var gun: Gun?
     var scoreText=NSMutableAttributedString(string:"Score: "+String(0))
+    var pauseText=NSMutableAttributedString(string:"Game paused")
     let attributes:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -2, .font: UIFont(name: "Futura", size: 30)!, .foregroundColor: UIColor.black]
-    var pauseButton=MSButtonNode(img:UIImage(systemName: "pause.fill")!, size: CGSize(width: 100, height: 100))
+    let attributesScore:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -2, .font: UIFont(name: "Futura", size: 70)!, .foregroundColor: UIColor.black]
+    var pauseButton=MSButtonNode(img:UIImage(named: "pause")!, size: CGSize(width: 100, height: 100))
 //    var match: GKMatch?
 //    private var gameModel: GameModel!
     
@@ -162,11 +165,35 @@ class GameSceneSolo: SKScene {
         joystick.alpha = 0.5
         pauseButton?.selectedHandler = {
             if(self.isPaused==false){
-                self.dimDash.removeFromParent()
+                self.pauseText.addAttributes(self.attributesScore, range: NSMakeRange(0, self.pauseText.length))
+                self.pauseLabel.attributedText = self.pauseText
+                self.pauseLabel.position = self.character.position
+                self.addChild(self.pauseLabel)
                 self.dashButton.removeFromSuperview()
+                for w in self.arrayWall{
+                    w.alpha=0.3
+                }
+                for z in self.testInfecteds{
+                    z.alpha=0.3
+                }
+                self.character.alpha=0.3
+                self.map.alpha=0.3
+                self.scoreLabel.alpha=0.3
+                self.joystick.alpha=0.15
+//                self.alpha=0.3
             } else {
-                self.addChild(self.dimDash)
                 self.view?.addSubview(self.dashButton)
+                for w in self.arrayWall{
+                    w.alpha=1
+                }
+                for z in self.testInfecteds{
+                    z.alpha=1
+                }
+                self.character.alpha=1
+                self.map.alpha=1
+                self.scoreLabel.alpha=1
+                self.joystick.alpha=0.5
+                self.pauseLabel.removeFromParent()
             }
             self.isPaused.toggle()
             self.joystick.disabled.toggle()
@@ -515,14 +542,15 @@ class GameSceneSolo: SKScene {
         }
         for z in testInfecteds{
             if(z.parent != nil){
-                if z.intersects(character){
-                    let scene=MainMenu(fileNamed: "MainMenu")
-                    let theScene = scene
-                    let skView = view!
-                    dashButton.removeFromSuperview()
-                    dimDash.isHidden=true
-                    skView.presentScene(theScene)
-                    print("hit")
+                for z1 in z.physicsBody!.allContactedBodies(){
+                    if character.physicsBody==z1{
+                        let scene=MainMenu(fileNamed: "MainMenu")
+                        let theScene = scene
+                        let skView = view!
+                        dashButton.removeFromSuperview()
+                        dimDash.isHidden=true
+                        skView.presentScene(theScene)
+                    }
                 }
             }
         }
