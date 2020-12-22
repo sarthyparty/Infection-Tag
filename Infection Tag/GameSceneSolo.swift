@@ -64,9 +64,9 @@ class GameSceneSolo: SKScene {
 //    var gun: Gun?
     var scoreText=NSMutableAttributedString(string:"Score: "+String(0))
     var pauseText=NSMutableAttributedString(string:"Game paused")
-    let attributes:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -2, .font: UIFont(name: "Futura", size: 30)!, .foregroundColor: UIColor.black]
-    let attributesScore:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -2, .font: UIFont(name: "Futura", size: 70)!, .foregroundColor: UIColor.black]
-    var pauseButton=MSButtonNode(img:UIImage(named: "pause")!, size: CGSize(width: 100, height: 100))
+    let attributes:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -3, .font: UIFont(name: "Futura", size: 50*scale)!, .foregroundColor: UIColor.black]
+    let attributesScore:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -3, .font: UIFont(name: "Futura", size: 70*scale)!, .foregroundColor: UIColor.black]
+    var pauseButton=MSButtonNode(img:UIImage(named: "pause")!, size: CGSize(width: 100*scale, height: 100*scale))
 //    var match: GKMatch?
 //    private var gameModel: GameModel!
     
@@ -147,7 +147,7 @@ class GameSceneSolo: SKScene {
         back.anchorPoint=CGPoint(x:0,y:0)
         back.position=CGPoint(x:-screenWidth/2,y:-screenHeight/2)
         joystick.position = CGPoint(x: screenWidth/6, y: screenHeight/6)
-        scoreLabel.position = CGPoint(x: screenWidth/6, y: screenHeight - screenHeight/6)
+        scoreLabel.position = CGPoint(x: screenWidth/2, y: screenHeight - screenHeight/6)
         
 //        testInfecteds[0].position=getRandomPosition()
 //        testInfecteds[0].size = CGSize(width:180*scaleChar, height:180*scaleChar)
@@ -250,7 +250,7 @@ class GameSceneSolo: SKScene {
             w.physicsBody?.contactTestBitMask = PhysicsCategory.character1 // 4
             w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         }
-        character.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "walk3"), alphaThreshold: 0.5, size: CGSize(width: character.size.width*scaleChar, height: character.size.height*scaleChar))// 1
+        character.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "walk3"), alphaThreshold: 0.5, size: CGSize(width: character.size.width*scaleChar*scale, height: character.size.height*scaleChar*scale))// 1
         character.physicsBody?.isDynamic = true // 2
         character.physicsBody?.categoryBitMask = PhysicsCategory.character1 // 3
         character.physicsBody?.contactTestBitMask = PhysicsCategory.wall // 4
@@ -470,7 +470,7 @@ class GameSceneSolo: SKScene {
         camera?.position = character.position
         joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
         dimDash.position=CGPoint(x:camera!.position.x+(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
-        pauseButton?.position=CGPoint(x:camera!.position.x-(3*screenWidth)/7, y: camera!.position.y+(3*screenHeight)/7)
+        pauseButton?.position=CGPoint(x:camera!.position.x+(3*screenWidth)/7, y: camera!.position.y+(3*screenHeight)/7)
         if(character.isInfected){
             if(joystick.velocity == CGPoint(x: 0,y: 0)){
                 ind=8
@@ -570,7 +570,7 @@ class GameSceneSolo: SKScene {
         scoreLabel.attributedText = scoreText
         }
         camera?.position = character.position
-        scoreLabel.position = CGPoint(x:camera!.position.x+(screenWidth)/3, y: camera!.position.y+(3*screenHeight)/7)
+        scoreLabel.position = CGPoint(x:camera!.position.x, y: camera!.position.y+(3*screenHeight)/7)
        
 //        self.gun?.setPosition()
         
