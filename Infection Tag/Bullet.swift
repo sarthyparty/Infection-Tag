@@ -24,7 +24,7 @@ class Bullet: SKSpriteNode {
     init(pos: CGPoint) {
 //        self.id = ID
         // Make a texture from an image, a color, and size
-        let texture = ZwalkSprites[2]
+        let texture = SKTexture(imageNamed: "bullet")
 
         let color = UIColor.clear
         let size = CGSize(width: 30, height: 30)
