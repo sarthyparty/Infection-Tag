@@ -14,7 +14,7 @@ class Gun: SKSpriteNode {
     init(char: Character) {
 //        self.id = ID
         // Make a texture from an image, a color, and size
-        let texture = ZwalkSprites[2]
+        let texture = SKTexture(imageNamed: "Pistol")
 
         let color = UIColor.clear
         let size = CGSize(width: 30, height: 30)
@@ -25,10 +25,11 @@ class Gun: SKSpriteNode {
     }
     
     func setPosition() {
-        let x =  CGFloat(10*cos(self.character.zRotation+CGFloat(Float.pi/2)) + self.character.position.x)
-        let y =  CGFloat(10*sin(self.character.zRotation+CGFloat(Float.pi/2)) + self.character.position.y)
+        self.zRotation=character.zRotation+CGFloat(Float.pi/2)
+        let x =  CGFloat(25*cos(self.character.zRotation+CGFloat(Float.pi/2)) + self.character.position.x)
+        let y =  CGFloat(25*sin(self.character.zRotation+CGFloat(Float.pi/2)) + self.character.position.y)
         self.position = CGPoint(x:x, y:y)
-        self.zRotation=character.zRotation
+        
     }
 
     required init?(coder aDecoder: NSCoder) {

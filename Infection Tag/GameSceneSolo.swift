@@ -25,6 +25,7 @@ struct PhysicsCategory {
   static let character1   : UInt32 = 0b1// 1
   static let wall: UInt32 = 0b10      // 2
     static let zombie: UInt32 = 0b11
+    static let bullet: UInt32 = 0b100
 }
 
 class GameSceneSolo: SKScene {
@@ -39,6 +40,7 @@ class GameSceneSolo: SKScene {
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
     var dimDash=SKSpriteNode(imageNamed:"dash")
+    var shootButton : UIButton=UIButton(type: UIButton.ButtonType.custom)
     var testInfecteds:[Zombie] = [Zombie]()
 //    var otherCharacter: Character = Character(isInfected: false, ID: "HELLO")
     var scaleChar=CGFloat(0.3)
@@ -61,7 +63,9 @@ class GameSceneSolo: SKScene {
     var startTimer=false
     var startCounter=false
     var zombieSpawnTimer=0
-//    var gun: Gun?
+    var bullets: [Bullet] = [Bullet]()
+    var shotBullets: [Bullet] = [Bullet]()
+    var gun: Gun?
     var scoreText=NSMutableAttributedString(string:"Score: "+String(0))
     var pauseText=NSMutableAttributedString(string:"Game paused")
     let attributes:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -3, .font: UIFont(name: "Futura", size: 50*scale)!, .foregroundColor: UIColor.black]
@@ -69,6 +73,18 @@ class GameSceneSolo: SKScene {
     var pauseButton=MSButtonNode(img:UIImage(named: "pause")!, size: CGSize(width: 100*scale, height: 100*scale))
 //    var match: GKMatch?
 //    private var gameModel: GameModel!
+    
+    @objc func shoot() {
+        for i in 0...bullets.count-1 {
+            if bullets[i].pickedUp {
+                bullets[i].shoot(char: self.character, angle: self.gun!.zRotation+CGFloat(Float.pi))
+                shotBullets.append(bullets[i])
+                self.addChild(bullets[i])
+                self.bullets.remove(at: i)
+                return
+            }
+        }
+    }
     
     @objc func dash() {
         speedScale=CGFloat(3)
@@ -155,11 +171,14 @@ class GameSceneSolo: SKScene {
 //        testInfecteds[0].texture = ZwalkSprites[2]
 //        character.isInfected=false
         dimDash.size=CGSize(width: 100, height: 100)
-        dimDash.position=CGPoint(x:5*screenWidth/6, y: screenHeight/6)
+        dimDash.position=CGPoint(x:5*screenWidth/6, y: screenHeight/3)
 //        dimDash.isHidden=true
-        dashButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 100, height: 100))
+        dashButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+4*screenHeight/6, width: 100, height: 100))
         dashButton.setImage(UIImage(named: "dash"), for: UIButton.State.normal)
         dashButton.addTarget(self, action: #selector(self.dash), for: UIControl.Event.allTouchEvents)
+        shootButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 100, height: 100))
+        shootButton.setImage(UIImage(named: "dash"), for: UIButton.State.normal)
+        shootButton.addTarget(self, action: #selector(self.shoot), for: UIControl.Event.allTouchEvents)
         back.size = CGSize(width:map.size.width*scaleMap+screenWidth,height:map.size.height*scaleMap+screenHeight)
         map.size = CGSize(width:map.size.width*scaleMap, height:map.size.height*scaleMap)
         joystick.alpha = 0.5
@@ -209,10 +228,11 @@ class GameSceneSolo: SKScene {
         self.addChild(joystick)
         self.addChild(character)
         self.addChild(self.scoreLabel)
-//        self.addChild(self.gun!)
+        self.addChild(self.gun!)
         character.position = CGPoint(x: 500*scale, y: 300*scale)
         character.size = CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
         self.view?.addSubview(dashButton)
+        self.view?.addSubview(shootButton)
 //        for z in testInfecteds{
 //            self.addChild(z)
 //        }
@@ -227,7 +247,7 @@ class GameSceneSolo: SKScene {
 //        super.scaleMode = .aspectFit 
     }
     override func sceneDidLoad() {
-//        gun = Gun(char: self.character)
+        gun = Gun(char: self.character)
 //        scoreLabel.attributedText = NSAttributedString(string: "Score: " + String(score))
 //        scoreLabel.color = SKColor(named: "orange")
         joystick.handleImage = UIImage(named: "shadedDark01.png")
@@ -535,6 +555,30 @@ class GameSceneSolo: SKScene {
             testInfecteds.last?.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "walk3"), alphaThreshold: 0.5, size: testInfecteds.last!.size)
             testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.zombie// 4
 //            indexZ+=1
+            zombieSpawnTimer = 0
+        }
+        if (zombieSpawnTimer%60==0) {
+            let pos = getRandomPosition()
+            let bullet = Bullet(pos: pos)
+            self.bullets.append(bullet)
+            self.addChild(bullets.last!)
+            bullets.last?.physicsBody?.isDynamic = false // 2
+            bullets.last?.physicsBody?.categoryBitMask = PhysicsCategory.zombie // 3
+
+            bullets.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.bullet// 4
+            bullets.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
+            bullets.last?.physicsBody = SKPhysicsBody(texture: ZwalkSprites[2], alphaThreshold: 0.5, size: bullets.last!.size)
+            bullets.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.bullet// 4
+        }
+        for b in bullets {
+            if (b.parent != nil) {
+                if b.intersects(character) {
+                    b.pickUp()
+                }
+            }
+        }
+        for b in shotBullets {
+            b.setPosition()
         }
         zombieSpawnTimer+=1
         for z in testInfecteds{
@@ -572,7 +616,18 @@ class GameSceneSolo: SKScene {
         camera?.position = character.position
         scoreLabel.position = CGPoint(x:camera!.position.x, y: camera!.position.y+(3*screenHeight)/7)
        
-//        self.gun?.setPosition()
+        self.gun?.setPosition()
+        
+        if shotBullets.count >= 1 {
+            for i in 0...shotBullets.count-1 {
+                if shotBullets[i].doneShooting() {
+                    print(shotBullets.count)
+                    shotBullets.remove(at: i)
+                    print(shotBullets.count)
+                    break
+                }
+            }
+        }
         
 //        let localPlayer = getLocalPlayerType()
 //        gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
