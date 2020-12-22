@@ -11,13 +11,15 @@ class Gun: SKSpriteNode {
     
 //    var id: String
     var character: Character
-    init(char: Character) {
+    var scale: CGFloat
+    init(char: Character, scale: CGFloat) {
 //        self.id = ID
         // Make a texture from an image, a color, and size
         let texture = SKTexture(imageNamed: "Pistol")
 
         let color = UIColor.clear
-        let size = CGSize(width: 30, height: 30)
+        let size = CGSize(width: 30*scale, height: 30*scale)
+        self.scale=scale
         self.character = char
             // Call the designated initializer
         super.init(texture: texture, color: color, size: size)
@@ -26,8 +28,10 @@ class Gun: SKSpriteNode {
     
     func setPosition() {
         self.zRotation=character.zRotation+CGFloat(Float.pi/2)
-        let x =  CGFloat(25*cos(self.character.zRotation+CGFloat(Float.pi/2)) + self.character.position.x)
-        let y =  CGFloat(25*sin(self.character.zRotation+CGFloat(Float.pi/2)) + self.character.position.y)
+        var x:CGFloat
+        var y:CGFloat
+        x =  CGFloat(25*self.scale*cos(self.character.zRotation+CGFloat(Float.pi/4)) + self.character.position.x)
+        y =  CGFloat(25*self.scale*sin(self.character.zRotation+CGFloat(Float.pi/4)) + self.character.position.y)
         self.position = CGPoint(x:x, y:y)
         
     }

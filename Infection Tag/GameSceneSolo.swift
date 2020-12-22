@@ -77,7 +77,7 @@ class GameSceneSolo: SKScene {
     @objc func shoot() {
         for i in 0...bullets.count-1 {
             if bullets[i].pickedUp {
-                bullets[i].shoot(char: self.character, angle: self.gun!.zRotation+CGFloat(Float.pi))
+                bullets[i].shoot(char: self.gun!, angle: self.gun!.zRotation+CGFloat(Float.pi))
                 shotBullets.append(bullets[i])
                 self.addChild(bullets[i])
                 self.bullets.remove(at: i)
@@ -170,13 +170,13 @@ class GameSceneSolo: SKScene {
 //        testInfecteds[0].isInfected=true
 //        testInfecteds[0].texture = ZwalkSprites[2]
 //        character.isInfected=false
-        dimDash.size=CGSize(width: 100, height: 100)
+        dimDash.size=CGSize(width: 100*scale, height: 100*scale)
         dimDash.position=CGPoint(x:5*screenWidth/6, y: screenHeight/3)
 //        dimDash.isHidden=true
-        dashButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 100, height: 100))
+        dashButton=UIButton(frame:CGRect(x: -50+2*screenWidth/6*scale, y: -50+5*screenHeight/6*scale, width: 100*scale, height: 100*scale))
         dashButton.setImage(UIImage(named: "dash"), for: UIButton.State.normal)
         dashButton.addTarget(self, action: #selector(self.dash), for: UIControl.Event.allTouchEvents)
-        shootButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+4*screenHeight/6, width: 100, height: 100))
+        shootButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6*scale, y: -50+5*screenHeight/6*scale, width: 100*scale, height: 100*scale))
         shootButton.setImage(UIImage(named: "Shoot_button"), for: UIButton.State.normal)
         shootButton.addTarget(self, action: #selector(self.shoot), for: UIControl.Event.allTouchEvents)
         back.size = CGSize(width:map.size.width*scaleMap+screenWidth,height:map.size.height*scaleMap+screenHeight)
@@ -247,7 +247,7 @@ class GameSceneSolo: SKScene {
 //        super.scaleMode = .aspectFit 
     }
     override func sceneDidLoad() {
-        gun = Gun(char: self.character)
+        gun = Gun(char: self.character, scale: scale)
 //        scoreLabel.attributedText = NSAttributedString(string: "Score: " + String(score))
 //        scoreLabel.color = SKColor(named: "orange")
         joystick.handleImage = UIImage(named: "shadedDark01.png")
@@ -489,7 +489,7 @@ class GameSceneSolo: SKScene {
         }
         camera?.position = character.position
         joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
-        dimDash.position=CGPoint(x:camera!.position.x+(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
+        dimDash.position=CGPoint(x:camera!.position.x-(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
         pauseButton?.position=CGPoint(x:camera!.position.x+(3*screenWidth)/7, y: camera!.position.y+(3*screenHeight)/7)
         if(character.isInfected){
             if(joystick.velocity == CGPoint(x: 0,y: 0)){
@@ -559,7 +559,7 @@ class GameSceneSolo: SKScene {
         }
         if (zombieSpawnTimer%60==0) {
             let pos = getRandomPosition()
-            let bullet = Bullet(pos: pos)
+            let bullet = Bullet(pos: pos, scale: scale)
             self.bullets.append(bullet)
             self.addChild(bullets.last!)
             bullets.last?.physicsBody?.isDynamic = false // 2
@@ -572,8 +572,10 @@ class GameSceneSolo: SKScene {
         }
         for b in bullets {
             if (b.parent != nil) {
-                if b.intersects(character) {
-                    b.pickUp()
+                for b1 in b.physicsBody!.allContactedBodies(){
+                    if b1==character.physicsBody {
+                        b.pickUp()
+                    }
                 }
             }
         }
@@ -590,9 +592,10 @@ class GameSceneSolo: SKScene {
                     if character.physicsBody==z1{
                         let scene=MainMenu(fileNamed: "MainMenu")
                         let theScene = scene
-                        let skView = view!
+                        let skView = self.view!
                         dashButton.removeFromSuperview()
                         dimDash.isHidden=true
+                        shootButton.removeFromSuperview()
                         skView.presentScene(theScene)
                     }
                 }
