@@ -74,7 +74,7 @@ class GameSceneSolo: SKScene {
     @objc func shoot() {
         for i in 0...bullets.count-1 {
             if bullets[i].pickedUp {
-                bullets[i].shoot(char: self.character, angle: self.gun!.zRotation-CGFloat(Float.pi/2))
+                bullets[i].shoot(char: self.character, angle: self.gun!.zRotation+CGFloat(Float.pi))
                 shotBullets.append(bullets[i])
                 self.addChild(bullets[i])
                 self.bullets.remove(at: i)
