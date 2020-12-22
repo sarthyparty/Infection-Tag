@@ -567,7 +567,7 @@ class GameSceneSolo: SKScene {
 
             bullets.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.bullet// 4
             bullets.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
-            bullets.last?.physicsBody = SKPhysicsBody(texture: ZwalkSprites[2], alphaThreshold: 0.5, size: bullets.last!.size)
+            bullets.last?.physicsBody = SKPhysicsBody(texture: bullet.texture, alphaThreshold: 0.5, size: bullets.last!.size)
             bullets.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.bullet// 4
         }
         for b in bullets {
