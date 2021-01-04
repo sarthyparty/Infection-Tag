@@ -56,6 +56,7 @@ class Zombie: Character {
     
     func update(){
         self.size=CGSize(width:180*scaleChar*CGFloat(scale1)*CGFloat(pow(1.2, iteration-1)), height:180*scaleChar*CGFloat(scale1)*CGFloat(pow(1.2, iteration-1)))
+        self.physicsBody=SKPhysicsBody(texture: SKTexture(imageNamed: "walk3"), alphaThreshold: 0.5, size: self.size)
     }
 //    func getRandomPosition() -> CGPoint{
 //        var xPos:Float

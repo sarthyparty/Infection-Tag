@@ -622,7 +622,16 @@ class GameSceneSolo: SKScene {
         scoreLabel.position = CGPoint(x:camera!.position.x, y: camera!.position.y+(3*screenHeight)/7)
        
         self.gun?.setPosition()
-        
+        for shotB in shotBullets{
+            for b in shotB.physicsBody!.allContactedBodies(){
+                for z1 in testInfecteds{
+                    if z1.physicsBody==b{
+                        z1.goBoom()
+                        shotB.removeFromParent()
+                    }
+                }
+            }
+        }
         if shotBullets.count >= 1 {
             for i in 0...shotBullets.count-1 {
                 shotBullets[i].setPosition()
@@ -632,19 +641,22 @@ class GameSceneSolo: SKScene {
                     print(shotBullets.count)
                     break
                 }
-                if testInfecteds.count >= 1 {
-                    for i in 0...testInfecteds.count-1 {
-                        if shotBullets[i].intersects(testInfecteds[i]) {
-                            shotBullets[i].removeFromParent()
-                            shotBullets.remove(at: i)
-                            if testInfecteds[i].goBoom() {
-                                testInfecteds.remove(at: i)
-                            }
-                        }
-                    }
-                }
             }
         }
+        if shotBullets.count>=1{
+        for i in shotBullets.count-1...0{
+            if (shotBullets[i].parent==nil){
+                shotBullets.remove(at: i)
+            }
+        }
+        }
+//        if testInfecteds.count>=1{
+//        for i in testInfecteds.count-1...0{
+//            if (testInfecteds[i].parent==nil){
+//                testInfecteds.remove(at: i)
+//            }
+//        }
+//        }
         
 //        let localPlayer = getLocalPlayerType()
 //        gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
