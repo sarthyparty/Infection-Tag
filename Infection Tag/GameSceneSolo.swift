@@ -9,7 +9,8 @@ let screenWidth = screenSize.width
 let screenHeight = screenSize.height
 let originalWidth = CGFloat(1024)
 let originalHeight = CGFloat(766)
-var scale = CGFloat.minimum(screenWidth/originalWidth, screenHeight/originalHeight)
+var scale1 = CGFloat.minimum(screenWidth/originalWidth, screenHeight/originalHeight)
+var scaleChar=CGFloat(0.3)
 
 import SpriteKit
 import GameplayKit
@@ -31,7 +32,7 @@ struct PhysicsCategory {
 class GameSceneSolo: SKScene {
     var indexZ=0
     var isServer = false
-    var joystick = TLAnalogJoystick(withDiameter: 200*scale)
+    var joystick = TLAnalogJoystick(withDiameter: 200*scale1)
     var character = Character(isInfected: false)
     var cam = SKCameraNode()
     var scoreLabel = SKLabelNode()
@@ -43,7 +44,7 @@ class GameSceneSolo: SKScene {
     var shootButton : UIButton=UIButton(type: UIButton.ButtonType.custom)
     var testInfecteds:[Zombie] = [Zombie]()
 //    var otherCharacter: Character = Character(isInfected: false, ID: "HELLO")
-    var scaleChar=CGFloat(0.3)
+    
     var ind=0
     var boundaryx=false
     var boundaryy=false
@@ -68,9 +69,9 @@ class GameSceneSolo: SKScene {
     var gun: Gun?
     var scoreText=NSMutableAttributedString(string:"Score: "+String(0))
     var pauseText=NSMutableAttributedString(string:"Game paused")
-    let attributes:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -3, .font: UIFont(name: "Futura", size: 50*scale)!, .foregroundColor: UIColor.black]
-    let attributesScore:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -3, .font: UIFont(name: "Futura", size: 70*scale)!, .foregroundColor: UIColor.black]
-    var pauseButton=MSButtonNode(img:UIImage(named: "pause")!, size: CGSize(width: 100*scale, height: 100*scale))
+    let attributes:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -3, .font: UIFont(name: "Futura", size: 50*scale1)!, .foregroundColor: UIColor.black]
+    let attributesScore:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -3, .font: UIFont(name: "Futura", size: 70*scale1)!, .foregroundColor: UIColor.black]
+    var pauseButton=MSButtonNode(img:UIImage(named: "pause")!, size: CGSize(width: 100*scale1, height: 100*scale1))
 //    var match: GKMatch?
 //    private var gameModel: GameModel!
     
@@ -153,7 +154,7 @@ class GameSceneSolo: SKScene {
         scoreText=NSMutableAttributedString(string: "Score: " + String(score))
         scoreText.addAttributes(attributes, range: NSMakeRange(0, scoreText.length))
         scoreLabel.attributedText = scoreText
-        let scaleMap=CGFloat(10*scaleChar*scale)
+        let scaleMap=CGFloat(10*scaleChar*scale1)
         super.didMove(to: view)
         dimDash.alpha=0.4
         dashButton.alpha=0.7
@@ -170,13 +171,13 @@ class GameSceneSolo: SKScene {
 //        testInfecteds[0].isInfected=true
 //        testInfecteds[0].texture = ZwalkSprites[2]
 //        character.isInfected=false
-        dimDash.size=CGSize(width: 100*scale, height: 100*scale)
+        dimDash.size=CGSize(width: 100*scale1, height: 100*scale1)
         dimDash.position=CGPoint(x:5*screenWidth/6, y: screenHeight/3)
 //        dimDash.isHidden=true
-        dashButton=UIButton(frame:CGRect(x: -50+2*screenWidth/6*scale, y: -50+5*screenHeight/6*scale, width: 100*scale, height: 100*scale))
+        dashButton=UIButton(frame:CGRect(x: -50+2*screenWidth/6*scale1, y: -50+5*screenHeight/6*scale1, width: 100*scale1, height: 100*scale1))
         dashButton.setImage(UIImage(named: "dash"), for: UIButton.State.normal)
         dashButton.addTarget(self, action: #selector(self.dash), for: UIControl.Event.allTouchEvents)
-        shootButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6*scale, y: -50+5*screenHeight/6*scale, width: 100*scale, height: 100*scale))
+        shootButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6*scale1, y: -50+5*screenHeight/6*scale1, width: 100*scale1, height: 100*scale1))
         shootButton.setImage(UIImage(named: "Shoot_button"), for: UIButton.State.normal)
         shootButton.addTarget(self, action: #selector(self.shoot), for: UIControl.Event.allTouchEvents)
         back.size = CGSize(width:map.size.width*scaleMap+screenWidth,height:map.size.height*scaleMap+screenHeight)
@@ -229,8 +230,8 @@ class GameSceneSolo: SKScene {
         self.addChild(character)
         self.addChild(self.scoreLabel)
         self.addChild(self.gun!)
-        character.position = CGPoint(x: 500*scale, y: 300*scale)
-        character.size = CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
+        character.position = CGPoint(x: 500*scale1, y: 300*scale1)
+        character.size = CGSize(width:180*scaleChar*scale1, height:180*scaleChar*scale1)
         self.view?.addSubview(dashButton)
         self.view?.addSubview(shootButton)
 //        for z in testInfecteds{
@@ -247,7 +248,7 @@ class GameSceneSolo: SKScene {
 //        super.scaleMode = .aspectFit 
     }
     override func sceneDidLoad() {
-        gun = Gun(char: self.character, scale: scale)
+        gun = Gun(char: self.character, scale: scale1)
 //        scoreLabel.attributedText = NSAttributedString(string: "Score: " + String(score))
 //        scoreLabel.color = SKColor(named: "orange")
         joystick.handleImage = UIImage(named: "shadedDark01.png")
@@ -270,7 +271,7 @@ class GameSceneSolo: SKScene {
             w.physicsBody?.contactTestBitMask = PhysicsCategory.character1 // 4
             w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         }
-        character.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "walk3"), alphaThreshold: 0.5, size: CGSize(width: character.size.width*scaleChar*scale, height: character.size.height*scaleChar*scale))// 1
+        character.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "walk3"), alphaThreshold: 0.5, size: CGSize(width: character.size.width*scaleChar*scale1, height: character.size.height*scaleChar*scale1))// 1
         character.physicsBody?.isDynamic = true // 2
         character.physicsBody?.categoryBitMask = PhysicsCategory.character1 // 3
         character.physicsBody?.contactTestBitMask = PhysicsCategory.wall // 4
@@ -302,8 +303,8 @@ class GameSceneSolo: SKScene {
             xPos=map.size.width*CGFloat(Float.random(in: 0..<1))
             yPos=map.size.height*CGFloat(Float.random(in: 0..<1))
             for wall in arrayWall{
-                let z=Zombie(char: character, pos: CGPoint(x: xPos, y: yPos), inde: 0, radi: Float(180*scaleChar/2*scale))
-                z.size=CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
+                let z=Zombie(char: character, pos: CGPoint(x: xPos, y: yPos), inde: 0, radi: Float(180*scaleChar/2*scale1))
+                z.size=CGSize(width:180*scaleChar*scale1, height:180*scaleChar*scale1)
                 if wall.intersects(z){
                     isIntersecting=true
                 }
@@ -392,10 +393,11 @@ class GameSceneSolo: SKScene {
     func zombieHiZombie (zombie1: Zombie, zombie2: Zombie) {
         let newX = (zombie1.position.x + zombie2.position.x)/2
         let newY = (zombie1.position.y + zombie2.position.y)/2
-        if(zombie1.size.width>zombie2.size.width){
+        if(zombie1.iteration>zombie2.iteration){
+            if (zombie1.iteration<6){
             zombie1.position = CGPoint(x: newX, y: newY)
-            zombie1.size.height = 1.2*(zombie1.size.height)
-            zombie1.size.width = 1.2*(zombie1.size.width)
+            zombie1.iteration=zombie1.iteration+1
+            zombie1.update()
             zombie1.rad=zombie1.rad*1.2
             zombie2.removeFromParent()
 //            testInfecteds.remove(at: zombie2.ind-1)
@@ -404,10 +406,12 @@ class GameSceneSolo: SKScene {
 //            for i in zombie1.ind...(testInfecteds.endIndex-1){
 //                testInfecteds[i].ind-=1
 //            }
+            }
         }else{
+            if (zombie2.iteration<6){
             zombie2.position = CGPoint(x: newX, y: newY)
-            zombie2.size.height = 1.2*(zombie1.size.height)
-            zombie2.size.width = 1.2*(zombie1.size.width)
+            zombie2.iteration=zombie2.iteration+1
+            zombie2.update()
             zombie2.rad=zombie2.rad*1.2
             zombie1.removeFromParent()
 //            testInfecteds.remove(at: zombie1.ind-1)
@@ -416,6 +420,7 @@ class GameSceneSolo: SKScene {
 //            for i in zombie2.ind...(testInfecteds.endIndex-1){
 //                testInfecteds[i].ind-=1
 //            }
+            }
         }
 //        testInfecteds.last?.physicsBody?.isDynamic = true // 2
 //        testInfecteds.last?.physicsBody?.categoryBitMask = PhysicsCategory.zombie // 3
@@ -425,8 +430,8 @@ class GameSceneSolo: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        let velocityx=self.joystick.velocity.x*speedScale*scale
-        let velocityy=self.joystick.velocity.y*speedScale*scale
+        let velocityx=self.joystick.velocity.x*speedScale*scale1
+        let velocityy=self.joystick.velocity.y*speedScale*scale1
         if(boundaryx==false){
         if (self.character.position.x + (velocityx)<character.size.width/2){
             self.character.position.x=character.size.width/2
@@ -540,8 +545,8 @@ class GameSceneSolo: SKScene {
         }
         if(zombieSpawnTimer%180==0){
             let pos=getRandomPosition()
-            testInfecteds.append(Zombie(char: character, pos: pos, inde: testInfecteds.endIndex, radi: Float(180*scaleChar/2*scale)))
-            testInfecteds.last?.size = CGSize(width:180*scaleChar*scale, height:180*scaleChar*scale)
+            testInfecteds.append(Zombie(char: character, pos: pos, inde: testInfecteds.endIndex, radi: Float(180*scaleChar/2*scale1)))
+            testInfecteds.last?.size = CGSize(width:180*scaleChar*scale1, height:180*scaleChar*scale1)
             testInfecteds.last?.isInfected=true
             testInfecteds.last?.texture = ZwalkSprites[2]
             self.addChild(testInfecteds.last!)
@@ -551,7 +556,7 @@ class GameSceneSolo: SKScene {
 
             testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.zombie// 4
             testInfecteds.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
-            testInfecteds.last?.speedZ=testInfecteds.last!.speedZ*scale
+            testInfecteds.last?.speedZ=testInfecteds.last!.speedZ*scale1
             testInfecteds.last?.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "walk3"), alphaThreshold: 0.5, size: testInfecteds.last!.size)
             testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.zombie// 4
 //            indexZ+=1
@@ -559,7 +564,7 @@ class GameSceneSolo: SKScene {
         }
         if (zombieSpawnTimer%60==0) {
             let pos = getRandomPosition()
-            let bullet = Bullet(pos: pos, scale: scale)
+            let bullet = Bullet(pos: pos, scale: scale1)
             self.bullets.append(bullet)
             self.addChild(bullets.last!)
             bullets.last?.physicsBody?.isDynamic = false // 2
@@ -660,42 +665,42 @@ class GameSceneSolo: SKScene {
     func makeWalls(){
         let imgName="clearPNG"
         let h=map.size.height*3
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:1.44*288*scale), Position: CGPoint(x:1.26*288*scale,y:(h-0.47*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.83*288*scale, height:0.13*288*scale), Position: CGPoint(x:0.43*288*scale,y:(h-1.28*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:1.44*288*scale), Position: CGPoint(x:1.9*288*scale,y:(h-0*288)*scale)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale1, height:1.44*288*scale1), Position: CGPoint(x:1.26*288*scale1,y:(h-0.47*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.83*288*scale1, height:0.13*288*scale1), Position: CGPoint(x:0.43*288*scale1,y:(h-1.28*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale1, height:1.44*288*scale1), Position: CGPoint(x:1.9*288*scale1,y:(h-0*288)*scale1)))
         
         //Library area
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:1.73*288*scale), Position: CGPoint(x:2.39*288*scale,y:(h-0.87*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:1.73*288*scale), Position: CGPoint(x:3.01*288*scale,y:(h-0.87*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:1.73*288*scale), Position: CGPoint(x:3.63*288*scale,y:(h-0.87*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:2.76*288*scale), Position: CGPoint(x:4.2*288*scale,y:(h-0.49*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.93*288*scale, height:0.13*288*scale), Position: CGPoint(x:1.9*288*scale,y:(h-3.24*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:3.73*288*scale), Position: CGPoint(x:1.26*288*scale,y:(h-2.48*288)*scale)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale1, height:1.73*288*scale1), Position: CGPoint(x:2.39*288*scale1,y:(h-0.87*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale1, height:1.73*288*scale1), Position: CGPoint(x:3.01*288*scale1,y:(h-0.87*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale1, height:1.73*288*scale1), Position: CGPoint(x:3.63*288*scale1,y:(h-0.87*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale1, height:2.76*288*scale1), Position: CGPoint(x:4.2*288*scale1,y:(h-0.49*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.93*288*scale1, height:0.13*288*scale1), Position: CGPoint(x:1.9*288*scale1,y:(h-3.24*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale1, height:3.73*288*scale1), Position: CGPoint(x:1.26*288*scale1,y:(h-2.48*288)*scale1)))
         //rest of left stuff
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.78*288*scale, height:0.13*288*scale), Position: CGPoint(x:0*288*scale,y:(h-3.96*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:0.64*288*scale), Position: CGPoint(x:0.78*288*scale,y:(h-5.39*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:0.64*288*scale), Position: CGPoint(x:0.3*288*scale,y:(h-4.41*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:0.64*288*scale), Position: CGPoint(x:0.3*288*scale,y:(h-6.5*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:0.73*288*scale), Position: CGPoint(x:1.26*288*scale,y:(h-6.78*288)*scale)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.78*288*scale1, height:0.13*288*scale1), Position: CGPoint(x:0*288*scale1,y:(h-3.96*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale1, height:0.64*288*scale1), Position: CGPoint(x:0.78*288*scale1,y:(h-5.39*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale1, height:0.64*288*scale1), Position: CGPoint(x:0.3*288*scale1,y:(h-4.41*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale1, height:0.64*288*scale1), Position: CGPoint(x:0.3*288*scale1,y:(h-6.5*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale1, height:0.73*288*scale1), Position: CGPoint(x:1.26*288*scale1,y:(h-6.78*288)*scale1)))
         //park walls
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:2.3*288*scale, height:0.13*288*scale), Position: CGPoint(x:2.03*288*scale,y:(h-5.19*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:1.01*288*scale), Position: CGPoint(x:1.9*288*scale,y:(h-5.19*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:0.71*288*scale), Position: CGPoint(x:1.9*288*scale,y:(h-6.79*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:4.08*288*scale, height:0.13*288*scale), Position: CGPoint(x:4.85*288*scale,y:(h-5.19*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.8*288*scale, height:0.8*288*scale), Position: CGPoint(x:4.89*288*scale,y:(h-6.09*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.38*288*scale, height:0.52*288*scale), Position: CGPoint(x:6.96*288*scale,y:(h-6.23*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.38*288*scale, height:0.52*288*scale), Position: CGPoint(x:7.79*288*scale,y:(h-6.23*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.38*288*scale, height:0.52*288*scale), Position: CGPoint(x:8.62*288*scale,y:(h-6.23*288)*scale)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:2.3*288*scale1, height:0.13*288*scale1), Position: CGPoint(x:2.03*288*scale1,y:(h-5.19*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale1, height:1.01*288*scale1), Position: CGPoint(x:1.9*288*scale1,y:(h-5.19*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale1, height:0.71*288*scale1), Position: CGPoint(x:1.9*288*scale1,y:(h-6.79*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:4.08*288*scale1, height:0.13*288*scale1), Position: CGPoint(x:4.85*288*scale1,y:(h-5.19*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.8*288*scale1, height:0.8*288*scale1), Position: CGPoint(x:4.89*288*scale1,y:(h-6.09*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.38*288*scale1, height:0.52*288*scale1), Position: CGPoint(x:6.96*288*scale1,y:(h-6.23*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.38*288*scale1, height:0.52*288*scale1), Position: CGPoint(x:7.79*288*scale1,y:(h-6.23*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.38*288*scale1, height:0.52*288*scale1), Position: CGPoint(x:8.62*288*scale1,y:(h-6.23*288)*scale1)))
         //lake walls
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.58*288*scale, height:0.47*288*scale), Position: CGPoint(x:2.32*288*scale,y:(h-3.73*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:2.25*288*scale, height:0.47*288*scale), Position: CGPoint(x:4.2*288*scale,y:(h-3.73*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.99*288*scale, height:0.47*288*scale), Position: CGPoint(x:6.75*288*scale,y:(h-3.73*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:1.17*288*scale), Position: CGPoint(x:1.9*288*scale,y:(h-3.38*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale, height:0.96*288*scale), Position: CGPoint(x:9.08*288*scale,y:(h-3.24*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:2.44*288*scale, height:0.13*288*scale), Position: CGPoint(x:4.2*288*scale,y:(h-3.24*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.55*288*scale, height:0.13*288*scale), Position: CGPoint(x:7.55*288*scale,y:(h-3.24*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:4.13*288*scale, height:0.13*288*scale), Position: CGPoint(x:1.9*288*scale,y:(h-4.55*288)*scale)))
-        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.97*288*scale, height:0.13*288*scale), Position: CGPoint(x:6.74*288*scale,y:(h-4.55*288)*scale)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.58*288*scale1, height:0.47*288*scale1), Position: CGPoint(x:2.32*288*scale1,y:(h-3.73*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:2.25*288*scale1, height:0.47*288*scale1), Position: CGPoint(x:4.2*288*scale1,y:(h-3.73*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.99*288*scale1, height:0.47*288*scale1), Position: CGPoint(x:6.75*288*scale1,y:(h-3.73*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale1, height:1.17*288*scale1), Position: CGPoint(x:1.9*288*scale1,y:(h-3.38*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288*scale1, height:0.96*288*scale1), Position: CGPoint(x:9.08*288*scale1,y:(h-3.24*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:2.44*288*scale1, height:0.13*288*scale1), Position: CGPoint(x:4.2*288*scale1,y:(h-3.24*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.55*288*scale1, height:0.13*288*scale1), Position: CGPoint(x:7.55*288*scale1,y:(h-3.24*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:4.13*288*scale1, height:0.13*288*scale1), Position: CGPoint(x:1.9*288*scale1,y:(h-4.55*288)*scale1)))
+        arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.97*288*scale1, height:0.13*288*scale1), Position: CGPoint(x:6.74*288*scale1,y:(h-4.55*288)*scale1)))
     }
     
 }

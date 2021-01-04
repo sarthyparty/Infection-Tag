@@ -30,17 +30,17 @@ class MainMenu: SKScene {
         }
         nameDisplay = (self.childNode(withName: "name") as! SKSpriteNode)
         nameDisplay.position=CGPoint(x: screenWidth/2, y: 3*screenHeight/4)
-        nameDisplay.yScale=scale*2
-        nameDisplay.xScale=scale*2
+        nameDisplay.yScale=scale1*2
+        nameDisplay.xScale=scale1*2
         normalGuy = (self.childNode(withName: "normalGuy") as! SKSpriteNode)
-        normalGuy.position=CGPoint(x: normalGuy.position.x*scale, y: normalGuy.position.y*scale)
-        normalGuy.size=CGSize(width: normalGuy.size.width*scale, height: normalGuy.size.height*scale)
+        normalGuy.position=CGPoint(x: normalGuy.position.x*scale1, y: normalGuy.position.y*scale1)
+        normalGuy.size=CGSize(width: normalGuy.size.width*scale1, height: normalGuy.size.height*scale1)
         z1 = (self.childNode(withName: "z1") as! SKSpriteNode)
-        z1.position=CGPoint(x: z1.position.x*scale, y: z1.position.y*scale)
-        z1.size=CGSize(width: z1.size.width*scale, height: z1.size.height*scale)
+        z1.position=CGPoint(x: z1.position.x*scale1, y: z1.position.y*scale1)
+        z1.size=CGSize(width: z1.size.width*scale1, height: z1.size.height*scale1)
         z2 = (self.childNode(withName: "z2") as! SKSpriteNode)
-        z2.position=CGPoint(x: z2.position.x*scale, y: z2.position.y*scale)
-        z2.size=CGSize(width: z2.size.width*scale, height: z2.size.height*scale)
+        z2.position=CGPoint(x: z2.position.x*scale1, y: z2.position.y*scale1)
+        z2.size=CGSize(width: z2.size.width*scale1, height: z2.size.height*scale1)
 
         //        buttonPlay.removeFromParent()
 

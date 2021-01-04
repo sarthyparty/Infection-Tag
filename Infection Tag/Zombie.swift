@@ -15,6 +15,7 @@ class Zombie: Character {
     var ind: Int
     var speedZ: CGFloat
     var rad: Float
+    var iteration: Float
     
     init(char: Character, pos: CGPoint, inde: Int, radi:Float){
         self.character = char
@@ -22,6 +23,7 @@ class Zombie: Character {
         self.ind = inde
         self.rad=radi
         self.speedZ = CGFloat(3)
+        self.iteration = 1
         super.init(isInfected: true)
         self.position = pos
         self.zRotation = angle
@@ -30,8 +32,6 @@ class Zombie: Character {
     
     func move() {
         let perfectAng = -atan2((self.character.position.x - self.position.x), (self.character.position.y - self.position.y))
-        
-        
         self.zRotation = perfectAng
         self.position.x = self.position.x + (speedZ * cos(self.angle+CGFloat(Float.pi/2)))
         self.position.y = self.position.y + (speedZ * sin(self.angle+CGFloat(Float.pi/2)))
@@ -43,6 +43,20 @@ class Zombie: Character {
         ind+=1
     }
     
+    func goBoom() -> Bool{
+        if (iteration <= 1){
+            self.removeFromParent()
+            return true
+        } else {
+            iteration=iteration-1
+            update()
+            return false
+        }
+    }
+    
+    func update(){
+        self.size=CGSize(width:180*scaleChar*CGFloat(scale1)*CGFloat(pow(1.2, iteration-1)), height:180*scaleChar*CGFloat(scale1)*CGFloat(pow(1.2, iteration-1)))
+    }
 //    func getRandomPosition() -> CGPoint{
 //        var xPos:Float
 //        var yPos:Float
