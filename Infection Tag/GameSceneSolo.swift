@@ -584,9 +584,6 @@ class GameSceneSolo: SKScene {
                 }
             }
         }
-        for b in shotBullets {
-            b.setPosition()
-        }
         zombieSpawnTimer+=1
         for z in testInfecteds{
             z.move()
@@ -628,11 +625,23 @@ class GameSceneSolo: SKScene {
         
         if shotBullets.count >= 1 {
             for i in 0...shotBullets.count-1 {
+                shotBullets[i].setPosition()
                 if shotBullets[i].doneShooting() {
                     print(shotBullets.count)
                     shotBullets.remove(at: i)
                     print(shotBullets.count)
                     break
+                }
+                if testInfecteds.count >= 1 {
+                    for i in 0...testInfecteds.count-1 {
+                        if shotBullets[i].intersects(testInfecteds[i]) {
+                            shotBullets[i].removeFromParent()
+                            shotBullets.remove(at: i)
+                            if testInfecteds[i].goBoom() {
+                                testInfecteds.remove(at: i)
+                            }
+                        }
+                    }
                 }
             }
         }
