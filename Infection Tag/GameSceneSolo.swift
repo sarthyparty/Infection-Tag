@@ -9,6 +9,7 @@ let screenWidth = screenSize.width
 let screenHeight = screenSize.height
 let originalWidth = CGFloat(1024)
 let originalHeight = CGFloat(766)
+let defaults = UserDefaults.standard
 var scale1 = CGFloat.minimum(screenWidth/originalWidth, screenHeight/originalHeight)
 var scaleChar=CGFloat(0.3)
 
@@ -38,6 +39,7 @@ class GameSceneSolo: SKScene {
     var scoreLabel = SKLabelNode()
     var pauseLabel = SKLabelNode()
     var score = 0
+    var highScore = defaults.integer(forKey: "highScore")
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
     var dimDash=SKSpriteNode(imageNamed:"dash")
@@ -151,7 +153,8 @@ class GameSceneSolo: SKScene {
     
     override func didMove(to view: SKView) {
 //        pauseButton?.texture=SKTexture(imageNamed: "pause.fill")
-        scoreText=NSMutableAttributedString(string: "Score: " + String(score))
+        
+        scoreText=NSMutableAttributedString(string: "Score: " + String(score)+" High Score: "+String(highScore))
         scoreText.addAttributes(attributes, range: NSMakeRange(0, scoreText.length))
         scoreLabel.attributedText = scoreText
         let scaleMap=CGFloat(10*scaleChar*scale1)
@@ -614,7 +617,13 @@ class GameSceneSolo: SKScene {
         }
         self.score+=1
         if (self.score%10==0){
-        scoreText=NSMutableAttributedString(string: "Score: " + String(score))
+            if score>highScore{
+                highScore=score
+                if highScore>defaults.integer(forKey: "highScore"){
+                    defaults.setValue(highScore, forKey: "highScore")
+                }
+            }
+        scoreText=NSMutableAttributedString(string: "Score: " + String(score)+" High Score: "+String(highScore))
         scoreText.addAttributes(attributes, range: NSMakeRange(0, scoreText.length))
         scoreLabel.attributedText = scoreText
         }
