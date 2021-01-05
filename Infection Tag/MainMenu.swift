@@ -19,6 +19,7 @@ class MainMenu: SKScene {
 
     override func didMove(to view: SKView) {
         buttonPlay = (self.childNode(withName: "buttonPlay") as! MSButtonNode)
+        buttonPlay.position=CGPoint(x: 2*screenWidth/3, y: 2*screenHeight/3)
         buttonPlay.selectedHandler = {
             self.loadGame()
         }
