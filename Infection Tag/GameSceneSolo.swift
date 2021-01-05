@@ -177,10 +177,10 @@ class GameSceneSolo: SKScene {
         dimDash.size=CGSize(width: 100*scale1, height: 100*scale1)
         dimDash.position=CGPoint(x:5*screenWidth/6, y: screenHeight/3)
 //        dimDash.isHidden=true
-        dashButton=UIButton(frame:CGRect(x: -50+2*screenWidth/6*scale1, y: -50+5*screenHeight/6*scale1, width: 100*scale1, height: 100*scale1))
+        dashButton=UIButton(frame:CGRect(x: -50+2*screenWidth/6, y: -50+5*screenHeight/6, width: 100*scale1, height: 100*scale1))
         dashButton.setImage(UIImage(named: "dash"), for: UIButton.State.normal)
         dashButton.addTarget(self, action: #selector(self.dash), for: UIControl.Event.allTouchEvents)
-        shootButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6*scale1, y: -50+5*screenHeight/6*scale1, width: 100*scale1, height: 100*scale1))
+        shootButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 100*scale1, height: 100*scale1))
         shootButton.setImage(UIImage(named: "Shoot_button"), for: UIButton.State.normal)
         shootButton.addTarget(self, action: #selector(self.shoot), for: UIControl.Event.allTouchEvents)
         back.size = CGSize(width:map.size.width*scaleMap+screenWidth,height:map.size.height*scaleMap+screenHeight)
