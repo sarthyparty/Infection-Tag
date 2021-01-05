@@ -631,13 +631,6 @@ class GameSceneSolo: SKScene {
                 }
             }
         }
-        if shotBullets.count>=1{
-        for i in shotBullets.count-1...0{
-            if (shotBullets[i].parent==nil){
-                shotBullets.remove(at: i)
-            }
-        }
-        }
 //        if testInfecteds.count>=1{
 //        for i in testInfecteds.count-1...0{
 //            if (testInfecteds[i].parent==nil){
