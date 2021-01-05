@@ -18,10 +18,10 @@ class MainMenu: SKScene {
     var z2: SKSpriteNode!
 
     override func didMove(to view: SKView) {
-//        buttonPlay = (self.childNode(withName: "buttonPlay") as! MSButtonNode)
-//        buttonPlay.selectedHandler = {
-//            self.loadGame()
-//        }
+        buttonPlay = (self.childNode(withName: "buttonPlay") as! MSButtonNode)
+        buttonPlay.selectedHandler = {
+            self.loadGame()
+        }
 
         buttonPlaySolo = (self.childNode(withName: "buttonPlaySolo") as! MSButtonNode)
         buttonPlaySolo.position=CGPoint(x: screenWidth/2, y: screenHeight/2)
@@ -42,7 +42,7 @@ class MainMenu: SKScene {
         z2.position=CGPoint(x: z2.position.x*scale1, y: z2.position.y*scale1)
         z2.size=CGSize(width: z2.size.width*scale1, height: z2.size.height*scale1)
 
-        //        buttonPlay.removeFromParent()
+                buttonPlay.removeFromParent()
 
 
     }
