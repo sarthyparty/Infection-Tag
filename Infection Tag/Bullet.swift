@@ -27,7 +27,7 @@ class Bullet: SKSpriteNode {
         let texture = SKTexture(imageNamed: "bullet")
 
         let color = UIColor.clear
-        let size = CGSize(width: 30*scale, height: 30*scale)
+        let size = CGSize(width: 50*scale, height: 50*scale)
             // Call the designated initializer
         super.init(texture: texture, color: color, size: size)
         self.position = pos
@@ -55,6 +55,7 @@ class Bullet: SKSpriteNode {
     }
     func pickUp() {
         pickedUp = true
+        
         self.removeFromParent()
     }
     
