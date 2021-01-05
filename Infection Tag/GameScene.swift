@@ -349,14 +349,16 @@ class GameScene: SKScene {
                 self.view?.addSubview(dashButton)
             }
         }
-        let localPlayer = getLocalPlayerType()
-        gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
-        gameModel.players[localPlayer.playerIndex()].yPos = Float(self.character.position.y)
-        gameModel.players[localPlayer.playerIndex()].zRot = Float(self.character.zRotation)
-        gameModel.players[localPlayer.playerIndex()].isInfected = self.character.isInfected
-        gameModel.players[localPlayer.playerIndex()].textureIndex = ind
-        sendData()
-        updateUI()
+        if gameModel.players.count == 2 {
+            let localPlayer = getLocalPlayerType()
+            gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
+            gameModel.players[localPlayer.playerIndex()].yPos = Float(self.character.position.y)
+            gameModel.players[localPlayer.playerIndex()].zRot = Float(self.character.zRotation)
+            gameModel.players[localPlayer.playerIndex()].isInfected = self.character.isInfected
+            gameModel.players[localPlayer.playerIndex()].textureIndex = ind
+            sendData()
+            updateUI()
+        }
     }
     
     func getLocalPlayerType() -> PlayerType {
