@@ -396,40 +396,19 @@ class GameSceneSolo: SKScene {
     func zombieHiZombie (zombie1: Zombie, zombie2: Zombie) {
         let newX = (zombie1.position.x + zombie2.position.x)/2
         let newY = (zombie1.position.y + zombie2.position.y)/2
-        if(zombie1.iteration>zombie2.iteration){
-            if (zombie1.iteration<6){
+        let newIteration=zombie1.iteration+zombie2.iteration
+        if ((zombie1.iteration<8)&&(zombie2.iteration<8)){
             zombie1.position = CGPoint(x: newX, y: newY)
-            zombie1.iteration=zombie1.iteration+1
+            if (newIteration>=8){
+                zombie1.iteration=8
+            } else {
+                zombie1.iteration=newIteration
+            }
             zombie1.update()
             zombie1.rad=zombie1.rad*1.2
             zombie2.removeFromParent()
-//            testInfecteds.remove(at: zombie2.ind-1)
-//            zombie1.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(zombie1.rad)/*, center: testInfecteds.last!.position*/)
             zombie1.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "walk3"), alphaThreshold: 0.5, size: zombie1.size)// 1
-//            for i in zombie1.ind...(testInfecteds.endIndex-1){
-//                testInfecteds[i].ind-=1
-//            }
-            }
-        }else{
-            if (zombie2.iteration<6){
-            zombie2.position = CGPoint(x: newX, y: newY)
-            zombie2.iteration=zombie2.iteration+1
-            zombie2.update()
-            zombie2.rad=zombie2.rad*1.2
-            zombie1.removeFromParent()
-//            testInfecteds.remove(at: zombie1.ind-1)
-//            zombie2.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(zombie2.rad)/*, center: testInfecteds.last!.position*/) // 1
-            zombie2.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "walk3"), alphaThreshold: 0.5, size: zombie2.size)
-//            for i in zombie2.ind...(testInfecteds.endIndex-1){
-//                testInfecteds[i].ind-=1
-//            }
-            }
         }
-//        testInfecteds.last?.physicsBody?.isDynamic = true // 2
-//        testInfecteds.last?.physicsBody?.categoryBitMask = PhysicsCategory.zombie // 3
-//        testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1// 4
-//        testInfecteds.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
-//        testInfecteds.last?.speedZ=testInfecteds.last!.speedZ*scale
     }
     
     override func update(_ currentTime: TimeInterval) {
