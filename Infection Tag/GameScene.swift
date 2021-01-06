@@ -692,7 +692,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        }
 //        }
         
-        if gameModel.players.count != 2 {
+        if gameModel.players.count == 2 {
             let localPlayer = getLocalPlayerType()
             gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
             gameModel.players[localPlayer.playerIndex()].yPos = Float(self.character.position.y)
