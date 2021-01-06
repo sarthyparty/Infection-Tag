@@ -22,7 +22,7 @@ class MainMenu: SKScene {
         buttonPlay.selectedHandler = {
             self.loadGame()
         }
-
+        buttonPlay.removeFromParent()
         buttonPlaySolo = (self.childNode(withName: "buttonPlaySolo") as! MSButtonNode)
         buttonPlaySolo.position=CGPoint(x: screenWidth/2, y: screenHeight/2)
         buttonPlaySolo.selectedHandler = {
@@ -41,7 +41,7 @@ class MainMenu: SKScene {
         z2 = (self.childNode(withName: "z2") as! SKSpriteNode)
         z2.position=CGPoint(x: z2.position.x*scale1, y: z2.position.y*scale1)
         z2.size=CGSize(width: z2.size.width*scale1, height: z2.size.height*scale1)
-        buttonPlay.removeFromParent()
+        
 
 
     }
