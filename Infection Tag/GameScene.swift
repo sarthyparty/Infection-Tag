@@ -111,9 +111,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.gameModel = GameModel()
         self.match?.delegate = self
         savePlayers()
-        if getLocalPlayerType().playerIndex() == 0 {
-            self.match?.chooseBestHostingPlayer(completionHandler: makeServer)
-        }
+//        if getLocalPlayerType().playerIndex() == 0 {
+//            self.match?.chooseBestHostingPlayer(completionHandler: makeServer)
+//        }
     }
     
     func makeServer(player: GKPlayer?) -> Void {
