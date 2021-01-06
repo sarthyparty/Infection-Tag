@@ -128,7 +128,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func savePlayers() {
-        if self.match?.expectedPlayerCount == 2 {
             guard let player2Name = match?.players.first?.displayName else { return }
             let player1 = Player(displayName: GKLocalPlayer.local.displayName)
             let player2 = Player(displayName: player2Name)
@@ -139,7 +138,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 player1.displayName < player2.displayName
             }
             sendData()
-        }
     }
     
     override func didMove(to view: SKView) {
@@ -857,6 +855,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
 extension GameScene: GKMatchDelegate {
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
+        
+        guard let model = GameModel.decode(data: data) else { return }
+        gameModel = model
+    }
+    
+    func match(_ match: GKMatch, didReceive data: Data, forRecipient pl: GKPlayer, fromRemotePlayer player: GKPlayer) {
         
         guard let model = GameModel.decode(data: data) else { return }
         gameModel = model
