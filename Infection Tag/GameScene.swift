@@ -1,30 +1,11 @@
-//
-//  GameScene.swift
-//  Infection Tag
-//
-//  Created by 64000774 on 10/14/20.
-//
-//let screenSize = UIScreen.main.bounds
-//let screenWidth = screenSize.width
-//let screenHeight = screenSize.height
 
 import SpriteKit
 import GameplayKit
 import GameKit
 
 var myID = ""
-var local_data = Data(capacity: 8)
-
-
-//struct PhysicsCategory {
-//  static let none      : UInt32 = 0
-//  static let all       : UInt32 = UInt32.max
-//  static let character   : UInt32 = 0b1       // 1
-//  static let wall: UInt32 = 0b10      // 2
-//}
 
 class GameScene: SKScene {
-    var isServer = false
     var joystick = TLAnalogJoystick(withDiameter: 100)
     var character = Character(isInfected: false)
     var cam = SKCameraNode()
@@ -61,7 +42,7 @@ class GameScene: SKScene {
         dashButton.removeFromSuperview()
         dimDash.isHidden=false
     }
-
+    
     func updateUI() {
         if gameModel.players.count != 2 {
             savePlayers()
@@ -78,44 +59,28 @@ class GameScene: SKScene {
             otherCharacter.texture=walkSprites[newInd]
         }
     }
-
-
+    
+    
     func initialize(Match: GKMatch) {
         self.match = Match
         self.gameModel = GameModel()
         self.match?.delegate = self
         savePlayers()
-//        if getLocalPlayerType().playerIndex() == 0 {
-//            self.match?.chooseBestHostingPlayer(completionHandler: makeServer)
-//        }
     }
-
-    func makeServer(player: GKPlayer?) -> Void {
-        var l_player = [GKPlayer]()
-        l_player.append(player!)
-        do {
-            try self.match?.send(local_data, to: l_player, dataMode: GKMatch.SendDataMode.reliable)
-
-        } catch is Error {
-            print("this game is messed up")
-        }
-    }
-
+    
     private func savePlayers() {
-        if self.match?.expectedPlayerCount == 2 {
-            guard let player2Name = match?.players.first?.displayName else { return }
-            let player1 = Player(displayName: GKLocalPlayer.local.displayName)
-            let player2 = Player(displayName: player2Name)
-
-            gameModel.players = [player1, player2]
-
-            gameModel.players.sort { (player1, player2) -> Bool in
-                player1.displayName < player2.displayName
-            }
-            sendData()
+        guard let player2Name = match?.players.first?.displayName else { return }
+        let player1 = Player(displayName: GKLocalPlayer.local.displayName)
+        let player2 = Player(displayName: player2Name)
+            
+        gameModel.players = [player1, player2]
+            
+        gameModel.players.sort { (player1, player2) -> Bool in
+            player1.displayName < player2.displayName
         }
+        sendData()
     }
-
+    
     override func didMove(to view: SKView) {
         let scaleMap=CGFloat(10*scaleChar)
         super.didMove(to: view)
@@ -182,24 +147,19 @@ class GameScene: SKScene {
             w.physicsBody?.contactTestBitMask = PhysicsCategory.character1 // 4
             w.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
         }
-//        otherCharacter.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: character.position) // 1
-//        otherCharacter.physicsBody?.isDynamic = true // 2
-//        otherCharacter.physicsBody?.categoryBitMask = PhysicsCategory.character // 3
-//        otherCharacter.physicsBody?.contactTestBitMask = PhysicsCategory.character// 4
-//        otherCharacter.physicsBody?.collisionBitMask = PhysicsCategory.none
         testInfected.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: character.position) // 1
         testInfected.physicsBody?.isDynamic = true // 2
         testInfected.physicsBody?.categoryBitMask = PhysicsCategory.character1 // 3
         testInfected.physicsBody?.contactTestBitMask = PhysicsCategory.character1// 4
         testInfected.physicsBody?.collisionBitMask = PhysicsCategory.none
-
-
-
-
+        
+        
+        
+        
     }
     func sendData() {
             guard let match = match else { return }
-
+            
             do {
                 guard let data = gameModel.encode() else { return }
                 try match.sendData(toAllPlayers: data, with: .reliable)
@@ -218,7 +178,7 @@ class GameScene: SKScene {
             speedScale=CGFloat(0.9)
         }
     }
-    func characterHitWall(wall: Wall, character: Character) {
+    func characterHitWall(wall: Wall, character: SKSpriteNode) {
         if (self.character.position.y+27<=wall.position.y-wall.size.height/2+15){
             hitwallbottom=true
             wall.side = "bottom"
@@ -274,7 +234,7 @@ class GameScene: SKScene {
           }
         }
       }
-
+    
     override func update(_ currentTime: TimeInterval) {
         let velocityx=self.joystick.velocity.x*speedScale
         let velocityy=self.joystick.velocity.y*speedScale
@@ -329,7 +289,7 @@ class GameScene: SKScene {
             }
             if (xmovement&&ymovement) {
                 self.character.position = CGPoint(x: self.character.position.x+(velocityx), y: self.character.position.y+(velocityy))
-
+                
             } else if (xmovement) {
                 self.character.position = CGPoint(x: self.character.position.x+(velocityx), y: self.character.position.y)
             } else if (ymovement) {
@@ -367,8 +327,8 @@ class GameScene: SKScene {
                 character.zRotation=joystick.angular
             }
         }
-
-
+        
+        
         boundaryx = false
         boundaryy = false
         if(startCounter==true){
@@ -398,7 +358,7 @@ class GameScene: SKScene {
         sendData()
         updateUI()
     }
-
+    
     func getLocalPlayerType() -> PlayerType {
             if gameModel.players.first?.displayName == GKLocalPlayer.local.displayName {
                 return .one
@@ -413,14 +373,14 @@ class GameScene: SKScene {
                 return .one
             }
     }
-
+    
     func makeWalls(){
         let imgName="clearPNG"
         let h=map.size.height*3
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:1.44*288), Position: CGPoint(x:1.26*288,y:h-0.47*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.83*288, height:0.13*288), Position: CGPoint(x:0.43*288,y:h-1.28*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:1.44*288), Position: CGPoint(x:1.9*288,y:h-0*288)))
-
+        
         //Library area
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:1.73*288), Position: CGPoint(x:2.39*288,y:h-0.87*288)))
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:0.13*288, height:1.73*288), Position: CGPoint(x:3.01*288,y:h-0.87*288)))
@@ -455,10 +415,10 @@ class GameScene: SKScene {
         arrayWall.append(Wall(imageName: imgName, siz: CGSize(width:1.97*288, height:0.13*288), Position: CGPoint(x:6.74*288,y:h-4.55*288)))
 
     }
-
+    
 }
 extension GameScene: SKPhysicsContactDelegate {
-
+    
     func didBegin(_ contact: SKPhysicsContact) {
       // 1
       var firstBody: SKPhysicsBody
@@ -470,7 +430,7 @@ extension GameScene: SKPhysicsContactDelegate {
         firstBody = contact.bodyB
         secondBody = contact.bodyA
       }
-
+     
       // 2
         if((firstBody.categoryBitMask==secondBody.categoryBitMask)&&(firstBody.categoryBitMask==PhysicsCategory.character1)){
             if let character1 = firstBody.node as? Character,
@@ -478,20 +438,13 @@ extension GameScene: SKPhysicsContactDelegate {
                 characterHitCharacter(character1: character1, character2: character2)
             }
         }
-      if ((firstBody.categoryBitMask == PhysicsCategory.character1) &&
-          (secondBody.categoryBitMask == PhysicsCategory.wall)) {
+      if ((firstBody.categoryBitMask & PhysicsCategory.character1 != 0) &&
+          (secondBody.categoryBitMask & PhysicsCategory.wall != 0)) {
         if let character = firstBody.node as? SKSpriteNode,
           let wall = secondBody.node as? SKSpriteNode {
-            characterHitWall(wall: wall as! Wall, character: character as! Character)
+            characterHitWall(wall: wall as! Wall, character: character)
         }
       }
-        if ((firstBody.categoryBitMask == PhysicsCategory.wall) &&
-            (secondBody.categoryBitMask == PhysicsCategory.character1)) {
-          if let wall = firstBody.node as? SKSpriteNode,
-            let character = secondBody.node as? SKSpriteNode {
-              characterHitWall(wall: wall as! Wall, character: character as! Character)
-          }
-        }
     }
     func didEnd(_ contact: SKPhysicsContact) {
       // 1
@@ -504,7 +457,7 @@ extension GameScene: SKPhysicsContactDelegate {
         firstBody = contact.bodyB
         secondBody = contact.bodyA
       }
-
+     
       // 2
       if ((firstBody.categoryBitMask & PhysicsCategory.character1 != 0) &&
           (secondBody.categoryBitMask & PhysicsCategory.wall != 0)) {
@@ -518,17 +471,7 @@ extension GameScene: SKPhysicsContactDelegate {
 
 extension GameScene: GKMatchDelegate {
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-        if data == local_data {
-            isServer = true
-            otherCharacter.physicsBody = SKPhysicsBody(circleOfRadius: 180*scaleChar/2, center: character.position) // 1
-            otherCharacter.physicsBody?.isDynamic = true // 2
-            otherCharacter.physicsBody?.categoryBitMask = PhysicsCategory.character1 // 3
-            otherCharacter.physicsBody?.contactTestBitMask = PhysicsCategory.character1 // 4
-            otherCharacter.physicsBody?.collisionBitMask = PhysicsCategory.none // 5
-        }
         guard let model = GameModel.decode(data: data) else { return }
         gameModel = model
     }
 }
-
-
