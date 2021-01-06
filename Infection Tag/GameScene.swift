@@ -696,7 +696,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             gameModel.players[localPlayer.playerIndex()].yPos = Float(self.character.position.y)
             gameModel.players[localPlayer.playerIndex()].zRot = Float(self.character.zRotation)
             gameModel.players[localPlayer.playerIndex()].isInfected = self.character.isInfected
-            gameModel.players[localPlayer.playerIndex()].textureIndex = ind
+            gameModel.players[localPlayer.playerIndex()].textureIndex = (ind-(ind%4))/4
             sendData()
             updateUI()
         } else {
