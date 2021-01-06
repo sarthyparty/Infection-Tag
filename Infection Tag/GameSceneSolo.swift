@@ -164,6 +164,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
 //        pauseButton?.texture=SKTexture(imageNamed: "pause.fill")
         score = 0
+        ammoCount=0
         scoreText=NSMutableAttributedString(string: "Score: " + String(score)+" Bullets: "+String(ammoCount))
         scoreText.addAttributes(attributesScore, range: NSMakeRange(0, scoreText.length))
         scoreLabel.attributedText = scoreText
