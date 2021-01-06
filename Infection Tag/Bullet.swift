@@ -54,7 +54,11 @@ class Bullet: SKSpriteNode {
         
     }
     func pickUp() {
+        if pickedUp==false{
+            ammoCount+=1
+        }
         pickedUp = true
+        
         
         self.removeFromParent()
     }

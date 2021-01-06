@@ -12,6 +12,8 @@ let originalHeight = CGFloat(766)
 let defaults = UserDefaults.standard
 var scale1 = CGFloat.minimum(screenWidth/originalWidth, screenHeight/originalHeight)
 var scaleChar=CGFloat(0.3)
+var score = 0
+var ammoCount=0
 
 import SpriteKit
 import GameplayKit
@@ -31,7 +33,7 @@ struct PhysicsCategory {
 }
 
 class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
-    var ammoCount=0
+    
     var tempDimDash=true
     var changeX:CGFloat=CGFloat(0)
     var changeY:CGFloat=CGFloat(0)
@@ -42,7 +44,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
     var cam = SKCameraNode()
     var scoreLabel = SKLabelNode()
     var pauseLabel = SKLabelNode()
-    var score = 0
+    
     var highScore = defaults.integer(forKey: "highScore")
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
@@ -161,8 +163,8 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
 //        pauseButton?.texture=SKTexture(imageNamed: "pause.fill")
-        
-        scoreText=NSMutableAttributedString(string: "Score: " + String(score)+" High Score: "+String(highScore)+" Bullets: "+String(ammoCount))
+        score = 0
+        scoreText=NSMutableAttributedString(string: "Score: " + String(score)+" Bullets: "+String(ammoCount))
         scoreText.addAttributes(attributesScore, range: NSMakeRange(0, scoreText.length))
         scoreLabel.attributedText = scoreText
         let scaleMap=CGFloat(10*scaleChar*scale1)
@@ -206,7 +208,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                     self.shotBullets.append(self.bullets[i])
                     self.addChild(self.bullets[i])
                     self.bullets.remove(at: i)
-                    self.ammoCount-=1
+                    ammoCount-=1
                     return
                     
                 }
@@ -532,8 +534,8 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
         }
         camera?.position = character.position
         joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6+changeX, y: camera!.position.y-(2*screenHeight)/6+changeY)
-        dimDash.position=CGPoint(x:camera!.position.x-(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
-        newDash?.position=CGPoint(x:camera!.position.x-(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
+        dimDash.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6+100*scale1)
+        newDash?.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6+100*scale1)
         pauseButton?.position=CGPoint(x:camera!.position.x+(3*screenWidth)/7, y: camera!.position.y+(3*screenHeight)/7)
         newShoot?.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
         dimShoot.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
@@ -625,7 +627,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                         b.pickUp()
                         b.size = CGSize(width: 30*scale1, height: 30*scale1)
                         b.physicsBody = SKPhysicsBody(texture: b.texture!, alphaThreshold: 0.5, size: b.size)
-                        ammoCount+=1
+                        
                     }
                 }
             }
@@ -638,7 +640,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
             if(z.parent != nil){
                 for z1 in z.physicsBody!.allContactedBodies(){
                     if character.physicsBody==z1{
-                        let scene=MainMenu(fileNamed: "MainMenu")
+                        let scene=playAgainMenu(fileNamed: "playAgainMenu")
                         let theScene = scene
                         let skView = self.view!
 //                        newDash?.removeFromParent()
@@ -658,15 +660,15 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                 }
             }
         }
-        self.score+=1
-        if (self.score%10==0){
+        score+=1
+        if (score%10==0){
             if score>highScore{
                 highScore=score
                 if highScore>defaults.integer(forKey: "highScore"){
                     defaults.setValue(highScore, forKey: "highScore")
                 }
             }
-            scoreText=NSMutableAttributedString(string: "Score: " + String(score)+" High Score: "+String(highScore)+" Bullets: "+String(ammoCount))
+            scoreText=NSMutableAttributedString(string: "Score: " + String(score)+" Bullets: "+String(ammoCount))
         scoreText.addAttributes(attributesScore, range: NSMakeRange(0, scoreText.length))
         scoreLabel.attributedText = scoreText
         }

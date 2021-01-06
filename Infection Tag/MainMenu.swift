@@ -41,8 +41,7 @@ class MainMenu: SKScene {
         z2 = (self.childNode(withName: "z2") as! SKSpriteNode)
         z2.position=CGPoint(x: z2.position.x*scale1, y: z2.position.y*scale1)
         z2.size=CGSize(width: z2.size.width*scale1, height: z2.size.height*scale1)
-
-                buttonPlay.removeFromParent()
+        buttonPlay.removeFromParent()
 
 
     }

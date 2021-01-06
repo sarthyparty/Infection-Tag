@@ -12,6 +12,8 @@
 		8121C19A2559A67900EE1F06 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8121C1992559A67900EE1F06 /* MainMenu.swift */; };
 		819423AD25642C5B0031A940 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 819423AC25642C5B0031A940 /* MainMenu.sks */; };
 		819423B225642E730031A940 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819423B125642E730031A940 /* MSButtonNode.swift */; };
+		9D6E24E325A61597005DA2A4 /* playAgainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6E24E225A61597005DA2A4 /* playAgainMenu.swift */; };
+		9D6E24E825A61A0B005DA2A4 /* playAgainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 9D6E24E725A61A0B005DA2A4 /* playAgainMenu.sks */; };
 		9D7E711B257E91F50051AEBE /* GameSceneSolo.sks in Resources */ = {isa = PBXBuildFile; fileRef = 9D7E711A257E91F50051AEBE /* GameSceneSolo.sks */; };
 		9D892764257E853F009B9007 /* GameSceneSolo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D892763257E853F009B9007 /* GameSceneSolo.swift */; };
 		9D892769257E8798009B9007 /* Zombie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D892768257E8798009B9007 /* Zombie.swift */; };
@@ -61,6 +63,8 @@
 		819423AC25642C5B0031A940 /* MainMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenu.sks; sourceTree = "<group>"; };
 		819423B125642E730031A940 /* MSButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSButtonNode.swift; sourceTree = "<group>"; };
 		8576CADE4D763903F976DE1C /* Pods_Infection_Tag_Infection_TagUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Infection_Tag_Infection_TagUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D6E24E225A61597005DA2A4 /* playAgainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = playAgainMenu.swift; sourceTree = "<group>"; };
+		9D6E24E725A61A0B005DA2A4 /* playAgainMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = playAgainMenu.sks; sourceTree = "<group>"; };
 		9D7E711A257E91F50051AEBE /* GameSceneSolo.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameSceneSolo.sks; sourceTree = "<group>"; };
 		9D892763257E853F009B9007 /* GameSceneSolo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneSolo.swift; sourceTree = "<group>"; };
 		9D892768257E8798009B9007 /* Zombie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zombie.swift; sourceTree = "<group>"; };
@@ -183,6 +187,8 @@
 				D3CF0C522537500F00394F79 /* GameScene.swift */,
 				9D892768257E8798009B9007 /* Zombie.swift */,
 				9D892763257E853F009B9007 /* GameSceneSolo.swift */,
+				9D6E24E725A61A0B005DA2A4 /* playAgainMenu.sks */,
+				9D6E24E225A61597005DA2A4 /* playAgainMenu.swift */,
 				D345AB11258BC0F60026B15C /* Bullet.swift */,
 				D39D02D12540827D00BDAC1E /* Character.swift */,
 				D377F83F2589207E001F0A3F /* Gun.swift */,
@@ -340,6 +346,7 @@
 				D3CF0C5A2537501400394F79 /* Assets.xcassets in Resources */,
 				9D7E711B257E91F50051AEBE /* GameSceneSolo.sks in Resources */,
 				D3CF0C512537500F00394F79 /* Actions.sks in Resources */,
+				9D6E24E825A61A0B005DA2A4 /* playAgainMenu.sks in Resources */,
 				819423AD25642C5B0031A940 /* MainMenu.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -443,6 +450,7 @@
 				D3CF0C81253753FF00394F79 /* TFAnalogJoystick.swift in Sources */,
 				819423B225642E730031A940 /* MSButtonNode.swift in Sources */,
 				D3D60665256C128E003E276A /* GameCenterHelper.swift in Sources */,
+				9D6E24E325A61597005DA2A4 /* playAgainMenu.swift in Sources */,
 				D3D6066D256C143D003E276A /* GameModel.swift in Sources */,
 				D39D02D22540827D00BDAC1E /* Character.swift in Sources */,
 				D39D02D725471C9700BDAC1E /* wall.swift in Sources */,
