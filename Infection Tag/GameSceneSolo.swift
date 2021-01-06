@@ -30,7 +30,11 @@ struct PhysicsCategory {
     static let bullet: UInt32 = 0b100
 }
 
-class GameSceneSolo: SKScene {
+class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
+    var ammoCount=0
+    var tempDimDash=true
+    var changeX:CGFloat=CGFloat(0)
+    var changeY:CGFloat=CGFloat(0)
     var indexZ=0
     var isServer = false
     var joystick = TLAnalogJoystick(withDiameter: 200*scale1)
@@ -43,7 +47,10 @@ class GameSceneSolo: SKScene {
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
     var dimDash=SKSpriteNode(imageNamed:"dash")
-    var shootButton : UIButton=UIButton(type: UIButton.ButtonType.custom)
+    var dimShoot=SKSpriteNode(imageNamed:"Shoot_button")
+    var newShoot=MSButtonNode(img:UIImage(named: "Shoot_button")!, size: CGSize(width: 100*scale1, height: 100*scale1))
+//    var newShoot2=MSButtonNode(img:UIImage(named: "Shoot_button")!, size: CGSize(width: 100*scale1, height: 100*scale1))
+//    var shootButton : UIButton=UIButton(type: UIButton.ButtonType.custom)
     var testInfecteds:[Zombie] = [Zombie]()
 //    var otherCharacter: Character = Character(isInfected: false, ID: "HELLO")
     
@@ -59,7 +66,8 @@ class GameSceneSolo: SKScene {
     var ymovement = true
     var testWall:Wall?
     var arrayWall:[Wall] = [Wall]()
-    var dashButton : UIButton=UIButton(type: UIButton.ButtonType.custom)
+    var newDash = MSButtonNode(img:UIImage(named: "dash")!, size: CGSize(width: 100*scale1, height: 100*scale1))
+//    var dashButton : UIButton=UIButton(type: UIButton.ButtonType.custom)
     var speedScale=CGFloat(1)
     var counter=0
     var timerActionButton=0
@@ -71,31 +79,31 @@ class GameSceneSolo: SKScene {
     var gun: Gun?
     var scoreText=NSMutableAttributedString(string:"Score: "+String(0))
     var pauseText=NSMutableAttributedString(string:"Game paused")
-    let attributes:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -3, .font: UIFont(name: "Futura", size: 50*scale1)!, .foregroundColor: UIColor.black]
-    let attributesScore:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -3, .font: UIFont(name: "Futura", size: 70*scale1)!, .foregroundColor: UIColor.black]
+    let attributesScore:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -3, .font: UIFont(name: "Futura", size: 40*scale1)!, .foregroundColor: UIColor.black]
+    let attributesPause:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -3, .font: UIFont(name: "Futura", size: 70*scale1)!, .foregroundColor: UIColor.black]
     var pauseButton=MSButtonNode(img:UIImage(named: "pause")!, size: CGSize(width: 100*scale1, height: 100*scale1))
 //    var match: GKMatch?
 //    private var gameModel: GameModel!
     
-    @objc func shoot() {
-        for i in 0...bullets.count-1 {
-            if bullets[i].pickedUp {
-                bullets[i].shoot(char: self.gun!, angle: self.gun!.zRotation+CGFloat(Float.pi))
-                shotBullets.append(bullets[i])
-                self.addChild(bullets[i])
-                self.bullets.remove(at: i)
-                return
-            }
-        }
-    }
+//    @objc func shoot() {
+//        for i in 0...bullets.count-1 {
+//            if bullets[i].pickedUp {
+//                bullets[i].shoot(char: self.gun!, angle: self.gun!.zRotation+CGFloat(Float.pi))
+//                shotBullets.append(bullets[i])
+//                self.addChild(bullets[i])
+//                self.bullets.remove(at: i)
+//                return
+//            }
+//        }
+//    }
     
-    @objc func dash() {
-        speedScale=CGFloat(3)
-        startCounter=true
-        startTimer=true
-        dashButton.removeFromSuperview()
-        dimDash.isHidden=false
-    }
+//    @objc func dash() {
+//        speedScale=CGFloat(3)
+//        startCounter=true
+//        startTimer=true
+//        dashButton.removeFromSuperview()
+//        dimDash.isHidden=false
+//    }
     
 //    func updateUI() {
 //        if gameModel.players.count != 2 {
@@ -154,13 +162,14 @@ class GameSceneSolo: SKScene {
     override func didMove(to view: SKView) {
 //        pauseButton?.texture=SKTexture(imageNamed: "pause.fill")
         
-        scoreText=NSMutableAttributedString(string: "Score: " + String(score)+" High Score: "+String(highScore))
-        scoreText.addAttributes(attributes, range: NSMakeRange(0, scoreText.length))
+        scoreText=NSMutableAttributedString(string: "Score: " + String(score)+" High Score: "+String(highScore)+" Bullets: "+String(ammoCount))
+        scoreText.addAttributes(attributesScore, range: NSMakeRange(0, scoreText.length))
         scoreLabel.attributedText = scoreText
         let scaleMap=CGFloat(10*scaleChar*scale1)
         super.didMove(to: view)
         dimDash.alpha=0.4
-        dashButton.alpha=0.7
+        dimShoot.alpha=0.4
+//        dashButton.alpha=0.7
 //        testInfecteds.append(Zombie())
         map.anchorPoint=CGPoint(x:0,y:0)
         map.position=CGPoint(x:0,y:0)
@@ -175,47 +184,86 @@ class GameSceneSolo: SKScene {
 //        testInfecteds[0].texture = ZwalkSprites[2]
 //        character.isInfected=false
         dimDash.size=CGSize(width: 100*scale1, height: 100*scale1)
-        dimDash.position=CGPoint(x:5*screenWidth/6, y: screenHeight/3)
-//        dimDash.isHidden=true
-        dashButton=UIButton(frame:CGRect(x: -50+2*screenWidth/6, y: -50+5*screenHeight/6, width: 100*scale1, height: 100*scale1))
-        dashButton.setImage(UIImage(named: "dash"), for: UIButton.State.normal)
-        dashButton.addTarget(self, action: #selector(self.dash), for: UIControl.Event.allTouchEvents)
-        shootButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 100*scale1, height: 100*scale1))
-        shootButton.setImage(UIImage(named: "Shoot_button"), for: UIButton.State.normal)
-        shootButton.addTarget(self, action: #selector(self.shoot), for: UIControl.Event.allTouchEvents)
+//        dimDash.position=CGPoint(x:5*screenWidth/6, y: screenHeight/3)
+        dimDash.isHidden=true
+        dimShoot.size=CGSize(width: 100*scale1, height: 100*scale1)
+//        dimShoot.position=CGPoint(x:5*screenWidth/6, y: screenHeight/3)
+        dimShoot.isHidden=true
+//        dashButton=UIButton(frame:CGRect(x: -50+2*screenWidth/6, y: -50+5*screenHeight/6, width: 100*scale1, height: 100*scale1))
+//        dashButton.setImage(UIImage(named: "dash"), for: UIButton.State.normal)
+//        dashButton.addTarget(self, action: #selector(self.dash), for: UIControl.Event.allTouchEvents)
+//        shootButton=UIButton(frame:CGRect(x: -50+5*screenWidth/6, y: -50+5*screenHeight/6, width: 100*scale1, height: 100*scale1))
+//        shootButton.setImage(UIImage(named: "Shoot_button"), for: UIButton.State.normal)
+//        shootButton.addTarget(self, action: #selector(self.shoot), for: UIControl.Event.allTouchEvents)
         back.size = CGSize(width:map.size.width*scaleMap+screenWidth,height:map.size.height*scaleMap+screenHeight)
         map.size = CGSize(width:map.size.width*scaleMap, height:map.size.height*scaleMap)
         joystick.alpha = 0.5
+        
+        newShoot?.selectedHandler = {
+            for i in 0...self.bullets.count-1 {
+                if self.bullets[i].pickedUp {
+                    self.bullets[i].shoot(char: self.gun!, angle: self.gun!.zRotation+CGFloat(Float.pi))
+                    self.shotBullets.append(self.bullets[i])
+                    self.addChild(self.bullets[i])
+                    self.bullets.remove(at: i)
+                    self.ammoCount-=1
+                    return
+                    
+                }
+            }
+        }
+        newDash?.selectedHandler = {
+            self.speedScale=CGFloat(3)
+            self.startCounter=true
+            self.startTimer=true
+            self.newDash?.removeFromParent()
+            self.dimDash.isHidden=false
+            
+        }
         pauseButton?.selectedHandler = {
             if(self.isPaused==false){
-                self.pauseText.addAttributes(self.attributesScore, range: NSMakeRange(0, self.pauseText.length))
+                self.pauseText.addAttributes(self.attributesPause, range: NSMakeRange(0, self.pauseText.length))
                 self.pauseLabel.attributedText = self.pauseText
                 self.pauseLabel.position = self.character.position
                 self.addChild(self.pauseLabel)
-                self.dashButton.removeFromSuperview()
-                for w in self.arrayWall{
-                    w.alpha=0.3
-                }
+                self.newDash?.removeFromParent()
                 for z in self.testInfecteds{
                     z.alpha=0.3
                 }
+                for b in self.bullets{
+                    b.alpha=0.3
+                }
+                for sb in self.shotBullets{
+                    sb.alpha=0.3
+                }
+                self.tempDimDash=self.dimDash.isHidden
+                self.dimDash.isHidden=false
                 self.character.alpha=0.3
                 self.map.alpha=0.3
                 self.scoreLabel.alpha=0.3
-                self.joystick.alpha=0.15
+                self.joystick.alpha=0.25
+                self.newShoot?.removeFromParent()
+                self.dimShoot.isHidden=false
 //                self.alpha=0.3
             } else {
-                self.view?.addSubview(self.dashButton)
-                for w in self.arrayWall{
-                    w.alpha=1
-                }
+                self.dimShoot.isHidden=true
+                self.addChild(self.newDash!)
+                self.addChild(self.newShoot!)
+                self.dimDash.isHidden=self.tempDimDash
                 for z in self.testInfecteds{
                     z.alpha=1
+                }
+                for b in self.bullets{
+                    b.alpha=1
+                }
+                for sb in self.shotBullets{
+                    sb.alpha=1
                 }
                 self.character.alpha=1
                 self.map.alpha=1
                 self.scoreLabel.alpha=1
                 self.joystick.alpha=0.5
+                self.newShoot?.alpha=1
                 self.pauseLabel.removeFromParent()
             }
             self.isPaused.toggle()
@@ -224,6 +272,10 @@ class GameSceneSolo: SKScene {
             
         }
         self.camera = cam
+//        newShoot2?.selectedHandler = {
+//            self.changeX+=5
+//            self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.changeX, y: self.camera!.position.y-(2*screenHeight)/6+self.changeY)
+//        }
         self.addChild(back)
         self.addChild(cam)
         
@@ -235,8 +287,8 @@ class GameSceneSolo: SKScene {
         self.addChild(self.gun!)
         character.position = CGPoint(x: 500*scale1, y: 300*scale1)
         character.size = CGSize(width:180*scaleChar*scale1, height:180*scaleChar*scale1)
-        self.view?.addSubview(dashButton)
-        self.view?.addSubview(shootButton)
+        
+//        self.view?.addSubview(shootButton)
 //        for z in testInfecteds{
 //            self.addChild(z)
 //        }
@@ -246,7 +298,11 @@ class GameSceneSolo: SKScene {
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
         self.addChild(dimDash)
+        self.addChild(dimShoot)
         self.addChild(pauseButton!)
+        self.addChild(newDash!)
+        self.addChild(newShoot!)
+//        self.addChild(newShoot2!)
 //        self.addChild(otherCharacter)
 //        super.scaleMode = .aspectFit 
     }
@@ -475,9 +531,13 @@ class GameSceneSolo: SKScene {
             }
         }
         camera?.position = character.position
-        joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
+        joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6+changeX, y: camera!.position.y-(2*screenHeight)/6+changeY)
         dimDash.position=CGPoint(x:camera!.position.x-(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
+        newDash?.position=CGPoint(x:camera!.position.x-(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
         pauseButton?.position=CGPoint(x:camera!.position.x+(3*screenWidth)/7, y: camera!.position.y+(3*screenHeight)/7)
+        newShoot?.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
+        dimShoot.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
+//        newShoot2?.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y+(2*screenHeight)/6)
         if(character.isInfected){
             if(joystick.velocity == CGPoint(x: 0,y: 0)){
                 ind=8
@@ -522,7 +582,7 @@ class GameSceneSolo: SKScene {
                 timerActionButton=0
                 startTimer=false
                 dimDash.isHidden=true
-                self.view?.addSubview(dashButton)
+                self.addChild(newDash!)//                self.view?.addSubview(dashButton)
             }
         }
         if(zombieSpawnTimer%180==0){
@@ -556,12 +616,16 @@ class GameSceneSolo: SKScene {
             bullets.last?.physicsBody?.collisionBitMask = PhysicsCategory.none
             bullets.last?.physicsBody = SKPhysicsBody(texture: bullet.texture!, alphaThreshold: 0.5, size: bullets.last!.size)
             bullets.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.bullet// 4
+            bullets.last?.physicsBody?.allowsRotation=false
         }
         for b in bullets {
             if (b.parent != nil) {
                 for b1 in b.physicsBody!.allContactedBodies(){
                     if b1==character.physicsBody {
                         b.pickUp()
+                        b.size = CGSize(width: 30*scale1, height: 30*scale1)
+                        b.physicsBody = SKPhysicsBody(texture: b.texture!, alphaThreshold: 0.5, size: b.size)
+                        ammoCount+=1
                     }
                 }
             }
@@ -577,9 +641,9 @@ class GameSceneSolo: SKScene {
                         let scene=MainMenu(fileNamed: "MainMenu")
                         let theScene = scene
                         let skView = self.view!
-                        dashButton.removeFromSuperview()
-                        dimDash.isHidden=true
-                        shootButton.removeFromSuperview()
+//                        newDash?.removeFromParent()
+//                        dimDash.isHidden=true
+//                        newShoot?.removeFromParent()
                         skView.presentScene(theScene)
                     }
                 }
@@ -602,8 +666,8 @@ class GameSceneSolo: SKScene {
                     defaults.setValue(highScore, forKey: "highScore")
                 }
             }
-        scoreText=NSMutableAttributedString(string: "Score: " + String(score)+" High Score: "+String(highScore))
-        scoreText.addAttributes(attributes, range: NSMakeRange(0, scoreText.length))
+            scoreText=NSMutableAttributedString(string: "Score: " + String(score)+" High Score: "+String(highScore)+" Bullets: "+String(ammoCount))
+        scoreText.addAttributes(attributesScore, range: NSMakeRange(0, scoreText.length))
         scoreLabel.attributedText = scoreText
         }
         camera?.position = character.position
@@ -615,6 +679,11 @@ class GameSceneSolo: SKScene {
                 for z1 in testInfecteds{
                     if z1.physicsBody==b{
                         z1.goBoom()
+                        shotB.removeFromParent()
+                    }
+                }
+                for w in arrayWall{
+                    if w.physicsBody==b{
                         shotB.removeFromParent()
                     }
                 }
@@ -631,6 +700,7 @@ class GameSceneSolo: SKScene {
                 }
             }
         }
+        
 //        if testInfecteds.count>=1{
 //        for i in testInfecteds.count-1...0{
 //            if (testInfecteds[i].parent==nil){
@@ -706,68 +776,68 @@ class GameSceneSolo: SKScene {
     }
     
 }
-extension GameSceneSolo: SKPhysicsContactDelegate {
-    
-    func didBegin(_ contact: SKPhysicsContact) {
-      // 1
-      var firstBody: SKPhysicsBody
-      var secondBody: SKPhysicsBody
-      if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
-        firstBody = contact.bodyA
-        secondBody = contact.bodyB
-      } else {
-        firstBody = contact.bodyB
-        secondBody = contact.bodyA
-      }
-     
-      // 2
-//        if((firstBody.categoryBitMask==secondBody.categoryBitMask)&&(firstBody.categoryBitMask==PhysicsCategory.character1)){
-//            if let character1 = firstBody.node as? Character,
-//              let character2 = secondBody.node as? Character {
-//                characterHitCharacter(character1: character1, character2: character2)
-//            }
-//        }
+//extension GameSceneSolo: SKPhysicsContactDelegate {
+//
+//    func didBegin(_ contact: SKPhysicsContact) {
+//      // 1
+//      var firstBody: SKPhysicsBody
+//      var secondBody: SKPhysicsBody
+//      if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+//        firstBody = contact.bodyA
+//        secondBody = contact.bodyB
+//      } else {
+//        firstBody = contact.bodyB
+//        secondBody = contact.bodyA
+//      }
+//
+//      // 2
+////        if((firstBody.categoryBitMask==secondBody.categoryBitMask)&&(firstBody.categoryBitMask==PhysicsCategory.character1)){
+////            if let character1 = firstBody.node as? Character,
+////              let character2 = secondBody.node as? Character {
+////                characterHitCharacter(character1: character1, character2: character2)
+////            }
+////        }
+////        if ((firstBody.categoryBitMask == PhysicsCategory.character1) &&
+////                (secondBody.categoryBitMask == PhysicsCategory.wall)) {
+////            if let character = firstBody.node as? SKSpriteNode,
+////           let wall = secondBody.node as? SKSpriteNode {
+////                characterHitWall(wall: wall as! Wall, character: character as! Character)
+////            }
+////        }
+////        if ((firstBody.categoryBitMask == PhysicsCategory.wall) &&
+////            (secondBody.categoryBitMask == PhysicsCategory.character1)) {
+////          if let wall = firstBody.node as? SKSpriteNode,
+////            let character = secondBody.node as? SKSpriteNode {
+////              characterHitWall(wall: wall as! Wall, character: character as! Character)
+////          }
+////        }
 //        if ((firstBody.categoryBitMask == PhysicsCategory.character1) &&
-//                (secondBody.categoryBitMask == PhysicsCategory.wall)) {
-//            if let character = firstBody.node as? SKSpriteNode,
-//           let wall = secondBody.node as? SKSpriteNode {
-//                characterHitWall(wall: wall as! Wall, character: character as! Character)
+//                (secondBody.categoryBitMask == PhysicsCategory.zombie)) {
+//            let scene=MainMenu(fileNamed: "MainMenu")
+//            let theScene = scene
+//            let skView = view!
+//            newDash?.removeFromParent()
+//            dimDash.isHidden=true
+//            skView.presentScene(theScene)
+//        }
+//        if ((firstBody.categoryBitMask == PhysicsCategory.zombie) &&
+//            (secondBody.categoryBitMask == PhysicsCategory.character1)) {
+//            let scene=MainMenu(fileNamed: "MainMenu")
+//            let theScene = scene
+//            let skView = view!
+//            newDash?.removeFromParent()
+//            dimDash.isHidden=true
+//            skView.presentScene(theScene)
+//        }
+//        if ((firstBody.categoryBitMask == PhysicsCategory.zombie) &&
+//            (secondBody.categoryBitMask == PhysicsCategory.zombie)) {
+//            if let zombie1 = firstBody.node as? SKSpriteNode,
+//              let zombie2 = secondBody.node as? SKSpriteNode {
+//                zombieHiZombie(zombie1: zombie1 as! Zombie, zombie2: zombie2 as! Zombie)
 //            }
 //        }
-//        if ((firstBody.categoryBitMask == PhysicsCategory.wall) &&
-//            (secondBody.categoryBitMask == PhysicsCategory.character1)) {
-//          if let wall = firstBody.node as? SKSpriteNode,
-//            let character = secondBody.node as? SKSpriteNode {
-//              characterHitWall(wall: wall as! Wall, character: character as! Character)
-//          }
-//        }
-        if ((firstBody.categoryBitMask == PhysicsCategory.character1) &&
-                (secondBody.categoryBitMask == PhysicsCategory.zombie)) {
-            let scene=MainMenu(fileNamed: "MainMenu")
-            let theScene = scene
-            let skView = view!
-            dashButton.removeFromSuperview()
-            dimDash.isHidden=true
-            skView.presentScene(theScene)
-        }
-        if ((firstBody.categoryBitMask == PhysicsCategory.zombie) &&
-            (secondBody.categoryBitMask == PhysicsCategory.character1)) {
-            let scene=MainMenu(fileNamed: "MainMenu")
-            let theScene = scene
-            let skView = view!
-            dashButton.removeFromSuperview()
-            dimDash.isHidden=true
-            skView.presentScene(theScene)
-        }
-        if ((firstBody.categoryBitMask == PhysicsCategory.zombie) &&
-            (secondBody.categoryBitMask == PhysicsCategory.zombie)) {
-            if let zombie1 = firstBody.node as? SKSpriteNode,
-              let zombie2 = secondBody.node as? SKSpriteNode {
-                zombieHiZombie(zombie1: zombie1 as! Zombie, zombie2: zombie2 as! Zombie)
-            }
-        }
-        
-    }
+//
+//    }
 //    func didEnd(_ contact: SKPhysicsContact) {
 //      // 1
 //      var firstBody: SKPhysicsBody
@@ -796,7 +866,7 @@ extension GameSceneSolo: SKPhysicsContactDelegate {
 //            }
 //          }
 //    }
-}
+//}
 
 //extension GameScene: GKMatchDelegate {
 //    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
