@@ -35,8 +35,9 @@ struct PhysicsCategory {
 class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
     
     var tempDimDash=true
-    var changeX:CGFloat=CGFloat(0)
-    var changeY:CGFloat=CGFloat(0)
+    var jChangeX:CGFloat=CGFloat(0)
+    var jChangeY:CGFloat=CGFloat(0)
+    var jChangeSize:CGFloat=CGFloat(0)
     var indexZ=0
     var isServer = false
     var joystick = TLAnalogJoystick(withDiameter: 200*scale1)
@@ -84,6 +85,26 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
     let attributesScore:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -3, .font: UIFont(name: "Futura", size: 40*scale1)!, .foregroundColor: UIColor.black]
     let attributesPause:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -3, .font: UIFont(name: "Futura", size: 70*scale1)!, .foregroundColor: UIColor.black]
     var pauseButton=MSButtonNode(img:UIImage(named: "pause")!, size: CGSize(width: 100*scale1, height: 100*scale1))
+    let attributesSettings:[NSAttributedString.Key:Any] = [.strokeColor: UIColor.white, .strokeWidth: -3, .font: UIFont(name: "Futura", size: 45*scale1)!, .foregroundColor: UIColor.black]
+    var joystickSizeLabel = SKLabelNode()
+    var joystickSizeText=NSMutableAttributedString(string:"Joystick Size:")
+    var jSizeSmall=MSButtonNode(img:UIImage(named: "walk1")!, size: CGSize(width: 70*scale1, height: 70*scale1))
+    var jSizeBig=MSButtonNode(img:UIImage(named: "Zwalk1")!, size: CGSize(width: 70*scale1, height: 70*scale1))
+//    var dashSizeLabel = SKLabelNode()
+//    var dashSizeText=NSMutableAttributedString(string:"Dash Button Size:")
+//    var shootSizeLabel = SKLabelNode()
+//    var shootSizeText=NSMutableAttributedString(string:"Shoot Button Size:")
+    var joystickPosLabel = SKLabelNode()
+    var joystickPosText=NSMutableAttributedString(string:"Joystick Position:")
+    var jPosXDown=MSButtonNode(img:UIImage(named: "walk1")!, size: CGSize(width: 70*scale1, height: 70*scale1))
+    var jPosXUp=MSButtonNode(img:UIImage(named: "Zwalk1")!, size: CGSize(width: 70*scale1, height: 70*scale1))
+    var jPosYDown=MSButtonNode(img:UIImage(named: "walk2")!, size: CGSize(width: 70*scale1, height: 70*scale1))
+    var jPosYUp=MSButtonNode(img:UIImage(named: "Zwalk2")!, size: CGSize(width: 70*scale1, height: 70*scale1))
+//    var dashPosLabel = SKLabelNode()
+//    var dashPosText=NSMutableAttributedString(string:"Dash Button Position:")
+//    var shootPosLabel = SKLabelNode()
+//    var shootPosText=NSMutableAttributedString(string:"Shoot Button Position:")
+    
 //    var match: GKMatch?
 //    private var gameModel: GameModel!
     
@@ -182,6 +203,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
         joystick.position = CGPoint(x: screenWidth/6, y: screenHeight/6)
         scoreLabel.position = CGPoint(x: screenWidth/2, y: screenHeight - screenHeight/6)
         
+        
 //        testInfecteds[0].position=getRandomPosition()
 //        testInfecteds[0].size = CGSize(width:180*scaleChar, height:180*scaleChar)
 //        testInfecteds[0].isInfected=true
@@ -202,7 +224,34 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
         back.size = CGSize(width:map.size.width*scaleMap+screenWidth,height:map.size.height*scaleMap+screenHeight)
         map.size = CGSize(width:map.size.width*scaleMap, height:map.size.height*scaleMap)
         joystick.alpha = 0.5
-        
+        jSizeSmall?.selectedHandler = {
+            if (self.jChangeSize>=(-0.26)){
+                self.jChangeSize-=0.02
+                self.joystick.diameter=200*scale1*(self.jChangeSize+1)
+            }
+        }
+        jSizeBig?.selectedHandler = {
+            if (self.jChangeSize<=(0.26)){
+                self.jChangeSize+=0.02
+                self.joystick.diameter=200*scale1*(self.jChangeSize+1)
+            }
+        }
+        jPosXUp?.selectedHandler = {
+            self.jChangeX+=5
+            self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+        }
+        jPosXDown?.selectedHandler = {
+            self.jChangeX-=5
+            self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+        }
+        jPosYUp?.selectedHandler = {
+            self.jChangeY+=5
+            self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+        }
+        jPosYDown?.selectedHandler = {
+            self.jChangeY-=5
+            self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+        }
         newShoot?.selectedHandler = {
             for i in 0...self.bullets.count-1 {
                 if self.bullets[i].pickedUp {
@@ -224,12 +273,49 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
             self.dimDash.isHidden=false
             
         }
+        self.camera = cam
         pauseButton?.selectedHandler = {
             if(self.isPaused==false){
+                self.jSizeSmall?.position = CGPoint(x: self.camera!.position.x-screenWidth/4-50, y: self.camera!.position.y)
+                self.jSizeBig?.position = CGPoint(x: self.camera!.position.x-screenWidth/4+50, y: self.camera!.position.y)
+                self.jPosYDown?.position = CGPoint(x: self.camera!.position.x+screenWidth/4, y: self.camera!.position.y-50)
+                self.jPosYUp?.position = CGPoint(x: self.camera!.position.x+screenWidth/4, y: self.camera!.position.y+50)
+                self.jPosXDown?.position = CGPoint(x: self.camera!.position.x+screenWidth/4-50, y: self.camera!.position.y)
+                self.jPosXUp?.position = CGPoint(x: self.camera!.position.x+screenWidth/4+50, y: self.camera!.position.y)
+                self.addChild(self.jSizeSmall!)
+                self.addChild(self.jSizeBig!)
+                self.addChild(self.jPosXDown!)
+                self.addChild(self.jPosXUp!)
+                self.addChild(self.jPosYDown!)
+                self.addChild(self.jPosYUp!)
                 self.pauseText.addAttributes(self.attributesPause, range: NSMakeRange(0, self.pauseText.length))
                 self.pauseLabel.attributedText = self.pauseText
-                self.pauseLabel.position = self.character.position
+                self.pauseLabel.position = CGPoint(x: self.camera!.position.x, y: self.camera!.position.y+(3*screenHeight)/7-75*scale1)
                 self.addChild(self.pauseLabel)
+                self.joystickSizeText.addAttributes(self.attributesSettings, range: NSMakeRange(0, self.joystickSizeText.length))
+                self.joystickSizeLabel.attributedText = self.joystickSizeText
+                self.joystickSizeLabel.position = CGPoint(x: self.camera!.position.x-screenWidth/4, y: self.camera!.position.y+(screenHeight)/5)
+                self.addChild(self.joystickSizeLabel)
+//                self.dashSizeText.addAttributes(self.attributesSettings, range: NSMakeRange(0, self.dashSizeText.length))
+//                self.dashSizeLabel.attributedText = self.dashSizeText
+//                self.dashSizeLabel.position = CGPoint(x: self.camera!.position.x-screenWidth/4, y: self.camera!.position.y)
+//                self.addChild(self.dashSizeLabel)
+//                self.shootSizeText.addAttributes(self.attributesSettings, range: NSMakeRange(0, self.shootSizeText.length))
+//                self.shootSizeLabel.attributedText = self.shootSizeText
+//                self.shootSizeLabel.position = CGPoint(x: self.camera!.position.x-screenWidth/4, y: self.camera!.position.y-(screenHeight)/5)
+//                self.addChild(self.shootSizeLabel)
+                self.joystickPosText.addAttributes(self.attributesSettings, range: NSMakeRange(0, self.joystickPosText.length))
+                self.joystickPosLabel.attributedText = self.joystickPosText
+                self.joystickPosLabel.position = CGPoint(x: self.camera!.position.x+screenWidth/4, y: self.camera!.position.y+(screenHeight)/5)
+                self.addChild(self.joystickPosLabel)
+//                self.dashPosText.addAttributes(self.attributesSettings, range: NSMakeRange(0, self.dashPosText.length))
+//                self.dashPosLabel.attributedText = self.dashPosText
+//                self.dashPosLabel.position = CGPoint(x: self.camera!.position.x+screenWidth/4, y: self.camera!.position.y)
+//                self.addChild(self.dashPosLabel)
+//                self.shootPosText.addAttributes(self.attributesSettings, range: NSMakeRange(0, self.shootPosText.length))
+//                self.shootPosLabel.attributedText = self.shootPosText
+//                self.shootPosLabel.position = CGPoint(x: self.camera!.position.x+screenWidth/4, y: self.camera!.position.y-(screenHeight)/5)
+//                self.addChild(self.shootPosLabel)
                 self.newDash?.removeFromParent()
                 for z in self.testInfecteds{
                     z.alpha=0.3
@@ -240,6 +326,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                 for sb in self.shotBullets{
                     sb.alpha=0.3
                 }
+                self.gun!.alpha=0.3
                 self.tempDimDash=self.dimDash.isHidden
                 self.dimDash.isHidden=false
                 self.character.alpha=0.3
@@ -247,7 +334,6 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                 self.joystick.alpha=0.25
                 self.newShoot?.removeFromParent()
                 self.dimShoot.isHidden=false
-//                self.alpha=0.3
             } else {
                 self.dimShoot.isHidden=true
                 self.addChild(self.newDash!)
@@ -262,18 +348,31 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                 for sb in self.shotBullets{
                     sb.alpha=1
                 }
+                self.gun!.alpha=1
                 self.character.alpha=1
                 self.map.alpha=1
                 self.joystick.alpha=0.5
                 self.newShoot?.alpha=1
                 self.pauseLabel.removeFromParent()
+                self.joystickSizeLabel.removeFromParent()
+//                self.dashSizeLabel.removeFromParent()
+//                self.shootSizeLabel.removeFromParent()
+                self.joystickPosLabel.removeFromParent()
+//                self.dashPosLabel.removeFromParent()
+//                self.shootPosLabel.removeFromParent()
+                self.jPosXDown?.removeFromParent()
+                self.jPosXUp?.removeFromParent()
+                self.jPosYUp?.removeFromParent()
+                self.jPosYDown?.removeFromParent()
+                self.jSizeSmall?.removeFromParent()
+                self.jSizeBig?.removeFromParent()
             }
             self.isPaused.toggle()
             self.joystick.disabled.toggle()
             
             
         }
-        self.camera = cam
+        
 //        newShoot2?.selectedHandler = {
 //            self.changeX+=5
 //            self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.changeX, y: self.camera!.position.y-(2*screenHeight)/6+self.changeY)
@@ -533,7 +632,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
             }
         }
         camera?.position = character.position
-        joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6+changeX, y: camera!.position.y-(2*screenHeight)/6+changeY)
+        joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6+jChangeX, y: camera!.position.y-(2*screenHeight)/6+jChangeY)
         dimDash.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6+100*scale1)
         newDash?.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6+100*scale1)
         pauseButton?.position=CGPoint(x:camera!.position.x+(3*screenWidth)/7, y: camera!.position.y+(3*screenHeight)/7)

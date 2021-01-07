@@ -268,9 +268,11 @@ open class TLAnalogJoystick: SKNode {
 		}
 		
 		set {
-			let diff = newValue - diameter
-			base.diameter += diff
-			handle.diameter += diff
+            self.base.size=CGSize(width: newValue, height: newValue)
+            self.handle.size=CGSize(width: newValue*handleRatio, height: newValue*handleRatio)
+//			let diff = newValue - diameter
+//			base.diameter += diff
+//			handle.diameter += diff
 		}
 	}
     
