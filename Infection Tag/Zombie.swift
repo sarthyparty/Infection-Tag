@@ -43,14 +43,13 @@ class Zombie: Character {
         ind+=1
     }
     
-    func goBoom() -> Bool{
+    func goBoom(){
         if (iteration <= 1){
             self.removeFromParent()
-            return true
+            score+=100
         } else {
             iteration=iteration-1
             update()
-            return false
         }
     }
     

@@ -28,6 +28,7 @@ class playAgainMenu: SKScene {
         PALabel2.position=CGPoint(x: screenWidth/2, y: screenHeight/2+145*scale1)
         PALabel1.position=CGPoint(x: screenWidth/2, y: screenHeight/2+215*scale1)
         buttonPlayS = (self.childNode(withName: "buttonPlaySolo") as! MSButtonNode)
+        buttonPlayS.size=CGSize(width: 100*scale1, height: 75*scale1)
         buttonPlayS.position=CGPoint(x: screenWidth/2, y: screenHeight/2)
         buttonPlayS.selectedHandler = {
             self.loadGameSolo()

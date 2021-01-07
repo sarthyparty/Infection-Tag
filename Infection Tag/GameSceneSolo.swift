@@ -44,7 +44,6 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
     var cam = SKCameraNode()
     var scoreLabel = SKLabelNode()
     var pauseLabel = SKLabelNode()
-    
     var highScore = defaults.integer(forKey: "highScore")
     var map=SKSpriteNode(imageNamed: "mapFINAL")
     var back=SKSpriteNode(imageNamed: "black")
@@ -70,6 +69,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
     var arrayWall:[Wall] = [Wall]()
     var newDash = MSButtonNode(img:UIImage(named: "dash")!, size: CGSize(width: 100*scale1, height: 100*scale1))
 //    var dashButton : UIButton=UIButton(type: UIButton.ButtonType.custom)
+    var hi:SKView?=nil
     var speedScale=CGFloat(1)
     var counter=0
     var timerActionButton=0
@@ -163,6 +163,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
 //        pauseButton?.texture=SKTexture(imageNamed: "pause.fill")
+        hi=self.view!
         score = 0
         ammoCount=0
         scoreText=NSMutableAttributedString(string: "Score: " + String(score)+" Bullets: "+String(ammoCount))
@@ -243,7 +244,6 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                 self.dimDash.isHidden=false
                 self.character.alpha=0.3
                 self.map.alpha=0.3
-                self.scoreLabel.alpha=0.3
                 self.joystick.alpha=0.25
                 self.newShoot?.removeFromParent()
                 self.dimShoot.isHidden=false
@@ -264,7 +264,6 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                 }
                 self.character.alpha=1
                 self.map.alpha=1
-                self.scoreLabel.alpha=1
                 self.joystick.alpha=0.5
                 self.newShoot?.alpha=1
                 self.pauseLabel.removeFromParent()
@@ -643,11 +642,16 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                     if character.physicsBody==z1{
                         let scene=playAgainMenu(fileNamed: "playAgainMenu")
                         let theScene = scene
-                        let skView = self.view!
+                        var skView:SKView?
+                        do{
+                            skView = try hi
+                        } catch{
+                            print("it no work")
+                        }
 //                        newDash?.removeFromParent()
 //                        dimDash.isHidden=true
 //                        newShoot?.removeFromParent()
-                        skView.presentScene(theScene)
+                        skView?.presentScene(theScene)
                     }
                 }
             }
