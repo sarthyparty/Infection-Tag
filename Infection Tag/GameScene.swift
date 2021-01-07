@@ -92,8 +92,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if gameModel.players.count != 2 {
             savePlayers()
         }
-        otherCharacter.position.x = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].xPos)
-        otherCharacter.position.y = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].yPos)
+        otherCharacter.position.x = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].xPos)*scale1
+        otherCharacter.position.y = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].yPos)*scale1
         otherCharacter.size = CGSize(width:180*scaleChar, height:180*scaleChar)
         otherCharacter.zRotation = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].zRot)
         otherCharacter.isInfected = gameModel.players[getOtherPlayerType().playerIndex()].isInfected
@@ -692,8 +692,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if gameModel.players.count == 2 {
             let localPlayer = getLocalPlayerType()
-            gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x)
-            gameModel.players[localPlayer.playerIndex()].yPos = Float(self.character.position.y)
+            gameModel.players[localPlayer.playerIndex()].xPos = Float(self.character.position.x/scale1)
+            gameModel.players[localPlayer.playerIndex()].yPos = Float(self.character.position.y/scale1)
             gameModel.players[localPlayer.playerIndex()].zRot = Float(self.character.zRotation)
             gameModel.players[localPlayer.playerIndex()].isInfected = self.character.isInfected
             gameModel.players[localPlayer.playerIndex()].textureIndex = (ind-(ind%4))/4
