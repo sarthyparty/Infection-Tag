@@ -35,9 +35,9 @@ struct PhysicsCategory {
 class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
     
     var tempDimDash=true
-    var jChangeX:CGFloat=CGFloat(0)
-    var jChangeY:CGFloat=CGFloat(0)
-    var jChangeSize:CGFloat=CGFloat(0)
+    var jChangeX:CGFloat=CGFloat(defaults.integer(forKey: "jX"))
+    var jChangeY:CGFloat=CGFloat(defaults.integer(forKey: "jY"))
+    var jChangeSize:CGFloat=CGFloat(defaults.double(forKey: "jSize"))
     var indexZ=0
     var isServer = false
     var joystick = TLAnalogJoystick(withDiameter: 200*scale1)
@@ -184,6 +184,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
 //        pauseButton?.texture=SKTexture(imageNamed: "pause.fill")
+        
         hi=self.view!
         score = 0
         ammoCount=0
@@ -200,6 +201,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
         map.position=CGPoint(x:0,y:0)
         back.anchorPoint=CGPoint(x:0,y:0)
         back.position=CGPoint(x:-screenWidth/2,y:-screenHeight/2)
+        joystick.diameter=200*scale1*(self.jChangeSize+1)
         joystick.position = CGPoint(x: screenWidth/6, y: screenHeight/6)
         scoreLabel.position = CGPoint(x: screenWidth/2, y: screenHeight - screenHeight/6)
         
@@ -227,29 +229,35 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
         jSizeSmall?.selectedHandler = {
             if (self.jChangeSize>=(-0.26)){
                 self.jChangeSize-=0.02
+                defaults.setValue(self.jChangeSize, forKey: "jSize")
                 self.joystick.diameter=200*scale1*(self.jChangeSize+1)
             }
         }
         jSizeBig?.selectedHandler = {
             if (self.jChangeSize<=(0.26)){
                 self.jChangeSize+=0.02
+                defaults.setValue(self.jChangeSize, forKey: "jSize")
                 self.joystick.diameter=200*scale1*(self.jChangeSize+1)
             }
         }
         jPosXUp?.selectedHandler = {
             self.jChangeX+=5
+            defaults.setValue(self.jChangeX, forKey: "jX")
             self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
         }
         jPosXDown?.selectedHandler = {
             self.jChangeX-=5
+            defaults.setValue(self.jChangeX, forKey: "jX")
             self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
         }
         jPosYUp?.selectedHandler = {
             self.jChangeY+=5
+            defaults.setValue(self.jChangeY, forKey: "jY")
             self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
         }
         jPosYDown?.selectedHandler = {
             self.jChangeY-=5
+            defaults.setValue(self.jChangeY, forKey: "jY")
             self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
         }
         newShoot?.selectedHandler = {
