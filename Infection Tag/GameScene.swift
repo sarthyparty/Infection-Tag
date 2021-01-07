@@ -284,6 +284,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(newDash!)
         self.addChild(newShoot!)
 //        self.addChild(newShoot2!)
+        otherCharacter.size = CGSize(width:180*scaleChar*scale1, height:180*scaleChar*scale1)
         self.addChild(otherCharacter)
 //        super.scaleMode = .aspectFit
     }
