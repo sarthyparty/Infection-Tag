@@ -185,6 +185,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     self.bullets[i].shoot(char: self.gun!, angle: self.gun!.zRotation+CGFloat(Float.pi))
                     self.shotBullets.append(self.bullets[i])
                     self.addChild(self.bullets[i])
+                    self.gameModel.players[self.getLocalPlayerType().playerIndex()].bullets.append(self.bullets[i].dbullet!)
+                    self.gameModel.players[self.getLocalPlayerType().playerIndex()].changedBullets = true;
                     self.bullets.remove(at: i)
                     self.ammoCount-=1
                     return
@@ -670,25 +672,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
             }
         }
+        
         if shotBullets.count >= 1 {
             for i in 0...shotBullets.count-1 {
                 shotBullets[i].setPosition()
+                self.gameModel.players[getLocalPlayerType().playerIndex()].bullets[i] = shotBullets[i].dbullet!
                 if shotBullets[i].doneShooting() {
-                    print(shotBullets.count)
+                    print("a bullet is shot")
+                }
+            }
+        }
+        
+        if shotBullets.count >= 1 {
+            for i in 0...shotBullets.count-1 {
+                if shotBullets[i].parent==nil {
                     shotBullets.remove(at: i)
-                    print(shotBullets.count)
+                    self.gameModel.players[getLocalPlayerType().playerIndex()].changedBullets = true
+                    self.gameModel.players[getLocalPlayerType().playerIndex()].bullets.remove(at: i)
                     break
                 }
             }
         }
         
-//        if testInfecteds.count>=1{
-//        for i in testInfecteds.count-1...0{
-//            if (testInfecteds[i].parent==nil){
-//                testInfecteds.remove(at: i)
-//            }
-//        }
-//        }
+        if testInfecteds.count>=1{
+        for i in testInfecteds.count-1...0{
+            if (testInfecteds[i].parent==nil){
+                testInfecteds.remove(at: i)
+                break
+            }
+        }
+        }
         
         if gameModel.players.count == 2 {
             let localPlayer = getLocalPlayerType()

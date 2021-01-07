@@ -20,6 +20,7 @@ class Bullet: SKSpriteNode {
     var pickedUp: Bool = false
     var time: Int?
     var ang: CGFloat?
+    var dbullet: DBullet?
     
     init(pos: CGPoint,scale: CGFloat ) {
 //        self.id = ID
@@ -40,6 +41,8 @@ class Bullet: SKSpriteNode {
             let y = self.position.y + 10*sin(self.ang! + CGFloat(Float.pi))
             self.time!+=1
             self.position = CGPoint(x: x, y: y)
+            self.dbullet!.xPos = Float(self.position.x)
+            self.dbullet!.yPos = Float(self.position.y)
         }
     }
     
@@ -51,6 +54,7 @@ class Bullet: SKSpriteNode {
         let y = char.position.y + 10*sin(angle + CGFloat(Float.pi))
         self.position = CGPoint(x: x, y: y)
         self.time = 0
+        self.dbullet = DBullet(xPos: Float(self.position.x), yPos: Float(self.position.y), zRot: Float(self.zRotation))
         
     }
     func pickUp() {
