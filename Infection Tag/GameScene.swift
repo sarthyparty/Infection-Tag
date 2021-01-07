@@ -94,7 +94,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         otherCharacter.position.x = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].xPos)*scale1
         otherCharacter.position.y = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].yPos)*scale1
-        otherCharacter.size = CGSize(width:180*scaleChar, height:180*scaleChar)
         otherCharacter.zRotation = CGFloat(gameModel.players[getOtherPlayerType().playerIndex()].zRot)
         otherCharacter.isInfected = gameModel.players[getOtherPlayerType().playerIndex()].isInfected
         let newInd=(gameModel.players[getOtherPlayerType().playerIndex()].textureIndex-(gameModel.players[getOtherPlayerType().playerIndex()].textureIndex%4))/4
