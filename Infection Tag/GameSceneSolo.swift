@@ -284,12 +284,12 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
         self.camera = cam
         pauseButton?.selectedHandler = {
             if(self.isPaused==false){
-                self.jSizeSmall?.position = CGPoint(x: self.camera!.position.x-screenWidth/4, y: self.camera!.position.y-50)
-                self.jSizeBig?.position = CGPoint(x: self.camera!.position.x-screenWidth/4, y: self.camera!.position.y+50)
-                self.jPosYDown?.position = CGPoint(x: self.camera!.position.x+screenWidth/4, y: self.camera!.position.y-70)
-                self.jPosYUp?.position = CGPoint(x: self.camera!.position.x+screenWidth/4, y: self.camera!.position.y+70)
-                self.jPosXDown?.position = CGPoint(x: self.camera!.position.x+screenWidth/4-70, y: self.camera!.position.y)
-                self.jPosXUp?.position = CGPoint(x: self.camera!.position.x+screenWidth/4+70, y: self.camera!.position.y)
+                self.jSizeSmall?.position = CGPoint(x: self.camera!.position.x-screenWidth/4, y: self.camera!.position.y-50*scale1)
+                self.jSizeBig?.position = CGPoint(x: self.camera!.position.x-screenWidth/4, y: self.camera!.position.y+50*scale1)
+                self.jPosYDown?.position = CGPoint(x: self.camera!.position.x+screenWidth/4, y: self.camera!.position.y-70*scale1)
+                self.jPosYUp?.position = CGPoint(x: self.camera!.position.x+screenWidth/4, y: self.camera!.position.y+70*scale1)
+                self.jPosXDown?.position = CGPoint(x: self.camera!.position.x+screenWidth/4-70*scale1, y: self.camera!.position.y)
+                self.jPosXUp?.position = CGPoint(x: self.camera!.position.x+screenWidth/4+70*scale1, y: self.camera!.position.y)
                 self.addChild(self.jSizeSmall!)
                 self.addChild(self.jSizeBig!)
                 self.addChild(self.jPosXDown!)
