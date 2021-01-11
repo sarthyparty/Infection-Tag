@@ -102,6 +102,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else {
             otherCharacter.texture=walkSprites[newInd]
         }
+        if gameModel.players[getOtherPlayerType().playerIndex()].bullets.count > 0 {
+            for db in gameModel.players[getOtherPlayerType().playerIndex()].bullets {
+                shotBullets.append(Bullet(pos: CGPoint(x: CGFloat(db.xPos)*scale1, y: CGFloat(db.yPos)*scale1), scale: scale1))
+            }
+            gameModel.players[getOtherPlayerType().playerIndex()].bullets = []
+            sendData()
+        }
+        
     }
     
     
@@ -186,7 +194,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     self.shotBullets.append(self.bullets[i])
                     self.addChild(self.bullets[i])
                     self.gameModel.players[self.getLocalPlayerType().playerIndex()].bullets.append(self.bullets[i].dbullet!)
-                    self.gameModel.players[self.getLocalPlayerType().playerIndex()].changedBullets = true;
                     self.bullets.remove(at: i)
                     self.ammoCount-=1
                     return
@@ -676,7 +683,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if shotBullets.count >= 1 {
             for i in 0...shotBullets.count-1 {
                 shotBullets[i].setPosition()
-                self.gameModel.players[getLocalPlayerType().playerIndex()].bullets[i] = shotBullets[i].dbullet!
                 if shotBullets[i].doneShooting() {
                     print("a bullet is shot")
                 }
@@ -687,8 +693,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             for i in 0...shotBullets.count-1 {
                 if shotBullets[i].parent==nil {
                     shotBullets.remove(at: i)
-                    self.gameModel.players[getLocalPlayerType().playerIndex()].changedBullets = true
-                    self.gameModel.players[getLocalPlayerType().playerIndex()].bullets.remove(at: i)
                     break
                 }
             }
