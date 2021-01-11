@@ -7,6 +7,9 @@
 
 import SpriteKit
 
+let defaults = UserDefaults.standard
+var uses=defaults.integer(forKey: "use")
+
 class MainMenu: SKScene {
 
     var gch: GameCenterHelper!
@@ -16,8 +19,12 @@ class MainMenu: SKScene {
     var normalGuy: SKSpriteNode!
     var z1: SKSpriteNode!
     var z2: SKSpriteNode!
+    
 
     override func didMove(to view: SKView) {
+        print(uses)
+        uses+=1
+        defaults.setValue(uses, forKey: "use")
         buttonPlay = (self.childNode(withName: "buttonPlay") as! MSButtonNode)
         buttonPlay.selectedHandler = {
             self.loadGame()

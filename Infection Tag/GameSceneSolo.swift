@@ -9,11 +9,11 @@ let screenWidth = screenSize.width
 let screenHeight = screenSize.height
 let originalWidth = CGFloat(1024)
 let originalHeight = CGFloat(766)
-let defaults = UserDefaults.standard
 var scale1 = CGFloat.minimum(screenWidth/originalWidth, screenHeight/originalHeight)
 var scaleChar=CGFloat(0.3)
 var score = 0
 var ammoCount=0
+
 
 import SpriteKit
 import GameplayKit
@@ -38,6 +38,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
     var jChangeX:CGFloat=CGFloat(defaults.integer(forKey: "jX"))
     var jChangeY:CGFloat=CGFloat(defaults.integer(forKey: "jY"))
     var jChangeSize:CGFloat=CGFloat(defaults.double(forKey: "jSize"))
+    var isFlip=defaults.bool(forKey: "flip")
     var indexZ=0
     var isServer = false
     var joystick = TLAnalogJoystick(withDiameter: 200*scale1)
@@ -50,7 +51,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
     var back=SKSpriteNode(imageNamed: "black")
     var dimDash=SKSpriteNode(imageNamed:"dash")
     var dimShoot=SKSpriteNode(imageNamed:"Shoot_button")
-    var newShoot=MSButtonNode(img:UIImage(named: "Shoot_button")!, size: CGSize(width: 100*scale1, height: 100*scale1))
+    var newShoot=MSButtonNode(img:UIImage(named: "Shoot_button")!, size: CGSize(width: 150*scale1, height: 150*scale1))
 //    var newShoot2=MSButtonNode(img:UIImage(named: "Shoot_button")!, size: CGSize(width: 100*scale1, height: 100*scale1))
 //    var shootButton : UIButton=UIButton(type: UIButton.ButtonType.custom)
     var testInfecteds:[Zombie] = [Zombie]()
@@ -68,7 +69,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
     var ymovement = true
     var testWall:Wall?
     var arrayWall:[Wall] = [Wall]()
-    var newDash = MSButtonNode(img:UIImage(named: "dash")!, size: CGSize(width: 100*scale1, height: 100*scale1))
+    var newDash = MSButtonNode(img:UIImage(named: "dash")!, size: CGSize(width: 150*scale1, height: 150*scale1))
 //    var dashButton : UIButton=UIButton(type: UIButton.ButtonType.custom)
     var hi:SKView?=nil
     var speedScale=CGFloat(1)
@@ -100,6 +101,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
     var jPosXUp=MSButtonNode(img:UIImage(named: "arrowRight")!, size: CGSize(width: 70*scale1, height: 70*scale1))
     var jPosYDown=MSButtonNode(img:UIImage(named: "arrowDown")!, size: CGSize(width: 70*scale1, height: 70*scale1))
     var jPosYUp=MSButtonNode(img:UIImage(named: "arrowUp")!, size: CGSize(width: 70*scale1, height: 70*scale1))
+    var flipButton=MSButtonNode(img:UIImage(named: "flipButton")!, size: CGSize(width: 200*scale1, height: 100*scale1))
 //    var dashPosLabel = SKLabelNode()
 //    var dashPosText=NSMutableAttributedString(string:"Dash Button Position:")
 //    var shootPosLabel = SKLabelNode()
@@ -183,6 +185,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
 //    }
     
     override func didMove(to view: SKView) {
+//        SKStoreReviewController.requestReview()
 //        pauseButton?.texture=SKTexture(imageNamed: "pause.fill")
         
         hi=self.view!
@@ -211,10 +214,10 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
 //        testInfecteds[0].isInfected=true
 //        testInfecteds[0].texture = ZwalkSprites[2]
 //        character.isInfected=false
-        dimDash.size=CGSize(width: 100*scale1, height: 100*scale1)
+        dimDash.size=CGSize(width: 150*scale1, height: 150*scale1)
 //        dimDash.position=CGPoint(x:5*screenWidth/6, y: screenHeight/3)
         dimDash.isHidden=true
-        dimShoot.size=CGSize(width: 100*scale1, height: 100*scale1)
+        dimShoot.size=CGSize(width: 150*scale1, height: 150*scale1)
 //        dimShoot.position=CGPoint(x:5*screenWidth/6, y: screenHeight/3)
         dimShoot.isHidden=true
 //        dashButton=UIButton(frame:CGRect(x: -50+2*screenWidth/6, y: -50+5*screenHeight/6, width: 100*scale1, height: 100*scale1))
@@ -241,24 +244,49 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
             }
         }
         jPosXUp?.selectedHandler = {
-            self.jChangeX+=5
+            if(self.isFlip==false){
+                self.jChangeX+=5
+            } else {
+                self.jChangeX-=5
+            }
             defaults.setValue(self.jChangeX, forKey: "jX")
-            self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+            if(self.isFlip==false){
+                self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+            } else {
+                self.joystick.position = CGPoint(x:self.camera!.position.x+(2*screenWidth)/6-self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+            }
+            
         }
         jPosXDown?.selectedHandler = {
-            self.jChangeX-=5
+            if(self.isFlip==false){
+                self.jChangeX-=5
+            } else {
+                self.jChangeX+=5
+            }
             defaults.setValue(self.jChangeX, forKey: "jX")
-            self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+            if(self.isFlip==false){
+                self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+            } else {
+                self.joystick.position = CGPoint(x:self.camera!.position.x+(2*screenWidth)/6-self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+            }
         }
         jPosYUp?.selectedHandler = {
             self.jChangeY+=5
             defaults.setValue(self.jChangeY, forKey: "jY")
-            self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+            if(self.isFlip==false){
+                self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+            } else {
+                self.joystick.position = CGPoint(x:self.camera!.position.x+(2*screenWidth)/6-self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+            }
         }
         jPosYDown?.selectedHandler = {
             self.jChangeY-=5
             defaults.setValue(self.jChangeY, forKey: "jY")
-            self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+            if(self.isFlip==false){
+                self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+            } else {
+                self.joystick.position = CGPoint(x:self.camera!.position.x+(2*screenWidth)/6-self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+            }
         }
         newShoot?.selectedHandler = {
             for i in 0...self.bullets.count-1 {
@@ -273,6 +301,24 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                 }
             }
         }
+        self.camera = cam
+        flipButton?.selectedHandler = {
+            self.isFlip.toggle()
+            defaults.setValue(self.isFlip, forKey: "flip")
+            if (self.isFlip==false){
+                self.joystick.position = CGPoint(x:self.camera!.position.x-(2*screenWidth)/6+self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+                self.dimDash.position=CGPoint(x:self.camera!.position.x+2*(screenWidth)/6, y: self.camera!.position.y-(2*screenHeight)/6+150*scale1)
+                self.newDash?.position=CGPoint(x:self.camera!.position.x+2*(screenWidth)/6, y: self.camera!.position.y-(2*screenHeight)/6+150*scale1)
+                self.newShoot?.position=CGPoint(x:self.camera!.position.x+2*(screenWidth)/6, y: self.camera!.position.y-(2*screenHeight)/6)
+                self.dimShoot.position=CGPoint(x:self.camera!.position.x+2*(screenWidth)/6, y: self.camera!.position.y-(2*screenHeight)/6)
+            } else {
+                self.joystick.position = CGPoint(x:self.camera!.position.x+(2*screenWidth)/6-self.jChangeX, y: self.camera!.position.y-(2*screenHeight)/6+self.jChangeY)
+                self.dimDash.position=CGPoint(x:self.camera!.position.x-2*(screenWidth)/6, y: self.camera!.position.y-(2*screenHeight)/6+150*scale1)
+                self.newDash?.position=CGPoint(x:self.camera!.position.x-2*(screenWidth)/6, y: self.camera!.position.y-(2*screenHeight)/6+150*scale1)
+                self.newShoot?.position=CGPoint(x:self.camera!.position.x-2*(screenWidth)/6, y: self.camera!.position.y-(2*screenHeight)/6)
+                self.dimShoot.position=CGPoint(x:self.camera!.position.x-2*(screenWidth)/6, y: self.camera!.position.y-(2*screenHeight)/6)
+            }
+        }
         newDash?.selectedHandler = {
             self.speedScale=CGFloat(3)
             self.startCounter=true
@@ -281,9 +327,10 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
             self.dimDash.isHidden=false
             
         }
-        self.camera = cam
+        
         pauseButton?.selectedHandler = {
             if(self.isPaused==false){
+                self.flipButton?.position=CGPoint(x: self.camera!.position.x, y: self.camera!.position.y-150*scale1)
                 self.jSizeSmall?.position = CGPoint(x: self.camera!.position.x-screenWidth/4, y: self.camera!.position.y-50*scale1)
                 self.jSizeBig?.position = CGPoint(x: self.camera!.position.x-screenWidth/4, y: self.camera!.position.y+50*scale1)
                 self.jPosYDown?.position = CGPoint(x: self.camera!.position.x+screenWidth/4, y: self.camera!.position.y-70*scale1)
@@ -296,6 +343,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                 self.addChild(self.jPosXUp!)
                 self.addChild(self.jPosYDown!)
                 self.addChild(self.jPosYUp!)
+                self.addChild(self.flipButton!)
                 self.pauseText.addAttributes(self.attributesPause, range: NSMakeRange(0, self.pauseText.length))
                 self.pauseLabel.attributedText = self.pauseText
                 self.pauseLabel.position = CGPoint(x: self.camera!.position.x, y: self.camera!.position.y+(3*screenHeight)/7-75*scale1)
@@ -374,6 +422,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                 self.jPosYDown?.removeFromParent()
                 self.jSizeSmall?.removeFromParent()
                 self.jSizeBig?.removeFromParent()
+                self.flipButton?.removeFromParent()
             }
             self.isPaused.toggle()
             self.joystick.disabled.toggle()
@@ -476,6 +525,11 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                 if wall.intersects(z){
                     isIntersecting=true
                 }
+            }
+            let z=Zombie(char: character, pos: CGPoint(x: xPos, y: yPos), inde: 0, radi: Float(180*scaleChar/2*scale1))
+            z.size=CGSize(width:180*scaleChar*scale1, height:180*scaleChar*scale1)
+            if CGRect(origin: cam.position, size: CGSize(width: screenWidth, height: screenHeight)).intersects(CGRect(origin: z.position, size: CGSize(width:180*scaleChar*scale1, height:180*scaleChar*scale1))){
+                isIntersecting=true
             }
         }while(isIntersecting)
         return CGPoint(x: xPos, y: yPos)
@@ -640,12 +694,21 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
             }
         }
         camera?.position = character.position
-        joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6+jChangeX, y: camera!.position.y-(2*screenHeight)/6+jChangeY)
-        dimDash.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6+100*scale1)
-        newDash?.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6+100*scale1)
+        if (isFlip==false){
+            joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6+jChangeX, y: camera!.position.y-(2*screenHeight)/6+jChangeY)
+            dimDash.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6+150*scale1)
+            newDash?.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6+150*scale1)
+            newShoot?.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
+            dimShoot.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
+        } else {
+            joystick.position = CGPoint(x:camera!.position.x+(2*screenWidth)/6-jChangeX, y: camera!.position.y-(2*screenHeight)/6+jChangeY)
+            dimDash.position=CGPoint(x:camera!.position.x-2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6+150*scale1)
+            newDash?.position=CGPoint(x:camera!.position.x-2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6+150*scale1)
+            newShoot?.position=CGPoint(x:camera!.position.x-2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
+            dimShoot.position=CGPoint(x:camera!.position.x-2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
+        }
         pauseButton?.position=CGPoint(x:camera!.position.x+(3*screenWidth)/7, y: camera!.position.y+(3*screenHeight)/7)
-        newShoot?.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
-        dimShoot.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6)
+        
 //        newShoot2?.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y+(2*screenHeight)/6)
         if(character.isInfected){
             if(joystick.velocity == CGPoint(x: 0,y: 0)){
@@ -749,16 +812,10 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                     if character.physicsBody==z1{
                         let scene=playAgainMenu(fileNamed: "playAgainMenu")
                         let theScene = scene
-                        var skView:SKView?
-                        do{
-                            skView = try hi
-                        } catch{
-                            print("it no work")
-                        }
 //                        newDash?.removeFromParent()
 //                        dimDash.isHidden=true
 //                        newShoot?.removeFromParent()
-                        skView?.presentScene(theScene)
+                        hi?.presentScene(theScene)
                     }
                 }
             }
