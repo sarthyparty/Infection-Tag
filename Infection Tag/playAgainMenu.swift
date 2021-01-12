@@ -9,6 +9,7 @@ import SpriteKit
 import StoreKit
 class playAgainMenu: SKScene {
     var buttonPlayS: MSButtonNode!
+    var back: SKSpriteNode!
 
     override func didMove(to view: SKView) {
         if (uses%3==0){
@@ -16,7 +17,9 @@ class playAgainMenu: SKScene {
             uses+=1
             SKStoreReviewController.requestReview()
         }
-        self.backgroundColor=UIColor.green
+        back = (self.childNode(withName: "background") as! SKSpriteNode)
+        back.size=CGSize(width: 2000, height: 2000)
+
         let PALabel1 = (self.childNode(withName: "paLabel1") as! SKLabelNode)
         let PALabel2 = (self.childNode(withName: "paLabel2") as! SKLabelNode)
         let PALabel3 = (self.childNode(withName: "paLabel3") as! SKLabelNode)

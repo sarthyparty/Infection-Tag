@@ -25,6 +25,7 @@ class GameViewController: UIViewController {
         gameCenterHelper = GameCenterHelper()
         gameCenterHelper.delegate = self
        gameCenterHelper.authenticatePlayer()
+//        scene?.size=CGSize(width: 100, height: 100)
         let theScene = scene
         let skView = view as! SKView
         skView.presentScene(theScene)

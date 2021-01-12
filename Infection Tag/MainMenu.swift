@@ -15,6 +15,7 @@ class MainMenu: SKScene {
     var gch: GameCenterHelper!
     var buttonPlay: MSButtonNode!
     var buttonPlaySolo: MSButtonNode!
+    var back: SKSpriteNode!
     var nameDisplay: SKNode!
     var normalGuy: SKSpriteNode!
     var z1: SKSpriteNode!
@@ -29,6 +30,8 @@ class MainMenu: SKScene {
         buttonPlay.selectedHandler = {
             self.loadGame()
         }
+        back = (self.childNode(withName: "background") as! SKSpriteNode)
+        back.size=CGSize(width: 2000, height: 2000)
         buttonPlay.removeFromParent()
         buttonPlaySolo = (self.childNode(withName: "buttonPlaySolo") as! MSButtonNode)
         buttonPlaySolo.position=CGPoint(x: screenWidth/2, y: screenHeight/2)
@@ -40,13 +43,13 @@ class MainMenu: SKScene {
         nameDisplay.yScale=scale1*2
         nameDisplay.xScale=scale1*2
         normalGuy = (self.childNode(withName: "normalGuy") as! SKSpriteNode)
-        normalGuy.position=CGPoint(x: normalGuy.position.x*scale1, y: normalGuy.position.y*scale1)
+        normalGuy.position=CGPoint(x: normalGuy.position.x*scale1+(screenWidth-originalWidth*scale1)/2, y: normalGuy.position.y*scale1)
         normalGuy.size=CGSize(width: normalGuy.size.width*scale1, height: normalGuy.size.height*scale1)
         z1 = (self.childNode(withName: "z1") as! SKSpriteNode)
-        z1.position=CGPoint(x: z1.position.x*scale1, y: z1.position.y*scale1)
+        z1.position=CGPoint(x: z1.position.x*scale1+(screenWidth-originalWidth*scale1)/2, y: z1.position.y*scale1)
         z1.size=CGSize(width: z1.size.width*scale1, height: z1.size.height*scale1)
         z2 = (self.childNode(withName: "z2") as! SKSpriteNode)
-        z2.position=CGPoint(x: z2.position.x*scale1, y: z2.position.y*scale1)
+        z2.position=CGPoint(x: z2.position.x*scale1+(screenWidth-originalWidth*scale1)/2, y: z2.position.y*scale1)
         z2.size=CGSize(width: z2.size.width*scale1, height: z2.size.height*scale1)
         
 
@@ -59,7 +62,7 @@ class MainMenu: SKScene {
             return
         }
         let scene = GameSceneSolo(fileNamed: "GameSceneSolo")
-        scene?.scaleMode = .resizeFill
+//        scene?.size=CGSize(width: 100, height: 100)
 //        skView.showsPhysics = true
 //        skView.showsDrawCount = true
 //        skView.showsFPS=true
