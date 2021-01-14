@@ -54,7 +54,7 @@ class Bullet: SKSpriteNode {
         let y = char.position.y + 10*sin(angle + CGFloat(Float.pi))
         self.position = CGPoint(x: x, y: y)
         self.time = 0
-        self.dbullet = DBullet(xPos: Float(self.position.x), yPos: Float(self.position.y), zRot: Float(self.zRotation))
+        self.dbullet = DBullet(xPos: Float(self.position.x/scale1), yPos: Float(self.position.y/scale1), zRot: Float(self.zRotation))
         
     }
     func pickUp() {
