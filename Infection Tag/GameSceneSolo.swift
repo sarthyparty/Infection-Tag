@@ -51,6 +51,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
     var back=SKSpriteNode(imageNamed: "black")
     var dimDash=SKSpriteNode(imageNamed:"dash")
     var dimShoot=SKSpriteNode(imageNamed:"Shoot_button")
+    var clouds = [SKSpriteNode]()
     var newShoot=MSButtonNode(img:UIImage(named: "Shoot_button")!, size: CGSize(width: 150*scale1, height: 150*scale1))
 //    var newShoot2=MSButtonNode(img:UIImage(named: "Shoot_button")!, size: CGSize(width: 100*scale1, height: 100*scale1))
 //    var shootButton : UIButton=UIButton(type: UIButton.ButtonType.custom)
@@ -802,6 +803,9 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
             testInfecteds.last?.physicsBody?.contactTestBitMask = PhysicsCategory.character1 | PhysicsCategory.zombie// 4
 //            indexZ+=1
             zombieSpawnTimer = 0
+            for cloud in clouds {
+                cloud.removeFromParent()
+            }
         }
         if (zombieSpawnTimer%60==0) {
             let pos = getRandomPosition()
@@ -876,7 +880,13 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
             for b in shotB.physicsBody!.allContactedBodies(){
                 for z1 in testInfecteds{
                     if z1.physicsBody==b{
-                        z1.goBoom()
+                        if (z1.goBoom()) {
+                            let cloud = SKSpriteNode(imageNamed: "cloud")
+                            cloud.position = z1.position
+                            cloud.size = z1.size
+                            self.addChild(cloud)
+                            clouds.append(cloud)
+                        }
                         shotB.removeFromParent()
                     }
                 }
