@@ -105,6 +105,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if gameModel.players[getOtherPlayerType().playerIndex()].bullets.count > 0 {
             for db in gameModel.players[getOtherPlayerType().playerIndex()].bullets {
                 shotBullets.append(Bullet(pos: CGPoint(x: CGFloat(db.xPos)*scale1, y: CGFloat(db.yPos)*scale1), scale: scale1))
+                self.addChild(shotBullets[shotBullets.count-1])
             }
             gameModel.players[getOtherPlayerType().playerIndex()].bullets = []
             sendData()
