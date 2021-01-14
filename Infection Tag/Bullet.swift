@@ -43,12 +43,12 @@ class Bullet: SKSpriteNode {
         }
     }
     
-    func shoot(char: Gun, angle: CGFloat) {
+    func shoot(gun: Gun, angle: CGFloat) {
         self.zRotation = angle+CGFloat(Float.pi/2)
         self.shot = true
         self.ang = angle
-        let x = char.position.x + scale1*10*cos(angle + CGFloat(Float.pi))
-        let y = char.position.y + scale1*10*sin(angle + CGFloat(Float.pi))
+        let x = gun.position.x
+        let y = gun.position.y
         self.position = CGPoint(x: x, y: y)
         self.time = 0
         

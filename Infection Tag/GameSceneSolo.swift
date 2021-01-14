@@ -291,7 +291,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
         newShoot?.selectedHandler = {
             for i in 0...self.bullets.count-1 {
                 if self.bullets[i].pickedUp {
-                    self.bullets[i].shoot(char: self.gun!, angle: self.gun!.zRotation+CGFloat(Float.pi))
+                    self.bullets[i].shoot(gun                                                                                                                                                                                                                                                                                                               : self.gun!, angle: self.gun!.zRotation+CGFloat(Float.pi))
                     self.shotBullets.append(self.bullets[i])
                     self.addChild(self.bullets[i])
                     self.bullets.remove(at: i)
