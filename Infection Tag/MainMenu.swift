@@ -39,9 +39,9 @@ class MainMenu: SKScene {
             self.loadGameSolo()
         }
         nameDisplay = (self.childNode(withName: "name") as! SKSpriteNode)
-        nameDisplay.position=CGPoint(x: screenWidth/2, y: 3*screenHeight/4)
-        nameDisplay.yScale=scale1*2
-        nameDisplay.xScale=scale1*2
+        nameDisplay.position=CGPoint(x: screenWidth/2, y: 4*screenHeight/5)
+        nameDisplay.yScale=scale1*1.8
+        nameDisplay.xScale=scale1*1.8
         normalGuy = (self.childNode(withName: "normalGuy") as! SKSpriteNode)
         normalGuy.position=CGPoint(x: normalGuy.position.x*scale1+(screenWidth-originalWidth*scale1)/2, y: normalGuy.position.y*scale1)
         normalGuy.size=CGSize(width: normalGuy.size.width*scale1, height: normalGuy.size.height*scale1)
