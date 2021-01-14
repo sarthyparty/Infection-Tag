@@ -698,14 +698,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-        if testInfecteds.count>=1{
-        for i in testInfecteds.count-1...0{
-            if (testInfecteds[i].parent==nil){
-                testInfecteds.remove(at: i)
-                break
-            }
-        }
-        }
+//        if testInfecteds.count>=1{
+//        for i in testInfecteds.count-1...0{
+//            if (testInfecteds[i].parent==nil){
+//                testInfecteds.remove(at: i)
+//                break
+//            }
+//        }
+//        }
         
         if gameModel.players.count == 2 {
             let localPlayer = getLocalPlayerType()
