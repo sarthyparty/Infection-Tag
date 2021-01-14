@@ -883,7 +883,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                         if (z1.goBoom()) {
                             let cloud = SKSpriteNode(imageNamed: "cloud")
                             cloud.position = z1.position
-                            cloud.size = z1.size
+                            cloud.size = CGSize(width: z1.size.width*2, height: z1.size.height*2)
                             self.addChild(cloud)
                             clouds.append(cloud)
                         }
