@@ -443,7 +443,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
         self.addChild(character)
         self.addChild(self.scoreLabel)
         self.addChild(self.gun!)
-        character.position = CGPoint(x: 500*scale1, y: 300*scale1)
+        character.position = CGPoint(x: 1500*scale1, y: 1300*scale1)
         character.size = CGSize(width:180*scaleChar*scale1, height:180*scaleChar*scale1)
         
 //        self.view?.addSubview(shootButton)
@@ -693,7 +693,34 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
                 self.character.position = CGPoint(x: self.character.position.x, y: self.character.position.y)
             }
         }
-        camera?.position = character.position
+        if (character.position.x<=screenWidth/2&&character.position.y<=screenHeight/2){
+            camera?.position = CGPoint(x: screenWidth/2, y: screenHeight/2)
+        }
+        else if (character.position.x>=map.size.width-screenWidth/2&&character.position.y<=screenHeight/2){
+            camera?.position = CGPoint(x: map.size.width-screenWidth/2, y: screenHeight/2)
+        }
+        else if (character.position.x<=screenWidth/2&&character.position.y>=map.size.height-screenHeight/2){
+            camera?.position = CGPoint(x: screenWidth/2, y: map.size.height-screenHeight/2)
+        }
+        else if (character.position.x>=map.size.width-screenWidth/2&&character.position.y>=map.size.height-screenHeight/2){
+            camera?.position = CGPoint(x: map.size.width-screenWidth/2, y: map.size.height-screenHeight/2)
+        }
+        else if (character.position.x<=screenWidth/2){
+            camera?.position = CGPoint(x: screenWidth/2, y: character.position.y)
+        }
+        else if (character.position.x>=map.size.width-screenWidth/2){
+            camera?.position = CGPoint(x: map.size.width-screenWidth/2, y: character.position.y)
+        }
+        else if (character.position.y<=screenHeight/2){
+            camera?.position = CGPoint(x: character.position.x, y: screenHeight/2)
+        }
+        else if (character.position.y>=map.size.height-screenHeight/2){
+            camera?.position = CGPoint(x: character.position.x, y: map.size.height-screenHeight/2)
+        }
+        else {
+            camera?.position = character.position
+        }
+        
         if (isFlip==false){
             joystick.position = CGPoint(x:camera!.position.x-(2*screenWidth)/6+jChangeX, y: camera!.position.y-(2*screenHeight)/6+jChangeY)
             dimDash.position=CGPoint(x:camera!.position.x+2*(screenWidth)/6, y: camera!.position.y-(2*screenHeight)/6+150*scale1)
@@ -841,7 +868,7 @@ class GameSceneSolo: SKScene, SKPhysicsContactDelegate {
         scoreText.addAttributes(attributesScore, range: NSMakeRange(0, scoreText.length))
         scoreLabel.attributedText = scoreText
         }
-        camera?.position = character.position
+//        camera?.position = character.position
         scoreLabel.position = CGPoint(x:camera!.position.x, y: camera!.position.y+(3*screenHeight)/7)
        
         self.gun?.setPosition()
